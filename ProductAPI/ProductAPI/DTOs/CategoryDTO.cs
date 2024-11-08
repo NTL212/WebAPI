@@ -1,5 +1,7 @@
 ﻿
 
+using ProductAPI.Models;
+
 namespace ProductAPI.DTOs
 {
 	public class CategoryDTO
@@ -9,5 +11,7 @@ namespace ProductAPI.DTOs
 		public string CategoryName { get; set; } = null!;
 		public bool IsDeleted { get; set; }
 		public string? Description { get; set; }
-	}
+
+        public List<CategoryDTO> InverseParent { get; set; } = new List<CategoryDTO>();
+    }
 }

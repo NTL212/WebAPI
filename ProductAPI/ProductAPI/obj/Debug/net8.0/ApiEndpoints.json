@@ -444,6 +444,11 @@
         "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
+      },
+      {
+        "Name": "orderDto",
+        "Type": "ProductAPI.DTOs.OrderDTO",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -590,6 +595,206 @@
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductAPI.DTOs.ProductDTO, ProductAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "CreateVoucher",
+    "RelativePath": "api/Voucher",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherDTO",
+        "Type": "ProductAPI.DTOs.VoucherDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ProductAPI.Models.Voucher",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "UpdateVoucher",
+    "RelativePath": "api/Voucher",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherDTO",
+        "Type": "ProductAPI.DTOs.VoucherDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "GetVoucherByCode",
+    "RelativePath": "api/Voucher/{code}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "code",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ProductAPI.Models.Voucher",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "DeleteVoucher",
+    "RelativePath": "api/Voucher/{voucherId}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "DeleteVoucherCampaign",
+    "RelativePath": "api/Voucher/{voucherId}/campaign",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "UpdateVoucherUsage",
+    "RelativePath": "api/Voucher/{voucherId}/usage",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "ApplyVoucherToOrder",
+    "RelativePath": "api/Voucher/apply",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "ProductAPI.ViewModels.ApplyVoucherRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "CreateVoucherCampaign",
+    "RelativePath": "api/Voucher/campaign",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherDTO",
+        "Type": "ProductAPI.DTOs.VoucherCampaignDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ProductAPI.Models.VoucherCampaign",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "UpdateVoucherCampaign",
+    "RelativePath": "api/Voucher/campaign",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherDTO",
+        "Type": "ProductAPI.DTOs.VoucherCampaignDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.VoucherController",
+    "Method": "GetVoucherCampaign",
+    "RelativePath": "api/Voucher/campaign/{voucherCampaignId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "voucherCampaignId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "ProductAPI.Models.VoucherCampaign",
         "MediaTypes": [
           "text/plain",
           "application/json",

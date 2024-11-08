@@ -1,0 +1,188 @@
+﻿@model List<ProductAPI.Models.CartItem>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Checkout<span>Shop</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+        <div class="checkout">
+            <div class="container">
+                <div class="checkout-discount">
+                    <form action="#">
+                        <input type="text" class="form-control" required id="checkout-discount-input">
+                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+                    </form>
+                </div><!-- End .checkout-discount -->
+                <form id="orderForm" action="javascript:void(0);">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
+
+                            <label>Receiver Name </label>
+                            <input type="text" id="receiverName" class="form-control" required>
+
+                            <label>Address *</label>
+                            <input type="text" id="address" class="form-control" required>
+
+                            <label>Phone *</label>
+                            <input type="text" id="phone" class="form-control" required>
+
+                            <label>Order notes (optional)</label>
+                            <textarea id="orderNotes" class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                        </div><!-- End .col-lg-9 -->
+                        <aside class="col-lg-3">
+                            <div class="summary">
+                                <h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+                                <table class="table table-summary">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @{
+                                            decimal subtotal = 0;
+                                        }
+
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td><a href="#">@item.Product.ProductName</a></td>
+                                                <td>$@(item.Price *item.Quantity)</td>
+                                            </tr>
+                                            {
+                                                subtotal += (item.Price *item.Quantity);
+                                            }
+                                        }
+
+                                        <tr class="summary-subtotal">
+                                            <td>Subtotal:</td>
+                                            <td>$@subtotal</td>
+                                        </tr><!-- End .summary-subtotal -->
+                                        <tr>
+                                            <td>Shipping:</td>
+                                            <td>Free shipping</td>
+                                        </tr>
+                                        <tr class="summary-total">
+                                            <td>Total:</td>
+                                            <td>$@subtotal</td> <!-- Nếu Total là subtotal + shipping, bạn có thể điều chỉnh thêm -->
+                                        </tr><!-- End .summary-total -->
+                                    </tbody>
+
+                                </table><!-- End .table table-summary -->
+
+                                <div class="accordion-summary" id="accordion-payment">
+                                    <div class="card">
+                                        <div class="card-header" id="heading-1">
+                                            <h2 class="card-title">
+                                                <a role="button" data-toggle="collapse" href="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
+                                                    Direct bank transfer
+                                                </a>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        <div id="collapse-1" class="collapse show" aria-labelledby="heading-1" data-parent="#accordion-payment">
+                                            <div class="card-body">
+                                                Make your payment directly into our bank account. Please use your Order ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .card -->
+
+                                    <div class="card">
+                                        <div class="card-header" id="heading-3">
+                                            <h2 class="card-title">
+                                                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+                                                    Cash on delivery
+                                                </a>
+                                            </h2>
+                                        </div><!-- End .card-header -->
+                                        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+                                            <div class="card-body">
+                                                Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros.
+                                            </div><!-- End .card-body -->
+                                        </div><!-- End .collapse -->
+                                    </div><!-- End .card -->
+                                    
+                                </div><!-- End .accordion -->
+
+                                <button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+                                    <span class="btn-text">Place Order</span>
+                                    <span class="btn-hover-text">Proceed to Checkout</span>
+                                </button>
+                            </div><!-- End .summary -->
+                        </aside><!-- End .col-lg-3 -->
+                    </div><!-- End .row -->
+                </form>
+            </div><!-- End .container -->
+        </div><!-- End .checkout -->
+    </div><!-- End .page-content -->
+    @section scripts{
+        <script>
+            document.getElementById("orderForm").addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                // Lấy dữ liệu từ form
+                const receiverName = document.getElementById("receiverName").value;
+                const address = document.getElementById("address").value;
+                const phone = document.getElementById("phone").value;
+                const orderNotes = document.getElementById("orderNotes").value;
+                const userId = '@Context.Session.GetInt32("UserId")';
+                
+
+                // Tạo dữ liệu để gửi API
+                const orderData = {
+                    receverName: receiverName,
+                    address: address,
+                    phoneNumber: phone,
+                    note: orderNotes,
+                    totalAmount: @subtotal
+                };
+
+                $.ajax({
+                    url: "/api/order/"+ userId,
+                    type: "POST",
+                    contentType: "application/json",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("token")}` // Thêm token nếu cần
+                    },
+                    data: JSON.stringify(orderData),
+                    success: function (response) {
+                        // Hiển thị thông báo thành công với SweetAlert2
+                        Swal.fire({
+                            title: 'Order Placed Successfully!',
+                            text: 'Your order has been placed successfully. You will be redirected to the order details page.',
+                            icon: 'success',
+                            confirmButtonText: 'View Order'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Chuyển hướng đến trang chi tiết đơn hàng với mã đơn hàng trong response
+                                //window.location.href = `/order/details/${response.orderId}`;
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error:", error);
+                        alert("An error occurred while placing the order.");
+                    }
+                });
+            });
+        </script>
+    }
+</main><!-- End .main -->

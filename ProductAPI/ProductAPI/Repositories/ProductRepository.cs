@@ -18,7 +18,8 @@ namespace ProductAPI.Repositories
 		}
 		public async Task<IEnumerable<Product>> GetAllProductsByCategory(int id)
 		{
-			return await _context.Products.Where(p=>p.CategoryId==id).ToListAsync();
+			List<int> subcategoryIds = await _context.Categories.Where(c=>c.ParentId==id).Select(c=>c.CategoryId).ToListAsync(); 
+			return await _context.Products.Include(p => p.Category).Where(p=>p.CategoryId==id||subcategoryIds.Contains((int)p.CategoryId)).ToListAsync();
 		}
 		public async Task<Product> GetProductById(int id)
 		{

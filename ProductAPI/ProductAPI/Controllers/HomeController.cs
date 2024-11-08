@@ -34,10 +34,11 @@ namespace ProductAPI.Controllers
 				homeVM.categories = JsonConvert.DeserializeObject<List<Category>>(content);
                 homeVM.products = JsonConvert.DeserializeObject<List<Product>>(content2);
 
+                homeVM.products = homeVM.products.Take(10).ToList();
 
 
-				// Trả về view với danh sách sản phẩm
-				return View(homeVM);
+                // Trả về view với danh sách sản phẩm
+                return View(homeVM);
 			}
 			else
 			{

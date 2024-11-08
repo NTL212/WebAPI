@@ -22,9 +22,10 @@ namespace ProductAPI.Controllers.APIs
 
         // Tạo đơn hàng mới
         [HttpPost("{userId}")]
-        public async Task<IActionResult> CreateOrder(int userId)
+        public async Task<IActionResult> CreateOrder(int userId, OrderDTO orderDto)
         {
-            var order = await _orderRepository.CreateOrderAsync(userId);
+            var newOrder = _mapper.Map<Order>(orderDto);
+            var order = await _orderRepository.CreateOrderAsync(userId, newOrder);
             if (order == null)
                 return BadRequest("Could not create order.");
 

@@ -36,6 +36,39 @@
    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* Custom dropdown styling to avoid conflicts */
+        .custom-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .custom-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .custom-dropdown:hover .custom-dropdown-content {
+            display: block;
+        }
+
+        .custom-dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .custom-dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+    </style>
 
 
     @RenderSection("head", false)
@@ -59,7 +92,7 @@
                                 <ul>
                                     @if (Context.Session.GetInt32("UserId")!=null)
                                     {
-                                        <li>Hello @Context.Session.GetInt32("UserId")</li>
+                                        <li>Hello @Context.Session.GetString("UserName")</li>
                                     }                                   
                                     <li id="authLink"><a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a></li>
                                 </ul>
@@ -99,68 +132,14 @@
                     <div class="header-right">
 
                         <div class="dropdown cart-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a id="cartButton" href="@Url.Action("Index", "ShoppingCart", new { id = Context.Session.GetInt32("UserId") })" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
                                     <span class="cart-count">2</span>
                                 </div>
                                 <p>Cart</p>
                             </a>
-
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-cart-products">
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Beige knitted elastic runner shoes</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $84.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-1.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-
-                                    <div class="product">
-                                        <div class="product-cart-details">
-                                            <h4 class="product-title">
-                                                <a href="product.html">Blue utility pinafore denim dress</a>
-                                            </h4>
-
-                                            <span class="cart-product-info">
-                                                <span class="cart-product-qty">1</span>
-                                                x $76.00
-                                            </span>
-                                        </div><!-- End .product-cart-details -->
-
-                                        <figure class="product-image-container">
-                                            <a href="product.html" class="product-image">
-                                                <img src="assets/images/products/cart/product-2.jpg" alt="product">
-                                            </a>
-                                        </figure>
-                                        <a href="#" class="btn-remove" title="Remove Product"><i class="icon-close"></i></a>
-                                    </div><!-- End .product -->
-                                </div><!-- End .cart-product -->
-
-                                <div class="dropdown-cart-total">
-                                    <span>Total</span>
-
-                                    <span class="cart-total-price">$160.00</span>
-                                </div><!-- End .dropdown-cart-total -->
-
-                                <div class="dropdown-cart-action">
-                                    <a href="@Url.Action("Index", "ShoppingCart", new { id = Context.Session.GetInt32("UserId") })" class="btn btn-primary">View Cart</a>
-                                    <a href="checkout.html" class="btn btn-outline-primary-2"><span>Checkout</span><i class="icon-long-arrow-right"></i></a>
-                                </div><!-- End .dropdown-cart-total -->
-                            </div><!-- End .dropdown-menu -->
+                         
                         </div><!-- End .cart-dropdown -->
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
@@ -182,7 +161,10 @@
                                     </ul><!-- End .menu-vertical -->
                                 </nav><!-- End .side-nav -->
                             </div><!-- End .dropdown-menu -->
+
+                        
                         </div><!-- End .category-dropdown -->
+
                     </div><!-- End .header-left -->
                     <script>
                         document.addEventListener('DOMContentLoaded', loadCategories);
@@ -197,19 +179,51 @@
 
                                 // Xóa các danh mục cũ nếu có
                                 categoryList.innerHTML = `
-                                            <li class="item-lead"><a href="#">Daily offers</a></li>
-                                            <li class="item-lead"><a href="#">Gift Ideas</a></li>
+                                          
                                         `;
 
                                 // Duyệt qua danh sách danh mục từ API và thêm vào danh sách
                                 categories.forEach(category => {
-                                    const categoryItem = `<li><a href="#">${category.categoryName}</a></li>`;
-                                    categoryList.insertAdjacentHTML('beforeend', categoryItem);
+                                    const categoryItem = document.createElement('li');
+                                    categoryItem.classList.add('dropdown', 'item');
+                                    categoryItem.innerHTML = `<a href="/product/shopbycategory?id=${category.categoryId}"">${category.categoryName}</a>`;
+
+                            
+
+                                    categoryList.appendChild(categoryItem);
                                 });
                             } catch (error) {
                                 console.error('Error loading categories:', error);
                             }
                         }
+                    </script>
+                    <script>
+                        $(document).ready(function () {
+                            $('#cartButton').on('click', function (e) {
+                                e.preventDefault(); // Chặn hành động mặc định của liên kết
+
+                                // Kiểm tra nếu session hoặc token tồn tại trong localStorage
+                                var authToken = localStorage.getItem('authToken');
+                                var userId = '@Context.Session.GetInt32("UserId")';
+
+                                if (authToken || userId) {
+                                    // Nếu có session, chuyển hướng tới trang giỏ hàng
+                                    const urlWithToken = `/ShoppingCart/Index/${userId}?token=${encodeURIComponent(authToken)}`;
+                                    window.location.href = urlWithToken;
+                                } else {
+                                    // Nếu không có session, hiển thị thông báo và điều hướng tới trang đăng nhập
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Please log in',
+                                        text: 'You need to log in to access your cart.',
+                                        showConfirmButton: true
+                                    }).then(() => {
+                                        // Nếu không có session, mở modal đăng nhập
+                                        $('#signin-modal').modal('show');
+                                    });
+                                }
+                            });
+                        });
                     </script>
                     <div class="header-center">
                         <nav class="main-nav">
@@ -496,23 +510,6 @@
                                             <a href="#" class="forgot-link">Forgot Your Password?</a>
                                         </div>
                                     </form>
-                                    <div class="form-choice">
-                                        <p class="text-center">or sign in with</p>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login btn-g">
-                                                    <i class="icon-google"></i>
-                                                    Login With Google
-                                                </a>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <a href="#" class="btn btn-login btn-f">
-                                                    <i class="icon-facebook-f"></i>
-                                                    Login With Facebook
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                                     <form id="register-form">

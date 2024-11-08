@@ -72,20 +72,6 @@
 							</tbody>
 						</table><!-- End .table table-wishlist -->
 
-						<div class="cart-bottom">
-							<div class="cart-discount">
-								<form action="#">
-									<div class="input-group">
-										<input type="text" class="form-control" required placeholder="coupon code">
-										<div class="input-group-append">
-											<button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
-										</div><!-- .End .input-group-append -->
-									</div><!-- End .input-group -->
-								</form>
-							</div><!-- End .cart-discount -->
-
-							<a href="#" class="btn btn-outline-dark-2"><span>UPDATE CART</span><i class="icon-refresh"></i></a>
-						</div><!-- End .cart-bottom -->
 					</div><!-- End .col-lg-9 -->
 					<aside class="col-lg-3">
 						<div class="summary summary-cart">
@@ -131,12 +117,6 @@
 										</td>
 										<td>$20.00</td>
 									</tr><!-- End .summary-shipping-row -->
-
-									<tr class="summary-shipping-estimate">
-										<td>Estimate for Your Country<br> <a href="dashboard.html">Change address</a></td>
-										<td>&nbsp;</td>
-									</tr><!-- End .summary-shipping-estimate -->
-
 									<tr class="summary-total">
 										<td>Total:</td>
 										<td>$160.00</td>
@@ -144,7 +124,8 @@
 								</tbody>
 							</table><!-- End .table table-summary -->
 
-							<a href="checkout.html" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+							<a id="checkoutButton" href="@Url.Action("Checkout", "ShoppingCart", new {id = Context.Session.GetInt32("UserId")})" class="btn btn-outline-primary-2 btn-order btn-block">PROCEED TO CHECKOUT</a>
+
 						</div><!-- End .summary -->
 
 						<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
@@ -155,8 +136,50 @@
 	</div><!-- End .page-content -->
 </main><!-- End .main -->
 @section scripts {
+
 	<script>
 		$(document).ready(function () {
+			$('#checkoutButton').on('click', function (e) {
+				e.preventDefault(); // Chặn hành động mặc định của liên kết
+
+				// Kiểm tra nếu session hoặc token tồn tại trong localStorage
+				var authToken = localStorage.getItem('authToken');
+				var userId = '@Context.Session.GetInt32("UserId")';
+
+				if (authToken || userId) {
+					// Nếu có session, chuyển hướng tới trang giỏ hàng
+					const urlWithToken = `/ShoppingCart/Checkout/${userId}?token=${encodeURIComponent(authToken)}`;
+					window.location.href = urlWithToken;
+				} else {
+					// Nếu không có session, hiển thị thông báo và điều hướng tới trang đăng nhập
+					Swal.fire({
+						icon: 'warning',
+						title: 'Please log in',
+						text: 'You need to log in to access your cart.',
+						showConfirmButton: true
+					}).then(() => {
+						// Nếu không có session, mở modal đăng nhập
+						$('#signin-modal').modal('show');
+					});
+				}
+			});
+		});
+	</script>
+
+	<script>
+		function updateCartTotal() {
+			let subtotal = 0;
+			$('.total-col').each(function () {
+				let total = parseFloat($(this).text().replace('$', '')) || 0;
+				subtotal += total;
+			});
+			$('.summary-subtotal td:last-child').text('$' + subtotal.toFixed(2));
+			$('.summary-total td:last-child').text('$' + subtotal.toFixed(2)); // Update Total nếu cần
+		}
+	</script>
+	<script>
+		$(document).ready(function () {
+			updateCartTotal();
 			// Khi người dùng nhấn nút xóa sản phẩm trong giỏ hàng
 			$('.btn-remove').on('click', function () {
 				var itemId = $(this).data('cart-item-id'); // Lấy CartItemId từ data-cart-item-id
@@ -176,7 +199,7 @@
 					success: function (response) {
 						// Xóa sản phẩm khỏi giao diện sau khi xóa thành công
 						$('tr').has('[data-cart-item-id="' + itemId + '"]').remove(); // Xóa dòng tương ứng với itemId
-
+						updateCartTotal()
 						console.log('Item removed successfully!');
 					},
 					error: function (error) {
@@ -225,6 +248,7 @@
 								$(this).text('$' + newTotal); // Cập nhật giá trị tổng cho dòng sản phẩm tương ứng
 							}
 						});
+						updateCartTotal();
 						console.log(response);
 					},
 					error: function (error) {

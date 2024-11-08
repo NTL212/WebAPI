@@ -11,8 +11,8 @@ namespace ProductAPI.Controllers.APIs
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
-    //[ServiceFilter(typeof(ValidateTokenAttribute))]
+    [Authorize]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class CartController : ControllerBase
     {
         private readonly ICartRepository _cartRepository;

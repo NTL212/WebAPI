@@ -91,5 +91,31 @@ namespace ProductAPI.Controllers
                 return View();
             }
         }
+
+        public async Task<IActionResult> ShopByCategory(int id)
+        {
+            // Tạo HttpClient từ IHttpClientFactory
+            var client = _httpClientFactory.CreateClient();
+
+            // Gửi GET request tới API
+            var response = await client.GetAsync(_apiBaseUrl + "products/"+id+"/category");
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Đọc nội dung trả về từ API
+                var content = await response.Content.ReadAsStringAsync();
+
+                var products = JsonConvert.DeserializeObject<List<Product>>(content);
+
+                // Trả về view với danh sách sản phẩm
+                return View(products);
+            }
+            else
+            {
+                // Xử lý nếu API không trả về kết quả thành công
+                ViewBag.ErrorMessage = "Có lỗi khi lấy dữ liệu từ API.";
+                return View();
+            }
+        }
     }
 }

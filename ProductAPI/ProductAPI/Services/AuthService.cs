@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.DTOs;
 using ProductAPI.Models;
@@ -52,12 +51,13 @@ namespace ProductAPI.Services
 
 		public string Login(LoginDTO loginDto)
 		{
-			var user = _context.Users.FirstOrDefault(u => u.Email == loginDto.Email);
+			var user = _context.Users.FirstOrDefault(u => u.Email == loginDto.Email && u.IsActive==true);
 			var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 			if (user == null || verificationResult== PasswordVerificationResult.Failed)
 				throw new UnauthorizedAccessException("Invalid credentials");
 			_httpContextAccessor.HttpContext.Session.SetInt32("UserId", user.UserId);
-			return GenerateJwtToken(user);
+            _httpContextAccessor.HttpContext.Session.SetString("UserName", user.Username);
+            return GenerateJwtToken(user);
 		}
 
 		private string GenerateEmailConfirmationToken(User user)

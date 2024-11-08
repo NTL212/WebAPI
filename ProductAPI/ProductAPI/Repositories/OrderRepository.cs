@@ -17,25 +17,21 @@ namespace ProductAPI.Repositories
 		}
 
 		// Tạo đơn hàng mới
-		public async Task<Order> CreateOrderAsync(int userId)
+		public async Task<Order> CreateOrderAsync(int userId, Order order)
 		{
 			var cart = await _context.Carts.Include(c=>c.CartItems).ThenInclude(ci=>ci.Product).FirstOrDefaultAsync(c => c.UserId == userId);
 			if (cart == null || cart.CartItems.Count == 0)
 				return null; // Giỏ hàng không tồn tại hoặc không có sản phẩm.
-			var order = new Order
-			{
-				UserId = userId,
-				OrderDate = DateTime.Now,
-				Status = "Pending",
-				TotalAmount = cart.CartItems.Sum(item=>item.Price * item.Quantity)
-			};
+			order.UserId = userId;
+			order.OrderDate = DateTime.Now;
+			order.Status = "Pending";
 
 			_context.Orders.Add(order);
-			await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-			foreach (var item in cart.CartItems)
+            foreach (var item in cart.CartItems)
 			{
-				var product = await _context.Products.FirstOrDefaultAsync(c => c.ProductId == userId);
+				var product = await _context.Products.FirstOrDefaultAsync(c => c.ProductId == item.ProductId);
 				var orderItem = _mapper.Map<OrderItem>(item);
 				orderItem.OrderId = order.OrderId;
 				product.Stock -= item.Quantity;

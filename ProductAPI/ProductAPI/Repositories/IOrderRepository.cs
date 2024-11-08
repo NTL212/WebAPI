@@ -4,7 +4,7 @@ namespace ProductAPI.Repositories
 {
 	public interface IOrderRepository
 	{
-		Task<Order> CreateOrderAsync(int userId);
+		Task<Order> CreateOrderAsync(int userId, Order order);
 		Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId);
 		Task<IEnumerable<Order>> GetAll ();
 		Task<Order> GetOrderByIdAsync(int orderId);

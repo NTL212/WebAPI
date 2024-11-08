@@ -17,7 +17,13 @@ public partial class User
 
     public bool? IsActive { get; set; }
 
+    public int? GroupId { get; set; }
+
     public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual ICollection<VoucherRecipient> VoucherRecipients { get; set; } = new List<VoucherRecipient>();
+
+    public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
 }

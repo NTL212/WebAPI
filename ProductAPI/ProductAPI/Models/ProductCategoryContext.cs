@@ -25,9 +25,23 @@ public partial class ProductCategoryContext : DbContext
 
     public virtual DbSet<OrderItem> OrderItems { get; set; }
 
+    public virtual DbSet<OrderVoucher> OrderVouchers { get; set; }
+
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<Role> Roles { get; set; }
+
     public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserGroup> UserGroups { get; set; }
+
+    public virtual DbSet<Voucher> Vouchers { get; set; }
+
+    public virtual DbSet<VoucherAssignment> VoucherAssignments { get; set; }
+
+    public virtual DbSet<VoucherCampaign> VoucherCampaigns { get; set; }
+
+    public virtual DbSet<VoucherRecipient> VoucherRecipients { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -85,9 +99,13 @@ public partial class ProductCategoryContext : DbContext
         {
             entity.HasKey(e => e.OrderId).HasName("PK__Orders__C3905BCF52E821F7");
 
+            entity.Property(e => e.Address).HasMaxLength(100);
+            entity.Property(e => e.Note).HasMaxLength(200);
             entity.Property(e => e.OrderDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.PhoneNumber).HasMaxLength(12);
+            entity.Property(e => e.ReceverName).HasMaxLength(50);
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasDefaultValue("Pending");
@@ -114,6 +132,22 @@ public partial class ProductCategoryContext : DbContext
                 .HasConstraintName("FK__OrderItem__Produ__6D0D32F4");
         });
 
+        modelBuilder.Entity<OrderVoucher>(entity =>
+        {
+            entity.HasKey(e => e.OrderVoucherId).HasName("PK__OrderVou__5B3AFEF4AC4E1E35");
+
+            entity.ToTable("OrderVoucher");
+
+            entity.Property(e => e.OrderVoucherId).HasColumnName("OrderVoucherID");
+            entity.Property(e => e.DiscountApplied).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.VoucherId).HasColumnName("VoucherID");
+
+            entity.HasOne(d => d.Voucher).WithMany(p => p.OrderVouchers)
+                .HasForeignKey(d => d.VoucherId)
+                .HasConstraintName("FK__OrderVouc__Vouch__151B244E");
+        });
+
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasKey(e => e.ProductId).HasName("PK__Products__B40CC6CD751209AB");
@@ -133,6 +167,15 @@ public partial class ProductCategoryContext : DbContext
                 .HasConstraintName("FK__Products__Catego__2B3F6F97");
         });
 
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.RoleId).HasName("PK__Roles__8AFACE1A75C904F7");
+
+            entity.HasIndex(e => e.Name, "UQ__Roles__737584F6D87809CB").IsUnique();
+
+            entity.Property(e => e.Name).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C9FA369D5");
@@ -147,6 +190,106 @@ public partial class ProductCategoryContext : DbContext
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.PasswordHash).HasMaxLength(256);
             entity.Property(e => e.Username).HasMaxLength(50);
+
+            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UserRole",
+                    r => r.HasOne<Role>().WithMany()
+                        .HasForeignKey("RoleId")
+                        .HasConstraintName("FK__UserRoles__RoleI__06CD04F7"),
+                    l => l.HasOne<User>().WithMany()
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK__UserRoles__UserI__05D8E0BE"),
+                    j =>
+                    {
+                        j.HasKey("UserId", "RoleId").HasName("PK__UserRole__AF2760AD7DF23FF8");
+                        j.ToTable("UserRoles");
+                    });
+        });
+
+        modelBuilder.Entity<UserGroup>(entity =>
+        {
+            entity.HasKey(e => e.GroupId).HasName("PK__UserGrou__149AF36AC52A853D");
+
+            entity.HasIndex(e => e.GroupName, "UQ__UserGrou__6EFCD434A03BE200").IsUnique();
+
+            entity.Property(e => e.Description).HasMaxLength(100);
+            entity.Property(e => e.GroupName).HasMaxLength(20);
+        });
+
+        modelBuilder.Entity<Voucher>(entity =>
+        {
+            entity.HasKey(e => e.VoucherId).HasName("PK__Voucher__3AEE79C14A5D1580");
+
+            entity.ToTable("Voucher");
+
+            entity.HasIndex(e => e.Code, "UQ__Voucher__A25C5AA7CE2B9C42").IsUnique();
+
+            entity.Property(e => e.VoucherId).HasColumnName("VoucherID");
+            entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.DiscountType).HasMaxLength(20);
+            entity.Property(e => e.DiscountValue).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
+                .HasDefaultValue("active");
+            entity.Property(e => e.UsedCount).HasDefaultValue(0);
+        });
+
+        modelBuilder.Entity<VoucherAssignment>(entity =>
+        {
+            entity.HasKey(e => e.AssignmentId).HasName("PK__VoucherA__32499E57E653DC9E");
+
+            entity.ToTable("VoucherAssignment");
+
+            entity.Property(e => e.AssignmentId).HasColumnName("AssignmentID");
+            entity.Property(e => e.CampaignId).HasColumnName("CampaignID");
+            entity.Property(e => e.VoucherId).HasColumnName("VoucherID");
+
+            entity.HasOne(d => d.Campaign).WithMany(p => p.VoucherAssignments)
+                .HasForeignKey(d => d.CampaignId)
+                .HasConstraintName("FK__VoucherAs__Campa__123EB7A3");
+
+            entity.HasOne(d => d.Voucher).WithMany(p => p.VoucherAssignments)
+                .HasForeignKey(d => d.VoucherId)
+                .HasConstraintName("FK__VoucherAs__Vouch__114A936A");
+        });
+
+        modelBuilder.Entity<VoucherCampaign>(entity =>
+        {
+            entity.HasKey(e => e.CampaignId).HasName("PK__VoucherC__3F5E8D798A4CF447");
+
+            entity.ToTable("VoucherCampaign");
+
+            entity.Property(e => e.CampaignId).HasColumnName("CampaignID");
+            entity.Property(e => e.EndDate).HasColumnType("datetime");
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.StartDate).HasColumnType("datetime");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
+                .HasDefaultValue("active");
+            entity.Property(e => e.TargetAudience).HasMaxLength(255);
+        });
+
+        modelBuilder.Entity<VoucherRecipient>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__VoucherR__3214EC07B8D139A9");
+
+            entity.ToTable("VoucherRecipient");
+
+            entity.Property(e => e.IsUsed).HasDefaultValue(false);
+
+            entity.HasOne(d => d.Group).WithMany(p => p.VoucherRecipients)
+                .HasForeignKey(d => d.GroupId)
+                .HasConstraintName("FK__VoucherRe__Group__1DB06A4F");
+
+            entity.HasOne(d => d.User).WithMany(p => p.VoucherRecipients)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK__VoucherRe__UserI__1CBC4616");
+
+            entity.HasOne(d => d.Voucher).WithMany(p => p.VoucherRecipients)
+                .HasForeignKey(d => d.VoucherId)
+                .HasConstraintName("FK__VoucherRe__Vouch__1BC821DD");
         });
 
         OnModelCreatingPartial(modelBuilder);
