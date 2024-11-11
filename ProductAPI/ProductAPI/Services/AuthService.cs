@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.DTOs;
-using ProductAPI.Models;
+using ProductDataAccess.DTOs;
+using ProductDataAccess.Models;
+using ProductDataAccess.Models.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -23,7 +25,7 @@ namespace ProductAPI.Services
 			_emailService = emailService;
 		}
 
-		public async Task<string> Register(RegisterDTO registerDTO)
+		public async Task<AuthResponseData> Register(RegisterDTO registerDTO)
 		{
             var userE = _context.Users.FirstOrDefault(u => u.Email == registerDTO.Email);
 
@@ -46,18 +48,19 @@ namespace ProductAPI.Services
 
 			_context.Users.Add(user);
 			_context.SaveChanges();
-			return GenerateJwtToken(user);
+			var response = new AuthResponseData(emailConfirmationToken, user.UserId, user.Username);
+            return response;
 		}
 
-		public string Login(LoginDTO loginDto)
+		public async Task<AuthResponseData> Login(LoginDTO loginDto)
 		{
-			var user = _context.Users.FirstOrDefault(u => u.Email == loginDto.Email && u.IsActive==true);
+			var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive==true);
 			var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 			if (user == null || verificationResult== PasswordVerificationResult.Failed)
 				throw new UnauthorizedAccessException("Invalid credentials");
-			_httpContextAccessor.HttpContext.Session.SetInt32("UserId", user.UserId);
-            _httpContextAccessor.HttpContext.Session.SetString("UserName", user.Username);
-            return GenerateJwtToken(user);
+			var token = GenerateJwtToken(user);
+			var authData = new AuthResponseData(token, user.UserId, user.Username);
+            return authData;
 		}
 
 		private string GenerateEmailConfirmationToken(User user)

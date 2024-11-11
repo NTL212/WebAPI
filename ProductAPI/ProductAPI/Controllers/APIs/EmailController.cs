@@ -1,12 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Services;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using ProductDataAccess.Models.Request;
 
 namespace ProductAPI.Controllers.APIs
 {
@@ -21,10 +15,10 @@ namespace ProductAPI.Controllers.APIs
 			_emailService = emailService;
 		}
 
-		[HttpGet("ConfirmEmail")]
-		public async Task<IActionResult> ConfirmEmail(string token, string email)
+		[HttpPost("ConfirmEmail")]
+		public async Task<IActionResult> ConfirmEmail(ConfirmEmailRequest request)
 		{
-			var isConfirmed = await _emailService.ConfirmEmailAsync(token, email);
+			var isConfirmed = await _emailService.ConfirmEmailAsync(request.Token, request.Email);
 			if (isConfirmed)
 			{
 				return Ok("Xác nhận email thành công!");

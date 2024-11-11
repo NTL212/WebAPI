@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using ProductAPI.Models;
+using ProductDataAccess.Models;
 using System.Collections.Generic;
 
 namespace ProductAPI.Repositories

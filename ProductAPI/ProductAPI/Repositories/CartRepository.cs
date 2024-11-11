@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProductAPI.Models;
+using ProductDataAccess.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProductAPI.DTOs;
+using ProductDataAccess.DTOs;
 using ProductAPI.Filters;
-using ProductAPI.Models;
+using ProductDataAccess.Models;
 using ProductAPI.Repositories;
 
 namespace ProductAPI.Controllers.APIs

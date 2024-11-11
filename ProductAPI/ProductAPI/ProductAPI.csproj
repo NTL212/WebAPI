@@ -23,8 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Resoures\" />
     <Folder Include="wwwroot\assets\images\NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProductDataAccess\ProductDataAccess.csproj" />
   </ItemGroup>
 
 </Project>

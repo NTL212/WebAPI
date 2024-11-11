@@ -1,16 +1,12 @@
 ﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using ProductAPI.DTOs;
+using ProductDataAccess.DTOs;
 using ProductAPI.Filters;
-using ProductAPI.Models;
+using ProductDataAccess.Models;
 using ProductAPI.Repositories;
 using ProductAPI.Services;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Controllers.APIs
 {
@@ -35,18 +31,23 @@ namespace ProductAPI.Controllers.APIs
         [HttpPost("register")]
         public IActionResult Register(RegisterDTO registerDto)
         {
-            var token = _authService.Register(registerDto);
-            return Ok(new { Token = token });
+            var authData = _authService.Register(registerDto);
+            var response = new ApiResponse<AuthResponseData>("success", "Register Success", authData.Result);
+            return Ok(response);
         }
 
         //Đăng nhập
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDTO loginDto)
         {
-            var token = _authService.Login(loginDto);
-            var userId = _httpContextAccessor.HttpContext.Session.GetInt32("UserId");
-            await _cartRepository.CreateCartIfNotExists((int)userId);
-			return Ok(new { Token = token });
+			var authData = _authService.Login(loginDto);
+            if (authData.Result == null) 
+            {
+                return BadRequest(new ApiResponse<bool>("error", "Login faied.", false));
+            }
+			await _cartRepository.CreateCartIfNotExists((int)authData.Result.UserId);
+            var response = new ApiResponse<AuthResponseData>("success", "Login successful.",authData.Result);
+			return Ok(response);
         }
 
         [HttpPost("logout")]

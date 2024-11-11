@@ -253,8 +253,6 @@ E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.AssemblyInfo.cs
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.csproj.CoreCompileInputs.cache
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.MvcApplicationPartsAssemblyInfo.cs
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.MvcApplicationPartsAssemblyInfo.cache
-E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.RazorAssemblyInfo.cache
-E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.RazorAssemblyInfo.cs
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\staticwebassets.build.json
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\staticwebassets.development.json
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\staticwebassets\msbuild.ProductAPI.Microsoft.AspNetCore.StaticWebAssets.props
@@ -269,3 +267,5 @@ E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\refint\ProductAPI.dll
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.pdb
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.genruntimeconfig.cache
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ref\ProductAPI.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\ProductDataAccess.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\ProductDataAccess.pdb

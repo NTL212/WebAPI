@@ -1,4 +1,4 @@
-﻿using ProductAPI.Models;
+﻿using ProductDataAccess.Models;
 
 namespace ProductAPI.Services
 {

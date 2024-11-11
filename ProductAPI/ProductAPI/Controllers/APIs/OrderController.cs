@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ProductAPI.Models;
+using ProductDataAccess.Models;
 using ProductAPI.Repositories;
-using ProductAPI.DTOs;
+using ProductDataAccess.DTOs;
 
 namespace ProductAPI.Controllers.APIs
 {

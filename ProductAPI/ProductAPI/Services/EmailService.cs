@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.Extensions.Options;
 using ProductAPI.Email;
-using ProductAPI.Models;
+using ProductDataAccess.Models;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.EntityFrameworkCore;
@@ -104,7 +104,7 @@ namespace ProductAPI.Services
 
 		public async Task SendConfirmationEmailAsync(string email, string token)
 		{
-			var confirmationLink = $"{_configuration["ApiUrl"]}/api/Email/ConfirmEmail?token={token}&email={email}";
+			var confirmationLink = $"{_configuration["MvcUrl"]}/Account/ConfirmEmail?email={email}";
 
 			var emailModel = new EmailModel
 			{

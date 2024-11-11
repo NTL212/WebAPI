@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ProductAPI.DTOs;
-using ProductAPI.Models;
+using ProductDataAccess.DTOs;
+using ProductDataAccess.Models;
 using ProductAPI.Repositories;
-using ProductAPI.ViewModels;
+using ProductDataAccess.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

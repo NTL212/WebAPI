@@ -2950,6 +2950,20 @@
             "rid": "win"
           }
         }
+      },
+      "ProductDataAccess/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "8.0.10",
+          "Microsoft.EntityFrameworkCore.SqlServer": "8.0.10"
+        },
+        "compile": {
+          "bin/placeholder/ProductDataAccess.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ProductDataAccess.dll": {}
+        }
       }
     }
   },
@@ -8325,6 +8339,11 @@
         "system.windows.extensions.nuspec",
         "useSharedDesignerContext.txt"
       ]
+    },
+    "ProductDataAccess/1.0.0": {
+      "type": "project",
+      "path": "../ProductDataAccess/ProductDataAccess.csproj",
+      "msbuildProject": "../ProductDataAccess/ProductDataAccess.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -8337,6 +8356,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.10",
       "Microsoft.Extensions.Identity.Core >= 8.0.10",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.6",
+      "ProductDataAccess >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.6.2",
       "System.IdentityModel.Tokens.Jwt >= 8.2.0"
     ]
@@ -8372,7 +8392,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "E:\\Work\\ProductAPI\\ProductDataAccess\\ProductDataAccess.csproj": {
+              "projectPath": "E:\\Work\\ProductAPI\\ProductDataAccess\\ProductDataAccess.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -5,10 +5,10 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProductAPI.Email;
 using ProductAPI.Filters;
-using ProductAPI.Models;
 using ProductAPI.Profiles;
 using ProductAPI.Repositories;
 using ProductAPI.Services;
+using ProductDataAccess.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -103,7 +103,14 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
+//Add CORS Policy
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowSpecificOrigin",
+		policy => policy.WithOrigins("https://localhost:7291")
+						.AllowAnyHeader()
+						.AllowAnyMethod());
+});
 
 
 var app = builder.Build();
@@ -119,6 +126,8 @@ else
     app.UseExceptionHandler("/Home/Error");
     app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 }
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseHttpsRedirection();
 

@@ -1,11 +1,12 @@
-﻿using ProductAPI.DTOs;
+﻿using ProductDataAccess.DTOs;
+using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Services
 {
 	public interface IAuthService
 	{
-		Task<string> Register(RegisterDTO registerDto);
-		string Login(LoginDTO loginDto);
+		Task<AuthResponseData> Register(RegisterDTO registerDto);
+		Task<AuthResponseData> Login(LoginDTO loginDto);
 
 		bool ValidateToken(string token);
 

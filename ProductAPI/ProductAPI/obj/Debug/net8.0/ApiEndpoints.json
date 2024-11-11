@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "changeDto",
-        "Type": "ProductAPI.DTOs.ChangePasswordDTO",
+        "Type": "ProductDataAccess.DTOs.ChangePasswordDTO",
         "IsRequired": true
       }
     ],
@@ -25,7 +25,7 @@
     "Parameters": [
       {
         "Name": "loginDto",
-        "Type": "ProductAPI.DTOs.LoginDTO",
+        "Type": "ProductDataAccess.DTOs.LoginDTO",
         "IsRequired": true
       }
     ],
@@ -51,7 +51,7 @@
     "Parameters": [
       {
         "Name": "registerDto",
-        "Type": "ProductAPI.DTOs.RegisterDTO",
+        "Type": "ProductDataAccess.DTOs.RegisterDTO",
         "IsRequired": true
       }
     ],
@@ -93,7 +93,7 @@
       },
       {
         "Name": "cartItemDto",
-        "Type": "ProductAPI.DTOs.CartItemDTO",
+        "Type": "ProductDataAccess.DTOs.CartItemDTO",
         "IsRequired": true
       }
     ],
@@ -178,7 +178,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductAPI.DTOs.CartItemDTO, ProductAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductDataAccess.DTOs.CartItemDTO, ProductDataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -203,7 +203,7 @@
       },
       {
         "Name": "cartItemDto",
-        "Type": "ProductAPI.DTOs.CartItemDTO",
+        "Type": "ProductDataAccess.DTOs.CartItemDTO",
         "IsRequired": true
       }
     ],
@@ -219,7 +219,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.DTOs.CartDTO",
+        "Type": "ProductDataAccess.DTOs.CartDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -239,7 +239,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductAPI.DTOs.CategoryDTO, ProductAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductDataAccess.DTOs.CategoryDTO, ProductDataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -259,13 +259,13 @@
     "Parameters": [
       {
         "Name": "categoryDto",
-        "Type": "ProductAPI.DTOs.CategoryDTO",
+        "Type": "ProductDataAccess.DTOs.CategoryDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.DTOs.CategoryDTO",
+        "Type": "ProductDataAccess.DTOs.CategoryDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -291,7 +291,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.DTOs.CategoryDTO",
+        "Type": "ProductDataAccess.DTOs.CategoryDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -316,7 +316,7 @@
       },
       {
         "Name": "categoryDto",
-        "Type": "ProductAPI.DTOs.CategoryDTO",
+        "Type": "ProductDataAccess.DTOs.CategoryDTO",
         "IsRequired": true
       }
     ],
@@ -354,7 +354,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductAPI.DTOs.CategoryDTO, ProductAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductDataAccess.DTOs.CategoryDTO, ProductDataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -368,19 +368,14 @@
     "ContainingType": "ProductAPI.Controllers.APIs.EmailController",
     "Method": "ConfirmEmail",
     "RelativePath": "api/Email/ConfirmEmail",
-    "HttpMethod": "GET",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "token",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "email",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "request",
+        "Type": "ProductDataAccess.Models.Request.ConfirmEmailRequest",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -447,7 +442,7 @@
       },
       {
         "Name": "orderDto",
-        "Type": "ProductAPI.DTOs.OrderDTO",
+        "Type": "ProductDataAccess.DTOs.OrderDTO",
         "IsRequired": true
       }
     ],
@@ -479,7 +474,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductAPI.DTOs.ProductDTO, ProductAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductDataAccess.DTOs.ProductDTO, ProductDataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -499,13 +494,13 @@
     "Parameters": [
       {
         "Name": "productDto",
-        "Type": "ProductAPI.DTOs.ProductDTO",
+        "Type": "ProductDataAccess.DTOs.ProductDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.DTOs.ProductDTO",
+        "Type": "ProductDataAccess.DTOs.ProductDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -531,7 +526,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.DTOs.ProductDTO",
+        "Type": "ProductDataAccess.DTOs.ProductDTO",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -556,7 +551,7 @@
       },
       {
         "Name": "productDto",
-        "Type": "ProductAPI.DTOs.ProductDTO",
+        "Type": "ProductDataAccess.DTOs.ProductDTO",
         "IsRequired": true
       }
     ],
@@ -594,7 +589,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductAPI.DTOs.ProductDTO, ProductAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[ProductDataAccess.DTOs.ProductDTO, ProductDataAccess, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -614,13 +609,13 @@
     "Parameters": [
       {
         "Name": "voucherDTO",
-        "Type": "ProductAPI.DTOs.VoucherDTO",
+        "Type": "ProductDataAccess.DTOs.VoucherDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.Models.Voucher",
+        "Type": "ProductDataAccess.Models.Voucher",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -640,7 +635,7 @@
     "Parameters": [
       {
         "Name": "voucherDTO",
-        "Type": "ProductAPI.DTOs.VoucherDTO",
+        "Type": "ProductDataAccess.DTOs.VoucherDTO",
         "IsRequired": true
       }
     ],
@@ -662,7 +657,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.Models.Voucher",
+        "Type": "ProductDataAccess.Models.Voucher",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -730,7 +725,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "ProductAPI.ViewModels.ApplyVoucherRequest",
+        "Type": "ProductDataAccess.ViewModels.ApplyVoucherRequest",
         "IsRequired": true
       }
     ],
@@ -746,13 +741,13 @@
     "Parameters": [
       {
         "Name": "voucherDTO",
-        "Type": "ProductAPI.DTOs.VoucherCampaignDTO",
+        "Type": "ProductDataAccess.DTOs.VoucherCampaignDTO",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.Models.VoucherCampaign",
+        "Type": "ProductDataAccess.Models.VoucherCampaign",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -772,7 +767,7 @@
     "Parameters": [
       {
         "Name": "voucherDTO",
-        "Type": "ProductAPI.DTOs.VoucherCampaignDTO",
+        "Type": "ProductDataAccess.DTOs.VoucherCampaignDTO",
         "IsRequired": true
       }
     ],
@@ -794,7 +789,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "ProductAPI.Models.VoucherCampaign",
+        "Type": "ProductDataAccess.Models.VoucherCampaign",
         "MediaTypes": [
           "text/plain",
           "application/json",
