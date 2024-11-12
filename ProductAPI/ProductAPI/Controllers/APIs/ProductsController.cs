@@ -27,7 +27,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
-            var products = await _productRepository.GetAllProducts();
+            var products = await _productRepository.GetAllIncludeProducts();
             var productsDto = _mapper.Map<IEnumerable<ProductDTO>>(products);
             return Ok(productsDto);
         }
@@ -44,7 +44,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
-            var product = await _productRepository.GetProductById(id);
+            var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
 
@@ -57,7 +57,7 @@ namespace ProductAPI.Controllers.APIs
         public async Task<ActionResult<ProductDTO>> Create(ProductDTO productDto)
         {
             var product = _mapper.Map<Product>(productDto);
-            if (await _productRepository.AddProduct(product))
+            if (await _productRepository.AddAsync(product))
             {
                 var createdProductDto = _mapper.Map<ProductDTO>(product);
                 return CreatedAtAction(nameof(GetById), new { id = createdProductDto.ProductId }, createdProductDto);
@@ -77,7 +77,7 @@ namespace ProductAPI.Controllers.APIs
                 return BadRequest();
 
             var product = _mapper.Map<Product>(productDto);
-            if (await _productRepository.UpdateProduct(product))
+            if (await _productRepository.UpdateAsync(product))
             {
                 return NoContent();
             }

@@ -15,13 +15,11 @@ namespace ProductAPI.Controllers.APIs
     public class AuthContronller : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly ICartRepository _cartRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 		private readonly IEmailService _emailService;
-		public AuthContronller(IAuthService authService, ICartRepository cartRepository, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
+		public AuthContronller(IAuthService authService, IHttpContextAccessor httpContextAccessor, IEmailService emailService)
         {
             _authService = authService;
-            _cartRepository = cartRepository;
             _httpContextAccessor = httpContextAccessor;
             _emailService = emailService;
         }
@@ -45,7 +43,6 @@ namespace ProductAPI.Controllers.APIs
             {
                 return BadRequest(new ApiResponse<bool>("error", "Login faied.", false));
             }
-			await _cartRepository.CreateCartIfNotExists((int)authData.Result.UserId);
             var response = new ApiResponse<AuthResponseData>("success", "Login successful.",authData.Result);
 			return Ok(response);
         }

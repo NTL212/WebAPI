@@ -85,7 +85,7 @@ namespace ProductAPI.Services
 					return false;
 				}
 
-				var user = _context.Users.FirstOrDefault(u => u.Email == email);
+				var user = _context.Set<User>().FirstOrDefault(u => u.Email == email);
 				if (user == null)
 				{
 					return false;

@@ -1,0 +1,75 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@model PagedResult<OrderDTO>
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="main">
+	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+		<div class="container">
+			<h1 class="page-title">Order Management<span>Account</span></h1>
+		</div><!-- End .container -->
+	</div><!-- End .page-header -->
+	<nav aria-label="breadcrumb" class="breadcrumb-nav">
+		<div class="container">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+				<li class="breadcrumb-item"><a href="#">Account</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Order Management</li>
+			</ol>
+		</div><!-- End .container -->
+	</nav><!-- End .breadcrumb-nav -->
+
+	<div class="page-content">
+		<div class="cart">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-9">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Order ID</th>
+									<th>Receiver Name</th>
+									<th>Address</th>
+									<th>Phone Number</th>
+									<th>Total Amount</th>
+									<th>Status</th>
+									<th>Actions</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var order in Model.Items)
+								{
+									<tr>
+										<td>@order.OrderId</td>
+										<td>@order.ReceverName</td>
+										<td>@order.Address</td>
+										<td>@order.PhoneNumber</td>
+										<td>@order.TotalAmount</td>
+										<td>@order.Status</td>
+										<td>
+											<a href="@Url.Action("Detail", "UserOrder", new { id = order.OrderId })" class="btn btn-info">View</a>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+						<div class="pagination">
+							<ul class="pagination">
+								@for (var i = 1; i <= (int)ViewData["TotalPages"]; i++)
+								{
+									<li class="page-item @if(i == (int)ViewData["CurrentPage"]) {
+								<text>active</text>
+}">
+										<a class="page-link" href="@Url.Action("Index", "UserOrder", new { userId=1, pageNumber = i })">@i</a>
+									</li>
+								}
+							</ul>
+						</div>
+					</div><!-- End .col-lg-9 -->				
+				</div><!-- End .row -->
+			</div><!-- End .container -->
+		</div><!-- End .cart -->
+	</div><!-- End .page-content -->
+</main><!-- End .main -->

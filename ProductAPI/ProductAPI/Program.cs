@@ -7,6 +7,7 @@ using ProductAPI.Email;
 using ProductAPI.Filters;
 using ProductAPI.Profiles;
 using ProductAPI.Repositories;
+using ProductAPI.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
 using System.Text;
@@ -37,13 +38,16 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-//DI Repository
+//DI Repository, Service
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ValidateTokenAttribute>();
 
 //Mail
@@ -135,10 +139,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
-
-app.MapControllerRoute(
-    name: "admin",
-    pattern: "/Admin/{controller=Dashboard}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

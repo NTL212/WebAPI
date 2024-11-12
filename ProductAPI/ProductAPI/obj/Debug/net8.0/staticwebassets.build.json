@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3dYZnbs46pl3iHmY4M48pxdwKJLAvU4Q/30rILKSXnc=",
+  "Hash": "okBtrrxNfUEKtsBM3aZLTEDeJ4fbIiO3zm0xFudwJfE=",
   "Source": "ProductAPI",
   "BasePath": "_content/ProductAPI",
   "Mode": "Default",
@@ -16,6 +16,44 @@
     }
   ],
   "Assets": [
+    {
+      "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ProductAPI.styles.css",
+      "SourceId": "ProductAPI",
+      "SourceType": "Computed",
+      "ContentRoot": "E:\\Work\\ProductAPI\\ProductAPI\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/ProductAPI",
+      "RelativePath": "ProductAPI.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "E:\\Work\\ProductAPI\\ProductAPI\\obj\\Debug\\net8.0\\scopedcss\\bundle\\ProductAPI.styles.css"
+    },
+    {
+      "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ProductAPI.bundle.scp.css",
+      "SourceId": "ProductAPI",
+      "SourceType": "Computed",
+      "ContentRoot": "E:\\Work\\ProductAPI\\ProductAPI\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/ProductAPI",
+      "RelativePath": "ProductAPI.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "E:\\Work\\ProductAPI\\ProductAPI\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ProductAPI.bundle.scp.css"
+    },
     {
       "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\css\\bootstrap.min.css",
       "SourceId": "ProductAPI",

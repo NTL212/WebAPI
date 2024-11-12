@@ -1,13 +1,13 @@
 ﻿using ProductDataAccess.Models;
+using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Repositories
 {
-	public interface IOrderRepository
+	public interface IOrderRepository:IRepository<Order>
 	{
 		Task<Order> CreateOrderAsync(int userId, Order order);
+		Task<PagedResult<Order>> GetPagedAsync(int userId, int pageNumber, int pageSize);
 		Task<IEnumerable<Order>> GetOrdersByUserIdAsync(int userId);
-		Task<IEnumerable<Order>> GetAll ();
-		Task<Order> GetOrderByIdAsync(int orderId);
 		Task<bool> UpdateOrderStatusAsync(int orderId, string status);
 	}
 }

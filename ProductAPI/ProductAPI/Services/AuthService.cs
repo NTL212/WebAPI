@@ -27,7 +27,7 @@ namespace ProductAPI.Services
 
 		public async Task<AuthResponseData> Register(RegisterDTO registerDTO)
 		{
-            var userE = _context.Users.FirstOrDefault(u => u.Email == registerDTO.Email);
+            var userE = _context.Set<User>().FirstOrDefault(u => u.Email == registerDTO.Email);
 
             if (userE != null||registerDTO.Password != registerDTO.ConfirmPassword)
 			{
@@ -46,7 +46,13 @@ namespace ProductAPI.Services
 
 			await _emailService.SendConfirmationEmailAsync(user.Email, emailConfirmationToken);
 
-			_context.Users.Add(user);
+			var userRole = new UserRole()
+			{
+				RoleId = 2,
+				UserId = user.UserId,
+			};
+			_context.Set<User>().Add(user);
+			_context.Set<UserRole>().Add(userRole);
 			_context.SaveChanges();
 			var response = new AuthResponseData(emailConfirmationToken, user.UserId, user.Username);
             return response;
@@ -54,7 +60,7 @@ namespace ProductAPI.Services
 
 		public async Task<AuthResponseData> Login(LoginDTO loginDto)
 		{
-			var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive==true);
+			var user = await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive==true);
 			var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 			if (user == null || verificationResult== PasswordVerificationResult.Failed)
 				throw new UnauthorizedAccessException("Invalid credentials");
@@ -128,14 +134,14 @@ namespace ProductAPI.Services
 
 		public bool ChangePassword(ChangePasswordDTO changeDTO)
 		{
-			var user = _context.Users.FirstOrDefault(u=>u.Email==changeDTO.Email);
+			var user = _context.Set<User>().FirstOrDefault(u=>u.Email==changeDTO.Email);
 			var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, changeDTO.OldPassword);
 			if (changeDTO.NewPassword != changeDTO.ConfirmNewPassword || verificationResult == PasswordVerificationResult.Failed)
 			{
 				return false;
 			}
 			user.PasswordHash = _passwordHasher.HashPassword(user, changeDTO.NewPassword); // Mã hóa mật khẩu
-			_context.Users.Update(user);
+			_context.Set<User>().Update(user);
 			return _context.SaveChanges()>0;
 		}
 	}

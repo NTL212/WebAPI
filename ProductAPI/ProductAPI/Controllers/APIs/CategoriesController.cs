@@ -27,7 +27,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
         {
-            var categories = await _categoryRepository.GetAll();
+            var categories = await _categoryRepository.GetAllAsync();
             var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
             return Ok(categoriesDto);
         }
@@ -43,7 +43,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDTO>> GetById(int id)
         {
-            var category = _categoryRepository.GetById(id);
+            var category = await _categoryRepository.GetByIdAsync(id);
             if (category == null)
                 return NotFound();
 
@@ -55,7 +55,7 @@ namespace ProductAPI.Controllers.APIs
         public async Task<ActionResult<CategoryDTO>> Create(CategoryDTO categoryDto)
         {
             var category = _mapper.Map<Category>(categoryDto);
-            if (await _categoryRepository.Add(category))
+            if (await _categoryRepository.AddAsync(category))
             {
                 var createdCategoryDto = _mapper.Map<CategoryDTO>(category);
                 return CreatedAtAction(nameof(GetById), new { id = createdCategoryDto.CategoryId }, createdCategoryDto);
@@ -70,7 +70,7 @@ namespace ProductAPI.Controllers.APIs
                 return BadRequest();
 
             var category = _mapper.Map<Category>(categoryDto);
-            if (await _categoryRepository.Update(category))
+            if (await _categoryRepository.UpdateAsync(category))
             {
                 return NoContent();
             };
@@ -80,7 +80,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await _categoryRepository.Delete(id))
+            if (await _categoryRepository.DeleteAsync(id))
             {
                 return NoContent();
             }

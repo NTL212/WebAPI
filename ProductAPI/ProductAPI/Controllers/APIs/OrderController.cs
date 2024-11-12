@@ -37,7 +37,7 @@ namespace ProductAPI.Controllers.APIs
 		[HttpGet]
 		public async Task<IActionResult> GetAllOrder()
 		{
-			var orders = await _orderRepository.GetAll();
+			var orders = await _orderRepository.GetAllAsync();
 
 			// Ánh xạ từ các Order sang OrderDTO
 			var ordersDTO = _mapper.Map<IEnumerable<OrderDTO>>(orders);
@@ -60,7 +60,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderById(int orderId)
         {
-            var order = await _orderRepository.GetOrderByIdAsync(orderId);
+            var order = await _orderRepository.GetByIdAsync(orderId);
             if (order == null)
                 return NotFound();
 

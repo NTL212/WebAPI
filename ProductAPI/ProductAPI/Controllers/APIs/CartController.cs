@@ -1,118 +1,120 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using ProductDataAccess.DTOs;
-using ProductAPI.Filters;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.Models;
+using ProductAPI.Services;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+using System.Net.Http;
+using System.Net.WebSockets;
+using ProductDataAccess.DTOs;
+using AutoMapper;
 using ProductAPI.Repositories;
 
 namespace ProductAPI.Controllers.APIs
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    [ServiceFilter(typeof(ValidateTokenAttribute))]
-    public class CartController : ControllerBase
-    {
-        private readonly ICartRepository _cartRepository;
-        private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public CartController(ICartRepository cartRepository, IMapper mapper, IHttpContextAccessor httpContextAccessor)
-        {
-            _cartRepository = cartRepository;
-            _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
-        }
+	public class CartController : Controller
+	{
+		private readonly ICartService _cartService;
+		private readonly IMapper _mapper;
+		private readonly IOrderRepository _orderRepository;
 
-        // Lấy giỏ hàng đang hoạt động của người dùng
-        [HttpGet("active")]
-        public async Task<ActionResult<CartDTO>> GetActiveCart()
-        {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            var cart = await _cartRepository.GetActiveCartByUserId((int)userId);
+		// Injecting the service in the controller's constructor
+		public CartController(ICartService cartService, IMapper mapper, IOrderRepository orderRepository)
+		{
+			_cartService = cartService;
+			_mapper = mapper;
+			_orderRepository = orderRepository;
+		}
 
-            if (cart == null)
-                return NotFound("No active cart found for the user.");
+		// Get the cart and display it along with the total price and quantity
+		[HttpGet]
+		public IActionResult Index()
+		{
+			var cart = _cartService.GetCart();
+			ViewBag.TotalPrice = _cartService.GetTotalPrice();
+			ViewBag.TotalQuantity = _cartService.GetTotalQuantity();
+			return View(cart);
+		}
 
-            var cartDto = _mapper.Map<CartDTO>(cart);
-            return Ok(cartDto);
-        }
+		// API to get cart item count
+		[HttpGet]
+		public IActionResult GetCartCount()
 
-        // Lấy tất cả các mục trong giỏ hàng
-        [HttpGet("{userId}/items")]
-        public async Task<ActionResult<IEnumerable<CartItemDTO>>> GetCartItems(int userId)
-        {
-            var cartItems = await _cartRepository.GetCartItems(userId);
-            var cartItemsDto = _mapper.Map<IEnumerable<CartItemDTO>>(cartItems);
-            return Ok(cartItemsDto);
-        }
+		{
+			var count = _cartService.GetCart().Count;
+			return JsonResponse(true, count);
+		}
 
-        // Thêm một mục vào giỏ hàng
-        [HttpPost("{userId}/items")]
-        public async Task<ActionResult> AddItemToCart(int userId, CartItemDTO cartItemDto)
-        {
-            var cartItem = _mapper.Map<CartItem>(cartItemDto);
+		// API to add an item to the cart
+		[HttpPost]
+		public IActionResult AddToCart(int productId, int quantity, decimal price)
+		{
+			var item = new CartItem
+			{
+				ProductId = productId,
+				Quantity = quantity,
+				Price = price
+			};
+			bool added = _cartService.AddToCart(item);
+			return JsonResponse(added, null);
+		}
 
-            if (await _cartRepository.AddItemToCart(userId, cartItem))
-                return Ok("Item added to cart.");
+		// API to update an item in the cart
+		[HttpPost]
+		public IActionResult UpdateCartItem(int productId, int quantity)
+		{
+			bool updated = _cartService.UpdateCartItem(productId, quantity);
+			return updated ? JsonResponse(true, null) : BadRequest();
+		}
 
-            return BadRequest("Failed to add item to cart.");
-        }
+		// API to remove an item from the cart
+		[HttpPost]
+		public IActionResult RemoveFromCart(int productId)
+		{
+			bool removed = _cartService.RemoveFromCart(productId);
+			return JsonResponse(removed, null);
+		}
 
-        // Cập nhật một mục trong giỏ hàng
-        [HttpPut("{cartId}/items/{itemId}")]
-        public async Task<ActionResult> UpdateCartItem(int cartId, int itemId, CartItemDTO cartItemDto)
-        {
-            if (itemId != cartItemDto.CartItemId)
-                return BadRequest("Item ID mismatch.");
+		// API to clear the entire cart
+		public IActionResult ClearCart()
+		{
+			_cartService.ClearCart();
+			return RedirectToAction("Index");
+		}
 
-            var cartItem = _mapper.Map<CartItem>(cartItemDto);
+		[HttpGet]
+		public async Task<IActionResult> CheckoutAllCart()
+		{
+			var cart = _cartService.GetCart();
+			return View(cart);
+		}
 
-            if (await _cartRepository.UpdateCartItem(cartId, cartItem))
-                return NoContent();
+		[HttpPost]
+		public async Task<IActionResult> CheckoutAllCart([FromBody] OrderDTO orderDTO)
+		{
+			var userId = HttpContext.Session.GetInt32("UserId");
+			var order = _mapper.Map<Order>(orderDTO);
+			var orderCreated = await _orderRepository.CreateOrderAsync((int)userId, order);
+			if (orderCreated != null)
+			{
+				return Ok(orderCreated);
 
-            return NotFound("Item not found in cart.");
-        }
+			}
+			else
+			{
+				return BadRequest();
+			}
+		} 
+		// Helper method to standardize the JSON response
+		private JsonResult JsonResponse(bool success, object data)
+		{
+			return Json(new
+			{
+				success,
+				redirectUrl = Url.Action("Index", "Cart"),
+				data
+			});
+		}
 
-        //Cộng số lượng item
-        [HttpPut("{cartId}/items/{itemId}/plus")]
-        public async Task<ActionResult> PlusCartItem(int cartId, int itemId)
-        {
-            if (await _cartRepository.PlusCartItem(cartId, itemId))
-                return NoContent();
 
-            return NotFound("Item not found in cart.");
-        }
-
-        //Trừ số lượng item
-        [HttpPut("{cartId}/items/{itemId}/minus")]
-        public async Task<ActionResult> MinusCartItem(int cartId, int itemId)
-        {
-            if (await _cartRepository.MinusCartItem(cartId, itemId))
-                return NoContent();
-
-            return NotFound("Item not found in cart.");
-        }
-
-        // Xóa một mục khỏi giỏ hàng
-        [HttpDelete("{cartId}/items/{itemId}")]
-        public async Task<ActionResult> RemoveItemFromCart(int cartId, int itemId)
-        {
-            if (await _cartRepository.RemoveItemFromCart(cartId, itemId))
-                return NoContent();
-
-            return NotFound("Item not found in cart.");
-        }
-
-        // Xóa toàn bộ mục khỏi giỏ hàng
-        [HttpDelete("{cartId}/clear")]
-        public async Task<ActionResult> ClearCart(int cartId)
-        {
-            if (await _cartRepository.ClearCart(cartId))
-                return NoContent();
-
-            return NotFound("Cart not found or already empty.");
-        }
-    }
+	}
 }
