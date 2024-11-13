@@ -1,0 +1,51 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Change Password</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post" action="@Url.Action("ChangePass", "Account")">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" class="form-control" id="OldPassword" name="OldPassword"  placeholder="Enter current password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" class="form-control" id="NewPassword" name="NewPassword" placeholder="Enter new password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" class="form-control" id="ConfirmNewPassword" name="ConfirmNewPassword" placeholder="Confirm new password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        if ('@ViewBag.Message' == "Failed") {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Incorrect password',
+                showConfirmButton: true
+            })
+        }
+        if ('@ViewBag.Message' == "Success") {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Change password successfully',
+                showConfirmButton: true
+            })
+        }
+
+    </script>
+}

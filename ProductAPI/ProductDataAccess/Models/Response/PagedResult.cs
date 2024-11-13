@@ -12,6 +12,15 @@ namespace ProductDataAccess.Models.Response
 		public int TotalRecords { get; set; }
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }
-	}
+
+        // Tính toán số trang tổng cộng
+        public int TotalPages => (int)Math.Ceiling((double)TotalRecords / PageSize);
+
+        // Kiểm tra nếu có trang trước
+        public bool HasPreviousPage => PageNumber > 1;
+
+        // Kiểm tra nếu có trang sau
+        public bool HasNextPage => PageNumber < TotalPages;
+    }
 }
 

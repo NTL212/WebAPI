@@ -5,63 +5,74 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Detail</h1>
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalAmount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ReceverName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ReceverName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Note)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Note)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.OrderId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container my-5">
+    <h2 class="text-center mb-4">Order Details</h2>
+
+    <!-- Order Summary -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Order Summary</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Order ID:</strong> #@Model.OrderId</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="badge
+      @(Model.Status == "Pending" ? "badge-info" :
+        Model.Status == "Completed" ? "badge-success" :
+        Model.Status == "Cancelled" ? "badge-danger" :
+        "badge-secondary")">
+                    @Model.Status
+                </span>
+            </p>
+            <p><strong>Order Date:</strong> @Model.OrderDate</p>
+        </div>
+    </div>
+
+    <!-- Customer Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Customer Information</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Receiver Name:</strong> @Model.ReceverName</p>
+            <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+            <p><strong>Shipping Address:</strong> @Model.Address</p>
+        </div>
+    </div>
+
+    <!-- Order Items -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <strong>Order Items</strong>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model.OrderItems)
+                    {
+                        <tr>
+                            <td>@item.Product.ProductName</td>
+                            <td>@item.Quantity</td>
+                            <td>$@item.Price</td>
+                            <td>$@(item.Quantity * item.Price)</td>
+                        </tr>                   
+                    }
+                    <tr>
+                        <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                        <td><strong>$@Model.TotalAmount</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

@@ -116,7 +116,7 @@
                             <i class="icon-bars"></i>
                         </button>
 
-                        <a href="index.html" class="logo">
+                        <a href="@Url.Action("Index", "Home")" class="logo">
                             <img src="/assets/images/demos/demo-4/logo.png" alt="Molla Logo" width="105" height="25">
                         </a>
                     </div><!-- End .header-left -->
@@ -251,26 +251,31 @@
                                 <li>
                                     <a href="@Url.Action("Shop", "Product")" class="sf-with">Shop</a>
                                 </li>
-                                <li>
-                                    <a href="product.html" class="sf-with">Trending</a>
-                                </li>
-                                <li>
-                                    <a href="product.html" class="sf-with">About me</a>
-                                </li>
-                                <li>
-                                    <a href="product.html" class="sf-with">Blog</a>
-                                </li>
-                                <li>
-                                    <a href="#" class="sf-with">Contact</a>
-
-                                </li>
 
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-center -->
                    
                     <div class="header-right">
-                        <i class="la la-lightbulb-o"></i><p>Clearance<span class="highlight">&nbsp;Up to 30% Off</span></p>
+                        @{
+                            var userId = Context.Session.GetInt32("UserId");
+                        }
+                        @if (userId != null)
+                        {
+                            <ul class="menu sf-arrows">
+                                <li>
+                                    <a href="#" class="sf-with-ul">Account</a>
+
+                                    <ul>
+                                        <li><a href="@Url.Action("Index", "UserOrder", new {userId = userId})">MyOrder</a></li>
+                                        <li><a href="@Url.Action("UserProfile", "Account", new {userId = userId})">Profile</a></li>
+                                        <li><a href="@Url.Action("ChangePass", "Account")">Change Password</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <!-- End .menu -->
+                        }
                     </div>
                 </div><!-- End .container -->
             </div><!-- End .header-bottom -->

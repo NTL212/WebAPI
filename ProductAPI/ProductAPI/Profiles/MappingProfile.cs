@@ -20,12 +20,19 @@ namespace ProductAPI.Profiles
 			CreateMap<Role, RoleDTO>().ReverseMap();
 			CreateMap<VoucherCampaign, VoucherCampaignDTO>().ReverseMap();
             CreateMap<OrderVoucher, OrderVoucherDTO>().ReverseMap();
+
 			CreateMap<PagedResult<Order>, PagedResult<OrderDTO>>()
 		   .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
-			CreateMap<CartItem, OrderItem>()
+
+            CreateMap<PagedResult<Product>, PagedResult<ProductDTO>>()
+           .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
+            CreateMap<CartItem, OrderItem>()
 		   .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
 		   .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
 		   .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
+
+			CreateMap<User, UserDTO>().ReverseMap();
 		}
 	}
 }

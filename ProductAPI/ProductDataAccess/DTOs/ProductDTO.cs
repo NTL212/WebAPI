@@ -8,16 +8,16 @@ namespace ProductDataAccess.DTOs
 
 		public string ProductName { get; set; } = string.Empty;
 
-		public int? CategoryId { get; set; }
+		public int CategoryId { get; set; }
 
 		public decimal Price { get; set; }
 
-		public int? Stock { get; set; }
+		public int Stock { get; set; }
 
-		public string? ImgName { get; set; }
+		public string ImgName { get; set; }
 
-		public DateTime? CreatedAt { get; set; }
-        public CategoryDTO? Category { get; set; }
-        public bool? IsDeleted { get; set; }
+		public DateTime CreatedAt { get; set; }
+        public CategoryDTO Category { get; set; }
+        public bool IsDeleted { get; set; }
 	}
 }

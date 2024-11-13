@@ -18,12 +18,12 @@ namespace ProductAPI.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(int userId, int pageNumber)
+        public async Task<IActionResult> Index(int userId, int pageNumber=1, string mess = null)
         {
 			var pageSize = 5;
 
 			// Lấy dữ liệu phân trang từ repository
-			var pageResult = await _orderRepository.GetPagedAsync(userId, pageNumber, pageSize);
+			var pageResult = await _orderRepository.GetPagedByUserAsync(userId, pageNumber, pageSize);
 
 			// Ánh xạ từ PageResult<Order> sang PageResult<OrderDTO>
 			var pageResultDTO = _mapper.Map<PagedResult<OrderDTO>>(pageResult);
@@ -31,13 +31,14 @@ namespace ProductAPI.Controllers
 			// Truyền dữ liệu vào ViewData để phân trang
 			ViewData["TotalPages"] = (int)Math.Ceiling(pageResult.TotalRecords / (double)pageSize);
 			ViewData["CurrentPage"] = pageNumber;
+            ViewData["message"] = mess;
 
 			return View(pageResultDTO);
 		}
 
         public async Task<IActionResult> Detail(int id)
         {
-            var order = await _orderRepository.GetByIdAsync(id);
+            var order = await _orderRepository.GetOrderById(id);
             if (order == null)
                 return NotFound();
 
@@ -48,9 +49,15 @@ namespace ProductAPI.Controllers
 
         public async Task<IActionResult> CancelOrder(int orderId)
         {
-            string status = "cancel";
+            string status = "Cancelled";
+            string message = "Failed";
+            int userId = (int)HttpContext.Session.GetInt32("UserId");
             var updated = await _orderRepository.UpdateOrderStatusAsync(orderId, status);
-            return View(updated);
+            if (updated)
+            {
+				message = "Success";
+			}
+            return RedirectToAction("Index", new {userid = userId, mess = message});
         }
     }
 }

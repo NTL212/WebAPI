@@ -63,7 +63,7 @@ namespace ProductAPI.Repositories
 				.ToListAsync();
 		}
 
-		public async Task<PagedResult<Order>> GetPagedAsync(int userId, int pageNumber, int pageSize)
+		public async Task<PagedResult<Order>> GetPagedByUserAsync(int userId, int pageNumber, int pageSize)
 		{
 			var totalRecords = await _dbSet.CountAsync();
 			var items = await _dbSet
@@ -90,5 +90,10 @@ namespace ProductAPI.Repositories
 			order.Status = status;
 			return await _context.SaveChangesAsync() > 0;
 		}
-	}
+
+		public async Task<Order> GetOrderById(int orderId)
+		{
+			return await _dbSet.Include(o=>o.User).Include(o=>o.OrderItems).ThenInclude(oi=>oi.Product).FirstOrDefaultAsync(o=>o.OrderId==orderId);
+        }
+    }
 }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using ProductAPI.Repositories.Interfaces;
+using ProductAPI.Services;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Request;
 using ProductDataAccess.Models.Response;
@@ -10,9 +13,15 @@ namespace ProductAPI.Controllers
     public class AccountController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        public AccountController(IHttpClientFactory httpClientFactory)
+        private readonly IUserRepoisitory _userRepository;
+        private readonly IMapper _mapper;
+        private readonly IAuthService _authService;
+        public AccountController(IHttpClientFactory httpClientFactory, IUserRepoisitory userRepository, IMapper mapper, IAuthService authService)
         {
             _httpClientFactory = httpClientFactory;
+            _userRepository = userRepository;
+            _mapper = mapper;
+            _authService = authService;
         }
         private readonly string _apiBaseUrl = "https://localhost:7016/api/AuthContronller/";
         private readonly string _apiBaseEmailUrl = "https://localhost:7016/api/Email/ConfirmEmail";
@@ -146,6 +155,34 @@ namespace ProductAPI.Controllers
         public IActionResult WaitingConfirm()
         {
             return View();
+        }
+
+        public async Task<IActionResult> UserProfile(int userId)
+        {
+            var user = await _userRepository.GetByIdAsync(userId);
+            var userDto = _mapper.Map<UserDTO>(user);
+            return View(userDto);
+
+        }
+
+        public IActionResult ChangePass(string mess=null)
+        {
+            ViewBag.Message = mess;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePass(ChangePasswordDTO changeDto)
+        {
+            var user = await _userRepository.GetByIdAsync((int)HttpContext.Session.GetInt32("UserId"));
+            changeDto.Email = user.Email;
+            var token = _authService.ChangePassword(changeDto);
+            string message = "Failed";
+            if (token)
+            {
+                message = "Success";
+            }
+            return RedirectToAction("ChangePass", new { mess = message });
         }
     }
 }

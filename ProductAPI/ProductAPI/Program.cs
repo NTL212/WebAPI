@@ -1,4 +1,3 @@
-using Humanizer.Localisation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -7,6 +6,7 @@ using ProductAPI.Email;
 using ProductAPI.Filters;
 using ProductAPI.Profiles;
 using ProductAPI.Repositories;
+using ProductAPI.Repositories.Implementations;
 using ProductAPI.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
@@ -44,6 +44,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRepoisitory, UserRepository>();
 
 
 builder.Services.AddScoped<IAuthService, AuthService>();

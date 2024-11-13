@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
 using ProductAPI.Filters;
-using ProductDataAccess.Models;
-using ProductAPI.Repositories;
 using ProductAPI.Services;
 using ProductDataAccess.Models.Response;
 

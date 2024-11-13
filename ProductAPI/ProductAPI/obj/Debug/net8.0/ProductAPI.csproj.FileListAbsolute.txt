@@ -273,3 +273,4 @@ E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.RazorAssemblyInfo.cach
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\ProductAPI.RazorAssemblyInfo.cs
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\scopedcss\projectbundle\ProductAPI.bundle.scp.css
+E:\Work\ProductAPI\ProductAPI\obj\Debug\net8.0\scopedcss\Views\Shared\_AdminLayout.cshtml.rz.scp.css

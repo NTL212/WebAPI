@@ -1,0 +1,51 @@
+﻿@model ProductDataAccess.DTOs.UserDTO
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container my-5">
+    <h2 class="text-center mb-4">User Profile</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                  @*     <img src="https://via.placeholder.com/150" class="rounded-circle mb-3" alt="User Avatar" width="150"> *@
+                    <h4 class="card-title" id="username">@Model.Username</h4>
+                    <p class="text-muted" id="email">@Model.Email</p>
+                    <p class="text-muted">
+                        Status:
+                        @if (Model.IsActive == true)
+                        {
+                            <span id="isActive" class="badge badge-success">Active</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <!-- User Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <strong>User Information</strong>
+                </div>
+                <div class="card-body">
+                    <p><strong>User ID:</strong> <span id="userId">@Model.UserId</span></p>
+                    <p><strong>Username:</strong> <span id="username">@Model.Username</span></p>
+                    <p><strong>Email:</strong> <span id="email">@Model.Email</span></p>
+                    <p><strong>Account Created:</strong> <span id="createdAt">@Model.CreatedAt</span></p>
+                    <p>
+                        <strong>Active Status:</strong>
+                        <span id="isActive" class="badge badge-success">Active</span>
+                    </p>
+                    <p><strong>Group ID:</strong> <span id="groupId">@Model.GroupId</span></p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center">
+                <a href="@Url.Action("ChangePass", "Account")"><button class="btn btn-secondary mx-2">Change Password</button></a>
+                
+            </div>
+        </div>
+    </div>
+</div>
