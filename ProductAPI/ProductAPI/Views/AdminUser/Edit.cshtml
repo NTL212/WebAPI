@@ -1,0 +1,73 @@
+﻿@using ProductDataAccess.DTOs;
+@model UserDTO
+@{
+    ViewData["PageTitle"] = "Edit User";
+    ViewData["Users"] = "active";
+    ViewData["SearchURL"] = "AdminUser";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Edit User</h6>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Edit" method="post">
+                            <input hidden name="UserId" value="@Model.UserId" />
+                            <!-- Username Field -->
+                            <div class="mb-3">
+                                <label for="Username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="Username" name="Username" value="@Model.Username" required />
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="mb-3">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+                            </div>
+
+
+                            <!-- Group -->
+                            <div class="mb-3">
+                                <label for="GroupId" class="form-label">Group</label>
+                                <select class="form-select" id="GroupId" name="GroupId" required>
+                                    <option value="@Model.GroupId">@Model.Group.GroupName</option>
+                                    @foreach (var group in (List<GroupDTO>)ViewData["groups"])
+                                    {
+                                        if (group.GroupId != Model.GroupId)
+                                        {
+                                            <option value="@group.GroupId">@group.GroupName</option>
+                                        }
+                                        
+                                    }
+                                </select>
+                            </div>
+
+                            <!-- Status  -->
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <div>
+                                    <input type="radio" id="IsActive" name="IsActive" value="true" @(Model.IsActive == true ? "checked" : "") />
+                                    <label for="InStock" class="form-label">Active</label>
+                                    <input type="radio" id="OutOfStock" name="IsActive" value="false" @(Model.IsActive == false ? "checked" : "") />
+                                    <label for="OutOfStock" class="form-label">Inactive</label>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">Save changes</button>
+                                <a href="@Url.Action("Index", "AdminUser")" class="btn btn-secondary ms-2">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

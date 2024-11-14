@@ -1,0 +1,118 @@
+﻿@using ProductDataAccess.Models.Request;
+@using ProductDataAccess.DTOs;
+@model ProductDTO
+@{
+    ViewData["PageTitle"] = "Edit Product";
+    ViewData["Products"] = "active";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Edit Product</h5>
+                        <p class="text-sm text-muted">Modify the product details below</p>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="@Url.Action("Edit", "AdminProduct")" enctype="multipart/form-data">
+                            <!-- Product Name -->
+                            <div class="mb-3">
+                                <label for="ProductName" class="form-label">Product Name</label>
+                                <input type="text" class="form-control" id="ProductName" name="ProductName" value="@Model.ProductName" required />
+                            </div>
+
+                            <!-- Category -->
+                            <div class="mb-3">
+                                <label for="CategoryId" class="form-label">Category</label>
+                                <select class="form-select" id="CategoryId" name="CategoryId" required>
+                                    <option value="@Model.Category.CategoryId">@Model.Category.CategoryName</option>
+                                    @foreach (var category in (List<CategoryDTO>)ViewData["Categories"])
+                                    {
+                                        <option value="@category.CategoryId">@category.CategoryName</option>
+                                    }
+                                </select>
+                            </div>
+                            <input hidden id="CreatedAt" name="CreatedAt" value="@Model.CreatedAt" />
+                             <input hidden id="ProductId" name="ProductId" value="@Model.ProductId" />
+                            <input hidden id="ImgName" name="ImgName" value="@Model.ImgName" />
+                            <!-- Price -->
+                            <div class="mb-3">
+                                <label for="Price" class="form-label">Price ($)</label>
+                                <input type="number" class="form-control" id="Price" name="Price" value="@Model.Price" required />
+                            </div>
+
+                            <!-- Stock -->
+                            <div class="mb-3">
+                                <label for="Stock" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="Stock" name="Stock" value="@Model.Stock" required />
+                            </div>
+
+                            <!-- Product Image -->
+                            <div class="mb-3">
+                                <label for="ProductImage" class="form-label">Product Image</label>
+                                <input type="file" class="form-control" id="productImage" name="productImage" />
+                                @if (!string.IsNullOrEmpty(Model.ImgName))
+                                {
+                                    <div class="mt-2">
+                                        <img src="/assets/images/products/@Model.ImgName" alt="Product Image" width="100" class="img-thumbnail" />
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Status (In Stock/Out of Stock) -->
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <div>
+                                    <input type="radio" id="InStock" name="IsDeleted" value="false" @(Model.IsDeleted == false ? "checked" : "") />
+                                    <label for="InStock" class="form-label">Available</label>
+                                    <input type="radio" id="OutOfStock" name="IsDeleted" value="true" @(Model.IsDeleted == true ? "checked" : "") />
+                                    <label for="OutOfStock" class="form-label">Deleted</label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <a href="@Url.Action("Index", "AdminProduct")" class="btn btn-secondary ms-3">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts {
+    <script>
+        // Display success message if product is successfully updated
+        if ('@ViewBag.Message' == "Success") {
+            Swal.fire({
+                title: 'Success!',
+                text: 'Product has been updated successfully',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+        }
+        // Display error message if there's an issue
+        else if ('@ViewBag.Message' == "Error") {
+            Swal.fire({
+                title: 'Error!',
+                text: 'An error occurred while updating the product',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+        else if('@ViewBag.Message' != "") {
+            Swal.fire({
+                title: 'Error!',
+                text: '@ViewBag.Message',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+    </script>
+}

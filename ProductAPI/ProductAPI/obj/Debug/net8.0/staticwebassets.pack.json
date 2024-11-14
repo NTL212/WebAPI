@@ -6173,12 +6173,20 @@
       "PackagePath": "staticwebassets\\assets\\images\\portfolio\\masonry-4cols\\item-8.jpg"
     },
     {
+      "Id": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\OIP.jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\products\\OIP.jpg"
+    },
+    {
       "Id": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\cart\\product-1.jpg",
       "PackagePath": "staticwebassets\\assets\\images\\products\\cart\\product-1.jpg"
     },
     {
       "Id": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\cart\\product-2.jpg",
       "PackagePath": "staticwebassets\\assets\\images\\products\\cart\\product-2.jpg"
+    },
+    {
+      "Id": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\download (2).jpg",
+      "PackagePath": "staticwebassets\\assets\\images\\products\\download (2).jpg"
     },
     {
       "Id": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\download (3).jpg",

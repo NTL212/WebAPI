@@ -1,4 +1,5 @@
 ﻿using ProductDataAccess.Models.Response;
+using System.Linq.Expressions;
 
 namespace ProductAPI.Repositories
 {
@@ -12,5 +13,11 @@ namespace ProductAPI.Repositories
 
         Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize);
 
-	}
+        Task<PagedResult<T>> GetPagedWithIncludeAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes);
+        Task<PagedResult<T>> GetPagedWithIncludeSearchAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+
+        Task<IEnumerable<T>> GetAllWithIncludeAsync(params Expression<Func<T, object>>[] includes);
+        Task<T> GetByIdWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+
+    }
 }

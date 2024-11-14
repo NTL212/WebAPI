@@ -24,7 +24,7 @@ namespace ProductAPI.Repositories
 		public async Task<IEnumerable<Product>> GetAllProductsByCategory(int id)
 		{
 			List<int> subcategoryIds = await _context.Set<Category>().Where(c=>c.ParentId==id).Select(c=>c.CategoryId).ToListAsync(); 
-			return await _dbSet.Include(p => p.Category).Where(p=>p.CategoryId==id||subcategoryIds.Contains((int)p.CategoryId)).ToListAsync();
+			return await _dbSet.Include(p => p.Category).Where(p=>(p.CategoryId==id||subcategoryIds.Contains((int)p.CategoryId)) && p.IsDeleted==false).ToListAsync();
 		}
 
 		public async Task<bool> DeleteProduct(int id)
@@ -38,5 +38,21 @@ namespace ProductAPI.Repositories
 			}
 			return false;
 		}
-	}
+        public async Task<bool> RestoreProduct(int id)
+        {
+            var product = await _dbSet.FindAsync(id);
+            if (product != null && product.IsDeleted == true)
+            {
+                product.IsDeleted = false;
+                _dbSet.Update(product);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            return false;
+        }
+
+        public Task<IEnumerable<Product>> GetAllAvailableProducts()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

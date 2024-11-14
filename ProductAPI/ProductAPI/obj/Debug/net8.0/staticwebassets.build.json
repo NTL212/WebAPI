@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "MieIMorbC4eRvAaMo80B7T9CUIXwETEEvyqCKxvqpPY=",
+  "Hash": "N/volM9YvFjfCZFneNbNwPXCb9PQr4ao3ZdNuGL+EUQ=",
   "Source": "ProductAPI",
   "BasePath": "_content/ProductAPI",
   "Mode": "Default",
@@ -29391,6 +29391,25 @@
       "OriginalItemSpec": "wwwroot\\assets\\images\\products\\cart\\product-2.jpg"
     },
     {
+      "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\download (2).jpg",
+      "SourceId": "ProductAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\",
+      "BasePath": "_content/ProductAPI",
+      "RelativePath": "assets/images/products/download (2).jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\products\\download (2).jpg"
+    },
+    {
       "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\download (3).jpg",
       "SourceId": "ProductAPI",
       "SourceType": "Discovered",
@@ -29807,6 +29826,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\products\\elements\\product-thumb-5.jpg"
+    },
+    {
+      "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\OIP.jpg",
+      "SourceId": "ProductAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\",
+      "BasePath": "_content/ProductAPI",
+      "RelativePath": "assets/images/products/OIP.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\products\\OIP.jpg"
     },
     {
       "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\product-1.jpg",

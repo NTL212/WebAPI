@@ -19,11 +19,15 @@ public partial class User
 
     public int? GroupId { get; set; }
 
-    public virtual ICollection<Cart> Carts { get; set; } = new List<Cart>();
+    public int? RoleId { get; set; }
+
+    public DateTime? LastUpdated { get; set; }
+
+    public virtual UserGroup? Group { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual ICollection<VoucherRecipient> VoucherRecipients { get; set; } = new List<VoucherRecipient>();
+    public virtual Role? Role { get; set; }
 
-    public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
+    public virtual ICollection<VoucherRecipient> VoucherRecipients { get; set; } = new List<VoucherRecipient>();
 }

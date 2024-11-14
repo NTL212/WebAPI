@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
+using System.Linq.Expressions;
 
 namespace ProductAPI.Repositories
 {
@@ -17,8 +18,15 @@ namespace ProductAPI.Repositories
         }
         public async Task<bool> AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            return await _context.SaveChangesAsync()>0;
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -45,8 +53,15 @@ namespace ProductAPI.Repositories
 
         public async Task<bool> UpdateAsync(T entity)
         {
-            _dbSet.Update(entity);
-            return await _context.SaveChangesAsync() > 0;
+            try
+            {
+                _dbSet.Update(entity);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
 		public async Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize)
@@ -65,5 +80,77 @@ namespace ProductAPI.Repositories
 				PageSize = pageSize
 			};
 		}
-	}
+
+        public async Task<IEnumerable<T>> GetAllWithIncludeAsync(params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<T> GetByIdWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.FirstOrDefaultAsync(predicate);
+        }
+
+        public async Task<PagedResult<T>> GetPagedWithIncludeAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes)
+        {
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            var totalRecords = await _dbSet.CountAsync();
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            
+            return new PagedResult<T>
+            {
+                Items = items,
+                TotalRecords = totalRecords,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
+
+        public async Task<PagedResult<T>> GetPagedWithIncludeSearchAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        {
+
+            IQueryable<T> query = _dbSet;
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+            var totalRecords = await _dbSet.CountAsync();
+            var items = await query
+                .Where(predicate)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<T>
+            {
+                Items = items,
+                TotalRecords = totalRecords,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+        }
+    }
 }

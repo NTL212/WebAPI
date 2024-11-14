@@ -1,0 +1,71 @@
+﻿@using ProductDataAccess.DTOs;
+@model UserDTO
+@{
+    ViewData["PageTitle"] = "Add New User";
+    ViewData["Users"] = "active";
+    ViewData["SearchURL"] = "AdminUser";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Add New User</h6>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Create" asp-controller="AdminUser" method="post">
+                            <!-- Username Field -->
+                            <div class="mb-3">
+                                <label for="Username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="Username" name="Username" required />
+                            </div>
+
+                            <!-- Email Field -->
+                            <div class="mb-3">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="Email" name="Email" required />
+                            </div>
+
+                            <!-- Group -->
+                            <div class="mb-3">
+                                <label for="GroupId" class="form-label">Group</label>
+                                <select class="form-select" id="GroupId" name="GroupId" required>
+                                    <option value="">Select Group</option>
+                                    @foreach (var group in (List<GroupDTO>)ViewData["groups"])
+                                    {
+                                        <option value="@group.GroupId">@group.GroupName</option>
+
+                                    }
+                                </select>
+                            </div>
+                            <!-- Password Field -->
+                            <div class="mb-3">
+                                <label for="Password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required />
+                            </div>
+
+                            <!-- Status Dropdown -->
+                            <div class="mb-3">
+                                <label for="IsDeleted" class="form-label">Status</label>
+                                <select class="form-select" id="IsActive" name="IsActive" required>
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
+                                </select>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">Add User</button>
+                                <a href="@Url.Action("Index", "AdminUser")" class="btn btn-secondary ms-2">Cancel</a>
+                            </div>                         
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

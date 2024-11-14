@@ -32,7 +32,12 @@ namespace ProductAPI.Repositories
 				return false;
 			}
 		}
-	}
+
+        public async Task<IEnumerable<Category>> GetAllParentCategory()
+        {
+            return await _dbSet.Where(c => c.ParentId == null).ToListAsync();
+        }
+    }
 
 }
 

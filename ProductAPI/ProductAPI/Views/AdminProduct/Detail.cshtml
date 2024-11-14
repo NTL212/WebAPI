@@ -29,8 +29,15 @@
                                     @(Model.IsDeleted ? "Deleted" : "Available")
                                 </span>
                                 <div class="mt-4">
-                                    <a href="javascript:;" class="btn btn-warning btn-sm">Delete</a>
-                                    <a href="javascript:;" class="btn btn-info btn-sm">Edit</a>
+                                    @if(Model.IsDeleted)
+                                    {
+                                        <a href="@Url.Action("Restore", "AdminProduct", new {id = Model.ProductId})" class="btn btn-success btn-sm">Restore</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Delete", "AdminProduct", new {id = Model.ProductId})" class="btn btn-warning btn-sm">Delete</a>
+                                    }
+                                    <a href="@Url.Action("Edit", "AdminProduct", new {id = Model.ProductId})" class="btn btn-info btn-sm">Edit</a>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +64,7 @@
                             <li class="list-group-item">
                                 <strong>Status:</strong>
                                 <span class="badge badge-sm @(Model.IsDeleted ? "bg-danger" : "bg-success")">
-                                    @(Model.IsDeleted ? "Out of Stock" : "In Stock")
+                                    @(Model.IsDeleted ? "Deleted" : "Available")
                                 </span>
                             </li>
                         </ul>
@@ -94,3 +101,23 @@
         </div>
     </div>
 </main>
+@section scripts {
+    <script>
+        // if ('@TempData["Message"]' == 'Success') {
+        //     Swal.fire({
+        //         title: 'Success!',
+        //         text: 'Action successfully',
+        //         icon: 'success',
+        //         confirmButtonText: 'Ok'
+        //     });
+        // }
+        // else{
+        //     Swal.fire({
+        //         title: 'Error!',
+        //         text: 'Action failed',
+        //         icon: 'error',
+        //         confirmButtonText: 'Ok'
+        //     });
+        // }
+    </script>
+}

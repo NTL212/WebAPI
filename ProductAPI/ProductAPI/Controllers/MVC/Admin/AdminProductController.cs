@@ -31,7 +31,7 @@ namespace ProductAPI.Controllers.MVC.Admin
             var product = await _productRepository.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
-
+            TempData["Message"] = mess;
             var productDto = _mapper.Map<ProductDTO>(product);
             return View(productDto);
         }
@@ -69,6 +69,82 @@ namespace ProductAPI.Controllers.MVC.Admin
             else
             {
                 return RedirectToAction("Create", new { mess = "Failed" });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id, string mess = null)
+        {
+            var categories = await _categoryRepository.GetAllAsync();
+            var product = await _productRepository.GetByIdWithIncludeAsync(p => p.ProductId == id, p => p.Category);
+            ViewBag.Message = mess;
+            ViewData["Categories"] = _mapper.Map<List<CategoryDTO>>(categories);
+            var productDto = _mapper.Map<ProductDTO>(product);
+            return View(productDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductDTO productDTO, IFormFile productImage)
+        {
+            try
+            {
+                var product = _mapper.Map<Product>(productDTO);
+
+                // Lưu sản phẩm và hình ảnh vào cơ sở dữ liệu
+                if (productImage != null)
+                {
+                    var filePath = Path.Combine("wwwroot", "assets", "images", "products", productImage.FileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        productImage.CopyTo(stream);
+                    }
+                    product.ImgName = productImage.FileName;
+                }
+
+                if (await _productRepository.UpdateAsync(product))
+                {
+                    return RedirectToAction("Edit", new { id = product.ProductId, mess = "Success" });
+                }
+                else
+                {
+                    return RedirectToAction("Edit", new { id = product.ProductId, mess = "Error" });
+                }
+            }
+            catch (Exception ex) {
+
+                return RedirectToAction("Edit", new { id = productDTO.ProductId, mess = ex.Message });
+            }
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (await _productRepository.DeleteProduct(id))
+                {
+                    return RedirectToAction("Detail", new { id = id, mess = "Success" });
+                }
+                return RedirectToAction("Detail", new { id = id, mess = "Error" });
+            }
+            catch (Exception ex) 
+            {
+                return RedirectToAction("Detail", new { id = id, mess = "Error"});
+            }
+        }
+
+        public async Task<IActionResult> Restore(int id)
+        {
+            try
+            {
+                if (await _productRepository.RestoreProduct(id))
+                {
+                    return RedirectToAction("Detail", new { id = id, mess = "Success" });
+                }
+                return RedirectToAction("Detail", new { id = id, mess = "Error" });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Detail", new { id = id, mess = "Error" });
             }
         }
     }

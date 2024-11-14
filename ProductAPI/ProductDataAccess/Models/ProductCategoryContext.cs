@@ -15,10 +15,6 @@ public partial class ProductCategoryContext : DbContext
     {
     }
 
-    public virtual DbSet<Cart> Carts { get; set; }
-
-    public virtual DbSet<CartItem> CartItems { get; set; }
-
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Order> Orders { get; set; }
@@ -49,40 +45,6 @@ public partial class ProductCategoryContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Cart>(entity =>
-        {
-            entity.HasKey(e => e.CartId).HasName("PK__Cart__51BCD7B7C13BF3A8");
-
-            entity.ToTable("Cart", tb => tb.HasTrigger("trg_UpdateModifyDate"));
-
-            entity.Property(e => e.CreatedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.ModifiedDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Carts)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__Cart__UserId__5EBF139D");
-        });
-
-        modelBuilder.Entity<CartItem>(entity =>
-        {
-            entity.HasKey(e => e.CartItemId).HasName("PK__CartItem__488B0B0A7496987F");
-
-            entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
-
-            entity.HasOne(d => d.Cart).WithMany(p => p.CartItems)
-                .HasForeignKey(d => d.CartId)
-                .HasConstraintName("FK__CartItems__CartI__628FA481");
-
-            entity.HasOne(d => d.Product).WithMany(p => p.CartItems)
-                .HasForeignKey(d => d.ProductId)
-                .HasConstraintName("FK__CartItems__Produ__6383C8BA");
-        });
-
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A0B121F43B0");
@@ -180,6 +142,8 @@ public partial class ProductCategoryContext : DbContext
         {
             entity.HasKey(e => e.UserId).HasName("PK__Users__1788CC4C9FA369D5");
 
+            entity.ToTable(tb => tb.HasTrigger("trg_UpdateLastUpdated"));
+
             entity.HasIndex(e => e.Username, "UQ__Users__536C85E4A0C2453D").IsUnique();
 
             entity.HasIndex(e => e.Email, "UQ__Users__A9D10534DEB8913B").IsUnique();
@@ -188,23 +152,21 @@ public partial class ProductCategoryContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Email).HasMaxLength(100);
+            entity.Property(e => e.LastUpdated)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.PasswordHash).HasMaxLength(256);
             entity.Property(e => e.Username).HasMaxLength(50);
 
-            entity.HasMany(d => d.Roles).WithMany(p => p.Users)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UserRole",
-                    r => r.HasOne<Role>().WithMany()
-                        .HasForeignKey("RoleId")
-                        .HasConstraintName("FK__UserRoles__RoleI__06CD04F7"),
-                    l => l.HasOne<User>().WithMany()
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK__UserRoles__UserI__05D8E0BE"),
-                    j =>
-                    {
-                        j.HasKey("UserId", "RoleId").HasName("PK__UserRole__AF2760AD7DF23FF8");
-                        j.ToTable("UserRoles");
-                    });
+            entity.HasOne(d => d.Group).WithMany(p => p.Users)
+                .HasForeignKey(d => d.GroupId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_Users_UserGroups");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.Users)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_User_Role");
         });
 
         modelBuilder.Entity<UserGroup>(entity =>

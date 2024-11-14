@@ -1,0 +1,69 @@
+﻿@using ProductDataAccess.Models.Request;
+@using ProductDataAccess.ViewModels;
+@using ProductDataAccess.DTOs;
+@model AdminCategoryEditVM
+@{
+    ViewData["PageTitle"] = "Edit Category";
+    ViewData["Categories"] = "active";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Edit Category</h6>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Edit" asp-controller="AdminCategory" method="post">
+                            <input hidden name="CategoryId" value="@Model.Category.CategoryId" />
+                            <!-- Category Name -->
+                            <div class="mb-3">
+                                <label for="CategoryName" class="form-label">Category Name</label>
+                                <input type="text" class="form-control" id="CategoryName" name="CategoryName" value="@Model.Category.CategoryName" required aria-describedby="CategoryNameHelp"/>
+                                <div id="CategoryNameHelp" class="form-text">Enter the name of the category.</div>
+                            </div>
+
+                            <!-- Status -->
+                            <div class="mb-3">
+                                <label for="IsDeleted" class="form-label">Status</label>
+                                <select class="form-select" id="IsDeleted" name="IsDeleted" required>
+                                    <option value="false" selected="@Model.Category.IsDeleted" >Active</option>
+                                    <option value="true" selected="@Model.Category.IsDeleted">Deleted</option>
+                                </select>
+                            </div>
+
+                            <!-- Parent Category -->
+                            <div class="mb-3">
+                                <label for="ParentId" class="form-label">Parent Category</label>
+                                <select class="form-select" id="ParentId" name="ParentId">
+                                    <option value="">Select a Parent Category (Optional)</option>
+                                    @if (Model.Category.ParentId != null)
+                                    {
+                                        <option value="@Model.Category.ParentId" selected>@Model.ParentCategory.CategoryName</option>
+                                    }
+                                    @foreach (var parentCategory in (List<CategoryDTO>)Model.ParentCategories)
+                                    {
+                                        <option value="@parentCategory.CategoryId" >
+                                            @parentCategory.CategoryName
+                                        </option>
+                                    }
+                                </select>
+                                <div class="form-text">If this category has a parent, select one. Otherwise, leave it blank.</div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">Save Changes</button>
+                                <a href="@Url.Action("Index", "AdminUser")" class="btn btn-secondary ms-2">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

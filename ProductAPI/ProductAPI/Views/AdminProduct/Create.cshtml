@@ -10,7 +10,7 @@
     @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-lg-8 col-md-8">
+            <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Add New Product</h5>
@@ -69,16 +69,8 @@
                                 <input type="file" class="form-control" id="productImage" name="productImage" />
                             </div>
 
-                            <!-- Status (In Stock/Out of Stock) -->
-                             <div class="mb-3">
-                                 <label class="form-label">Status</label>
-                                 <div>
-                                     <input type="radio" id="InStock" name="IsDeleted" value="false" />
-                                     <label for="InStock" class="form-label">In Stock</label>
-                                     <input type="radio" id="OutOfStock" name="IsDeleted" value="true" />
-                                     <label for="OutOfStock" class="form-label">Out of Stock</label>
-                                 </div>
-                             </div>
+                            <!-- Status  -->
+                            <input hidden type="radio" id="InStock" checked name="IsDeleted" value="false" />
 
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success">Add Product</button>

@@ -1,0 +1,154 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@model PagedResult<CategoryDTO>
+@{
+    ViewData["PageTitle"] = "Category List";
+    ViewData["Categories"] = "active";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h6>Category List</h6>
+                        <p>Total @Model.TotalRecords categories</p>
+                        <div class="d-flex justify-content-end">
+                            <a href="@Url.Action("Create", "AdminCategory")" class="btn btn-primary">Add New Category</a>
+                        </div>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CategoryId</th>
+                                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                                        <th class="text-secondary opacity-7"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var category in Model.Items)
+                                    {
+                                        <tr>
+                                            <td class="text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">#@category.CategoryId</span>
+                                            </td>
+                                            <td>
+                                                <!-- Category Name Section -->
+                                                <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <h6 class="mb-0 text-sm" style="font-weight: bold; color: #4E73DF;">@category.CategoryName</h6>
+                                                    </div>
+                                                    @if (category.InverseParent.Count > 0)
+                                                    {
+                                                        <div>
+                                                            <a href="javascript:void(0);" class="btn btn-sm btn-info mb-0" onclick="toggleSubcategories(@category.CategoryId)">
+                                                                <i class="fas fa-chevron-down"></i> View Subcategories
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <!-- Subcategories Section (Initially hidden) -->
+                                                <div id="subcategories-@category.CategoryId" class="subcategories-list" style="display: none; margin-left: 20px; margin-top: 10px;">
+                                                    <ul style="list-style-type: none;">
+                                                        @foreach (var subcategory in category.InverseParent)
+                                                        {
+                                                            <li>
+                                                                <div style="border-left: 3px solid #4E73DF; padding-left: 10px;">
+                                                                    <span>@subcategory.CategoryName</span>
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="badge badge-sm @(category.IsDeleted == false ? "bg-gradient-success" : "bg-gradient-danger")">
+                                                    @(category.IsDeleted ? "Deleted" : "Active")
+                                                </span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <a href="@Url.Action("Edit", "AdminCategory", new { id = category.CategoryId })" class="btn btn-sm btn-warning mb-0">Edit</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination controls -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-3">
+                                @if (Model.HasPreviousPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@(Model.PageNumber - 1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">&laquo;</span>
+                                    </li>
+                                }
+
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                                        <a class="page-link" href="?page=@i">@i</a>
+                                    </li>
+                                }
+
+                                @if (Model.HasNextPage)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@(Model.PageNumber + 1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="page-item disabled">
+                                        <span class="page-link">&raquo;</span>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts {
+    <script>
+        // Toggle the display of subcategories with animation
+        function toggleSubcategories(categoryId) {
+            var subcategoriesDiv = document.getElementById("subcategories-" + categoryId);
+            var icon = subcategoriesDiv.previousElementSibling.querySelector("i");
+
+            if (subcategoriesDiv.style.display === "none") {
+                subcategoriesDiv.style.display = "block";
+                icon.classList.remove("fa-chevron-down");
+                icon.classList.add("fa-chevron-up");
+            } else {
+                subcategoriesDiv.style.display = "none";
+                icon.classList.remove("fa-chevron-up");
+                icon.classList.add("fa-chevron-down");
+            }
+        }
+    </script>
+}
+
+
