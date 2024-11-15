@@ -23,9 +23,13 @@ public partial class Voucher
 
     public int? UsedCount { get; set; }
 
+    public string? VoucherType { get; set; }
+
+    public string? Conditions { get; set; }
+
     public virtual ICollection<OrderVoucher> OrderVouchers { get; set; } = new List<OrderVoucher>();
 
     public virtual ICollection<VoucherAssignment> VoucherAssignments { get; set; } = new List<VoucherAssignment>();
 
-    public virtual ICollection<VoucherRecipient> VoucherRecipients { get; set; } = new List<VoucherRecipient>();
+    public virtual ICollection<VoucherUser> VoucherUsers { get; set; } = new List<VoucherUser>();
 }

@@ -12,6 +12,4 @@ public partial class UserGroup
     public string? Description { get; set; }
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();
-
-    public virtual ICollection<VoucherRecipient> VoucherRecipients { get; set; } = new List<VoucherRecipient>();
 }

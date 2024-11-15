@@ -23,6 +23,10 @@ public partial class Order
 
     public string? Note { get; set; }
 
+    public int? VoucherId { get; set; }
+
+    public decimal? SubTotal { get; set; }
+
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     public virtual User User { get; set; } = null!;

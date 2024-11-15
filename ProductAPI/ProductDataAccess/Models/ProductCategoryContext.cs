@@ -37,7 +37,7 @@ public partial class ProductCategoryContext : DbContext
 
     public virtual DbSet<VoucherCampaign> VoucherCampaigns { get; set; }
 
-    public virtual DbSet<VoucherRecipient> VoucherRecipients { get; set; }
+    public virtual DbSet<VoucherUser> VoucherUsers { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -71,6 +71,7 @@ public partial class ProductCategoryContext : DbContext
             entity.Property(e => e.Status)
                 .HasMaxLength(50)
                 .HasDefaultValue("Pending");
+            entity.Property(e => e.SubTotal).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.User).WithMany(p => p.Orders)
@@ -189,6 +190,7 @@ public partial class ProductCategoryContext : DbContext
 
             entity.Property(e => e.VoucherId).HasColumnName("VoucherID");
             entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.Conditions).HasColumnType("text");
             entity.Property(e => e.DiscountType).HasMaxLength(20);
             entity.Property(e => e.DiscountValue).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
@@ -196,6 +198,9 @@ public partial class ProductCategoryContext : DbContext
                 .HasMaxLength(20)
                 .HasDefaultValue("active");
             entity.Property(e => e.UsedCount).HasDefaultValue(0);
+            entity.Property(e => e.VoucherType)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<VoucherAssignment>(entity =>
@@ -233,25 +238,20 @@ public partial class ProductCategoryContext : DbContext
             entity.Property(e => e.TargetAudience).HasMaxLength(255);
         });
 
-        modelBuilder.Entity<VoucherRecipient>(entity =>
+        modelBuilder.Entity<VoucherUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__VoucherR__3214EC07B8D139A9");
+            entity.HasKey(e => e.VoucherUserId).HasName("PK__VoucherU__3E27916E856D8694");
 
-            entity.ToTable("VoucherRecipient");
+            entity.Property(e => e.DateAssigned)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Quantity).HasDefaultValue(1);
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
-            entity.Property(e => e.IsUsed).HasDefaultValue(false);
-
-            entity.HasOne(d => d.Group).WithMany(p => p.VoucherRecipients)
-                .HasForeignKey(d => d.GroupId)
-                .HasConstraintName("FK__VoucherRe__Group__1DB06A4F");
-
-            entity.HasOne(d => d.User).WithMany(p => p.VoucherRecipients)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK__VoucherRe__UserI__1CBC4616");
-
-            entity.HasOne(d => d.Voucher).WithMany(p => p.VoucherRecipients)
+            entity.HasOne(d => d.Voucher).WithMany(p => p.VoucherUsers)
                 .HasForeignKey(d => d.VoucherId)
-                .HasConstraintName("FK__VoucherRe__Vouch__1BC821DD");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VoucherUs__Vouch__41EDCAC5");
         });
 
         OnModelCreatingPartial(modelBuilder);

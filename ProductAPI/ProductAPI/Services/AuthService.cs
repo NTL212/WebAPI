@@ -60,7 +60,7 @@ namespace ProductAPI.Services
 
 		public async Task<AuthResponseData> Login(LoginDTO loginDto)
 		{
-			var user = await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive==true);
+			var user = await _context.Set<User>().Include(u=>u.Role).FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive==true);
 			var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
 			if (user == null || verificationResult== PasswordVerificationResult.Failed)
 				throw new UnauthorizedAccessException("Invalid credentials");
@@ -94,10 +94,18 @@ namespace ProductAPI.Services
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-			var token = new JwtSecurityToken(
+            // Tạo Claims
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Username),
+            new Claim(ClaimTypes.Role, user.Role.Name)  // Role được thêm vào claim
+        };
+
+            var token = new JwtSecurityToken(
 				issuer: _configuration["Jwt:Issuer"],
 				audience: _configuration["Jwt:Audience"],
 				expires: DateTime.Now.AddMinutes(10),
+				claims: claims,
 				signingCredentials: creds
 			);
 

@@ -1,0 +1,81 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@using Newtonsoft.Json;
+@model PagedResult<VoucherDTO>
+@{
+    ViewData["PageTitle"] = "Distribute Voucher";
+    ViewData["VoucherDistribution"] = "active";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h6>Distribute Voucher</h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Form to distribute voucher -->
+                        <form action="@Url.Action("Distribute", "AdminVoucher")" method="post">
+                            <div class="form-group">
+                                <label for="voucherSelect">Choose Voucher</label>
+                                <select id="voucherSelect" name="voucherId" class="form-control">
+                                    <option value="">-- Select Voucher --</option>
+                                    @foreach (var item in Model.Items)
+                                    {
+                                        <option value="@item.VoucherId">@item.Code - @item.VoucherType</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="usersSelect">Choose Users</label>
+                                <select id="usersSelect" name="userIds" class="form-control" multiple>
+                                    <option value="">-- Select Users --</option>
+                                    @foreach (var user in Model.Users)
+                                    {
+                                        <option value="@user.UserId">@user.Username (@user.Email)</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="quantity">Voucher Quantity</label>
+                                <input type="number" id="quantity" name="quantity" class="form-control" min="1" value="1" />
+                            </div>
+
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-success">Distribute Voucher</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts{
+    <script>
+        if ('@TempData["SuccessMessage"]' != "") {
+            Swal.fire({
+                title: 'Success!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+        }
+
+        if ('@TempData["ErrorMessage"]' != "") {
+            Swal.fire({
+                title: 'Error!',
+                text: '@TempData["ErrorMessage"]',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+    </script>
+}

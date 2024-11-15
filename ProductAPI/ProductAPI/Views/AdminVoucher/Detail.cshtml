@@ -1,0 +1,174 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@using ProductDataAccess.ViewModels;
+@using Newtonsoft.Json;
+@model VoucherDTO
+@{
+    ViewData["PageTitle"] = "Detail Voucher";
+    ViewData["Products"] = "active";
+    ViewData["SearchURL"] = "AdminVoucher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h6>Voucher Details</h6>
+                    </div>
+                    <div class="card-body">
+                        <!-- Voucher Basic Information -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-sm">Voucher Id: <strong>@Model.VoucherId</strong></h6>
+                                <p class="text-muted">Voucher Code: <strong>@Model.Code</strong></p>
+                                <p class="text-muted">Discount Type: <strong>@Model.DiscountType</strong></p>
+                                <p class="text-muted">Expiry Date: <strong>@Model.ExpiryDate.ToString("dd MMM yyyy")</strong></p>
+                                <p class="text-muted">Status: 
+                                    <span class="badge 
+                                        @(Model.Status =="active" ? "bg-gradient-success" : "bg-gradient-danger")">
+                                        @Model.Status
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                @{
+                                    Dictionary<string, object> conditions = null;
+
+                                    try
+                                    {
+                                        // Attempt to deserialize conditions into a dictionary
+                                        conditions = JsonConvert.DeserializeObject<Dictionary<string, object>>(Model.Conditions);
+                                    }
+                                    catch (JsonReaderException)
+                                    {
+                                    }
+                                }
+
+                                @if (conditions != null && conditions.Any())
+                                {
+                                    // Kiểm tra điều kiện nếu có "All" trong GroupName hoặc giá trị bằng 0 hoặc ProductId rỗng
+                                    bool hasValidConditions = conditions.Any(condition =>
+                                    {
+                                        switch (condition.Key)
+                                        {
+                                            case "MaxDiscountAmount":
+                                                return Convert.ToDecimal(condition.Value) > 0;
+                                            case "MinOrderValue":
+                                                return Convert.ToDecimal(condition.Value) > 0;
+                                            case "GroupName":
+                                                return condition.Value.ToString() != "All"; // Không hiển thị nếu là "All"
+                                            case "ProductId":
+                                                return condition.Value is Newtonsoft.Json.Linq.JArray array && array.Any(); // Không hiển thị nếu mảng rỗng
+                                            default:
+                                                return true;
+                                        }
+                                    });
+
+                                    // Nếu không có điều kiện hợp lệ, hiển thị "There are no conditions for this voucher"
+                                    if (hasValidConditions)
+                                    {
+                                        <p><strong>Voucher Conditions:</strong></p>
+                                        <ul class="list-unstyled mb-0">
+                                            @foreach (var condition in conditions)
+                                            {
+                                                <li>
+                                                    @{
+                                                        switch (condition.Key)
+                                                        {
+                                                            case "MaxDiscountAmount":
+                                                                if (Convert.ToDecimal(condition.Value) > 0)
+                                                                {
+                                                                    <span>The maximum discount amount is <strong>@condition.Value $</strong>.</span>
+                                                                }
+                                                                break;
+
+                                                            case "MinOrderValue":
+                                                                if (Convert.ToDecimal(condition.Value) > 0)
+                                                                {
+                                                                    <span>The order must be at least <strong>@condition.Value $</strong>.</span>
+                                                                }
+                                                                break;
+
+                                                            case "GroupName":
+                                                                if (condition.Value.ToString() != "All")
+                                                                {
+                                                                    <span>This voucher applies to the <strong>@condition.Value</strong> group.</span>
+                                                                }
+                                                                break;
+
+                                                            case "ProductId":
+                                                                if (condition.Value is Newtonsoft.Json.Linq.JArray array && array.Any())
+                                                                {
+                                                                    <span>This voucher is applicable to products with the following IDs: <strong>@string.Join(", ", array)</strong>.</span>
+                                                                }
+                                                                break;
+
+                                                            default:
+                                                                if (condition.Value != null && Convert.ToDecimal(condition.Value) != 0)
+                                                                {
+                                                                    <span><strong>@condition.Key:</strong> @condition.Value</span>
+                                                                }
+                                                                break;
+                                                        }
+                                                    }
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">There are no conditions for this voucher.</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">There are no conditions for this voucher.</span>
+                                }
+
+
+
+                                <p class="text-muted">Usage Limit: <strong>@Model.MaxUsage</strong></p>
+                                <p class="text-muted">Used Count: <strong>@Model.UsedCount</strong></p>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12 d-flex justify-content-end">
+                                <a href="@Url.Action("Index", "AdminVoucher")" class="btn btn-outline-secondary me-2">Back to List</a>
+                                <a href="@Url.Action("Edit", "AdminVoucher", new { id = Model.VoucherId })" class="btn btn-warning">Edit Voucher</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@section scripts {
+    <script>
+
+        if ('@TempData["SuccessMessage"]' != "") {
+            Swal.fire({
+                title: 'Success!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+        if ('@TempData["ErrorMessage"]' != "") {
+            Swal.fire({
+                title: 'Error!',
+                text: '@TempData["ErrorMessage"]',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+    </script>
+}

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Repositories;
 using ProductDataAccess.DTOs;
@@ -19,9 +20,17 @@ namespace ProductAPI.Controllers.MVC.Admin
             _mapper = mapper;
             _categoryRepository = categoryRepository;
         }
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string searchText=null)
         {
-            var products = await _productRepository.GetPagedAsync(page, 10);
+            var products = new PagedResult<Product>();
+            if (searchText != null)
+            {
+                products = await _productRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.ProductName.ToLower().Contains(searchText.ToLower()));
+            }
+            else
+            {
+                products = await _productRepository.GetPagedWithIncludeAsync(page, 10);
+            }
             var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
             return View(productsDto);
         }

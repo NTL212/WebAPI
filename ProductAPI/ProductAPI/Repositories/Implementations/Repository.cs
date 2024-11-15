@@ -137,7 +137,6 @@ namespace ProductAPI.Repositories
             {
                 query = query.Include(include);
             }
-            var totalRecords = await _dbSet.CountAsync();
             var items = await query
                 .Where(predicate)
                 .Skip((pageNumber - 1) * pageSize)
@@ -147,7 +146,7 @@ namespace ProductAPI.Repositories
             return new PagedResult<T>
             {
                 Items = items,
-                TotalRecords = totalRecords,
+                TotalRecords = items.Count,
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };
