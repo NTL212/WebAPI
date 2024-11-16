@@ -9,8 +9,9 @@ namespace ProductDataAccess.ViewModels
     public class DistributeVoucherVM
     {
         public int VoucherId { get; set; }
-        public List<int>  UserIds { get; set; }
+        public List<int>?  UserIds { get; set; }
 
+        public string SelectedUserIds { get; set; }
         public int Quantity { get; set; }
     }
 }

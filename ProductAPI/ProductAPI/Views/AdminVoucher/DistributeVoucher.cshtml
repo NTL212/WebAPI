@@ -12,39 +12,54 @@
     @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
     <div class="container-fluid py-4">
         <div class="row">
-            <div class="col-12">
+            <!-- Phần bên trái -->
+            <div class="col-lg-8 col-md-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                         <h6>Distribute Voucher</h6>
                     </div>
                     <div class="card-body">
                         <!-- Form to distribute voucher -->
-                        <form action="@Url.Action("Distribute", "AdminVoucher")" method="post">
+                        <form action="@Url.Action("DistributeVoucher", "AdminVoucher")" method="post">
                             <div class="form-group">
                                 <label for="voucherSelect">Choose Voucher</label>
                                 <select id="voucherSelect" name="voucherId" class="form-control">
                                     <option value="">-- Select Voucher --</option>
                                     @foreach (var item in Model.Items)
                                     {
-                                        <option value="@item.VoucherId">@item.Code - @item.VoucherType</option>
+                                        <option value="@item.VoucherId"
+                                                data-voucherId="@item.VoucherId"
+                                                data-code="@item.Code"
+                                                data-type="@item.VoucherType"
+                                                data-discount-type="@item.DiscountType"
+                                                data-discount-value="@item.DiscountValue"
+                                                data-status="@item.Status"
+                                                data-expiryDate="@item.ExpiryDate"
+                                                data-quantity="@(item.MaxUsage - item.UsedCount)">
+                                            @item.Code - @item.VoucherType
+                                        </option>
                                     }
                                 </select>
                             </div>
+                            <input hidden id="SelectedUserIds" name="SelectedUserIds" />
 
-                            <div class="form-group">
-                                <label for="usersSelect">Choose Users</label>
-                                <select id="usersSelect" name="userIds" class="form-control" multiple>
-                                    <option value="">-- Select Users --</option>
-                                    @foreach (var user in Model.Users)
-                                    {
-                                        <option value="@user.UserId">@user.Username (@user.Email)</option>
-                                    }
-                                </select>
-                            </div>
-
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#userSelectionModal">
+                                Select Users
+                            </button>
                             <div class="form-group">
                                 <label for="quantity">Voucher Quantity</label>
                                 <input type="number" id="quantity" name="quantity" class="form-control" min="1" value="1" />
+                            </div>
+                            <div class="form-group">
+                                <label for="numberUser">User Selected Quantity</label>
+                                <input type="number" id="numberUser" name="numberUser" class="form-control" min="0" value="0" readonly />
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <label for="totalVoucherQuantity">Total Voucher Quantity</label>
+                                <input type="text" id="totalVoucherQuantity" class="form-control" readonly />
                             </div>
 
                             <div class="form-group text-center">
@@ -54,28 +69,286 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Phần bên phải -->
+            <div class="col-lg-4 col-md-12">
+                <div class="card mb-4" id="voucherInfoCard" style="display: none;">
+                    <div class="card-header pb-0">
+                        <h6>Voucher Information</h6>
+                    </div>
+                    <div class="card-body">
+                  
+                        <p><strong>Code:</strong> <span id="voucherCode">N/A</span></p>
+                        <p><strong>Voucher Type:</strong> <span id="voucherType">N/A</span></p>
+                        <p><strong>Discount Type:</strong> <span id="voucherDiscountType">N/A</span></p>
+                        <p><strong>Discount Value:</strong> <span id="voucherDiscountValue">N/A</span></p>
+                        <p><strong>Status:</strong> <span id="voucherStatus">N/A</span></p>
+                        <p><strong>Expiry Date:</strong> <span id="voucherExpiryDate">N/A</span></p>
+                        <p><strong>Quantity Available:</strong> <span id="voucherQuantity">N/A</span></p>
+                        <div class="col-12 d-flex justify-content-end me-6">
+                            <a href="" id="buttonEdit" class="btn btn-warning">Edit Voucher</a>
+                        </div>
+                    </div>
+                   
+                    
+                </div>
+            </div>
         </div>
     </div>
 </main>
 
-@section scripts{
-    <script>
-        if ('@TempData["SuccessMessage"]' != "") {
-            Swal.fire({
-                title: 'Success!',
-                text: '@TempData["SuccessMessage"]',
-                icon: 'success',
-                confirmButtonText: 'Ok'
-            });
-        }
 
-        if ('@TempData["ErrorMessage"]' != "") {
-            Swal.fire({
-                title: 'Error!',
-                text: '@TempData["ErrorMessage"]',
-                icon: 'error',
-                confirmButtonText: 'Ok'
+<!-- Modal -->
+<div class="modal fade" id="userSelectionModal" tabindex="-1" aria-labelledby="userSelectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userSelectionModalLabel">Select User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Filters -->
+                <div class="d-flex justify-content-between mb-3">
+                    <input type="text" class="form-control w-50 me-2" id="userSearch" placeholder="Search for a user" aria-label="Search for a user">
+                    <select class="form-select w-25" id="userGroupFilter">
+                        <option value="">All Groups</option>
+                        <!-- User groups will be dynamically added here -->
+                    </select>
+                </div>
+
+                <!-- User list with pagination -->
+                <div class="table-responsive">
+                    <table class="table align-items-center mb-0" id="userTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center">User ID</th>
+                                <th>User</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Group</th>
+                                <th class="text-center">Select
+                                    <input type="checkbox" id="selectAllUsers"> <!-- Select All -->
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- User rows will be injected dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination controls -->
+                <nav aria-label="Page navigation" class="mt-3">
+                    <ul class="pagination justify-content-center" id="paginationControls"></ul>
+                </nav>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmUserSelection">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+
+    <script>
+        $(document).ready(function () {
+            let users = @Html.Raw(Json.Serialize(@Model.Users)); // Lấy danh sách người dùng từ Model
+            let userGroups = @Html.Raw(Json.Serialize(@Model.UserGroups)); // Lấy danh sách nhóm người dùng từ Model
+            let currentPage = 1;
+            const itemsPerPage = 5;
+            let selectedUsers = [];
+            let filteredUsers = []
+            // Render danh sách nhóm người dùng vào filter
+            function renderUserGroups() {
+                const userGroupFilter = $("#userGroupFilter");
+                userGroups.forEach(group => {
+                    userGroupFilter.append(`<option value="${group.groupId}">${group.groupName}</option>`);
+                });
+            }
+
+            function renderUsers() {
+                const search = $("#userSearch").val().toLowerCase();
+                const selectedGroup = $("#userGroupFilter").val();
+
+                // Lọc người dùng theo tìm kiếm và nhóm
+                filteredUsers = users.filter(user => {
+                    const matchesSearch = user.username.toLowerCase().includes(search) || user.email.toLowerCase().includes(search);
+                    const matchesGroup = !selectedGroup || user.groupId == selectedGroup;
+                    return matchesSearch && matchesGroup;
+                });
+
+                let startIndex = (currentPage - 1) * itemsPerPage;
+                let endIndex = Math.min(startIndex + itemsPerPage, filteredUsers.length);
+                let paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+
+                let tbody = $("#userTable tbody");
+                tbody.empty();
+
+                // Render từng user
+                paginatedUsers.forEach(user => {
+                    tbody.append(`
+                    <tr data-user-id="${user.userId}">
+                        <td class="text-center">#${user.userId}</td>
+                        <td>${user.username}</td>
+                        <td class="text-center">${user.email}</td>
+                        <td class="text-center">${user.group.groupName}</td>
+                        <td class="text-center">
+                            <input type="checkbox" class="select-user" ${selectedUsers.includes(user.userId) ? 'checked' : ''} data-user-id="${user.userId}">
+                        </td>
+                    </tr>
+                `);
+                });
+
+                // Kiểm tra và đồng bộ trạng thái "Select All"
+                const allChecked = $(".select-user").length === $(".select-user:checked").length;
+                $("#selectAllUsers").prop("checked", allChecked);
+
+                // Render phân trang
+                renderPagination(filteredUsers.length);
+            }
+
+
+            // Render phân trang
+            function renderPagination(totalItems) {
+                const totalPages = Math.ceil(totalItems / itemsPerPage);
+                const paginationControls = $("#paginationControls");
+                paginationControls.empty();
+
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationControls.append(`
+                            <li class="page-item ${i === currentPage ? 'active' : ''}">
+                                <a class="page-link" href="#" data-page="${i}">${i}</a>
+                            </li>
+                        `);
+                }
+            }
+
+            // Event: tìm kiếm người dùng
+            $("#userSearch").on("input", function () {
+                currentPage = 1; // Reset về trang đầu tiên
+                renderUsers();
             });
-        }
+
+            // Event: filter theo nhóm người dùng
+            $("#userGroupFilter").on("change", function () {
+                currentPage = 1; // Reset về trang đầu tiên
+                renderUsers();
+            });
+
+            // Event: thay đổi trang
+            $("#paginationControls").on("click", "a", function (e) {
+                e.preventDefault();
+                currentPage = $(this).data("page");
+                renderUsers();
+            });
+
+            // Event: chọn từng người dùng
+            $("#userTable").on("change", ".select-user", function () {
+                const userId = $(this).data("user-id");
+                if ($(this).is(":checked")) {
+                    if (!selectedUsers.includes(userId)) {
+                        selectedUsers.push(userId);
+                    }
+                } else {
+                    selectedUsers = selectedUsers.filter(id => id !== userId);
+                    $("#selectAllUsers").prop("checked", false); // Bỏ check "Select All" nếu 1 checkbox bị bỏ
+                }
+
+                // Check lại trạng thái "Select All" nếu tất cả checkbox con đều được chọn
+                const allChecked = $(".select-user").length === $(".select-user:checked").length;
+                $("#selectAllUsers").prop("checked", allChecked);
+            });
+
+            // Event: chọn tất cả người dùng
+            $("#selectAllUsers").on("change", function () {
+                const isChecked = $(this).is(":checked");
+                $(".select-user").prop("checked", isChecked); // Check/Uncheck tất cả checkbox
+                selectedUsers = isChecked ? filteredUsers.map(user => user.userId) : []; // Cập nhật danh sách selectedUsers
+            });
+
+            // Event: xác nhận người dùng đã chọn
+            $("#confirmUserSelection").on("click", function () {
+                const selectedUsersJson = JSON.stringify(selectedUsers);
+                $("#SelectedUserIds").val(selectedUsersJson); // Gán vào input ẩn trong form
+                $("#userSelectionModal").modal("hide");
+            });
+
+            // Khởi tạo
+            renderUserGroups();
+            renderUsers();
+
+            let selectedUsersCount = 0; // Biến lưu trữ số lượng người dùng đã chọn
+
+            document.getElementById("voucherSelect").addEventListener("change", function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const code = selectedOption.getAttribute("data-code");
+                const type = selectedOption.getAttribute("data-type");
+                const voucherId = selectedOption.getAttribute("data-voucherId");
+                const status = selectedOption.getAttribute("data-status");
+                const expiryDate = selectedOption.getAttribute("data-expiryDate");
+                const quantity = selectedOption.getAttribute("data-quantity");
+                const discountType = selectedOption.getAttribute("data-discount-type");
+                const discountValue = selectedOption.getAttribute("data-discount-value");
+
+                if (code && type) {
+                    document.getElementById("voucherInfoCard").style.display = "block";
+                    document.getElementById("voucherCode").textContent = code;
+                    document.getElementById("voucherType").textContent = type;
+                    document.getElementById("voucherExpiryDate").textContent = expiryDate.toString("dd/MM/yyyy");
+                    document.getElementById("voucherDiscountType").textContent = discountType;
+                    document.getElementById("voucherDiscountValue").textContent = discountValue;
+                    document.getElementById("buttonEdit").href = `/AdminVoucher/Edit/${voucherId}`;
+                    var vStatus = document.getElementById("voucherStatus");
+                    vStatus.textContent = status;
+
+                    if (status == 'active') {
+                        vStatus.className = "badge bg-gradient-success";
+                    }
+                    else {
+                        vStatus.className = "badge bg-gradient-danger";
+                    }
+                    document.getElementById("voucherQuantity").textContent = quantity || "N/A";
+                    updateTotalVoucherQuantity(); // Cập nhật lại số lượng voucher sẽ cấp phát
+                } else {
+                    document.getElementById("voucherInfoCard").style.display = "none";
+                }
+            });
+
+            // Lắng nghe sự kiện khi người dùng chọn số lượng user
+
+            $("#userSelectionModal").on("hidden.bs.modal", function () {
+                selectedUsersCount = selectedUsers.length;
+                updateTotalVoucherQuantity();
+            });
+
+            // Hàm tính và cập nhật số lượng voucher sẽ cấp phát
+            function updateTotalVoucherQuantity() {
+                const quantity = parseInt(document.getElementById("quantity").value) || 0;
+                const totalVoucherQuantity = selectedUsersCount * quantity;
+                var voucherQuan = parseInt(document.getElementById("voucherQuantity").textContent);
+                var totalVoucherDistribute = document.getElementById("totalVoucherQuantity").value;
+                document.getElementById("totalVoucherQuantity").value = totalVoucherQuantity;
+                document.getElementById("numberUser").value = selectedUsersCount;
+                if (voucherQuan < totalVoucherDistribute) {
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'The number of issued vouchers exceeds the available quantity.',
+                        icon: 'warning',
+                        confirmButtonText: 'Ok'
+                    }).then(()=>{
+                        document.getElementById("quantity").value = 0;
+                        document.getElementById("totalVoucherQuantity").value = 0;
+                    })
+                    
+                }
+            }
+
+            document.getElementById("quantity").addEventListener("input", function () {
+                updateTotalVoucherQuantity(); // Cập nhật khi thay đổi số lượng voucher
+            });
+        });
     </script>
 }

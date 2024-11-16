@@ -47,6 +47,7 @@ builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IUserRepoisitory, UserRepository>();
 builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+builder.Services.AddScoped<IVoucherUserRepository, VoucherUserRepository>();
 builder.Services.AddScoped<PasswordHasher<User>>();
 
 

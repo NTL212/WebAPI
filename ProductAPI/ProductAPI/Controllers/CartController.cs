@@ -4,6 +4,8 @@ using ProductAPI.Services;
 using ProductDataAccess.DTOs;
 using AutoMapper;
 using ProductAPI.Repositories;
+using ProductDataAccess.ViewModels;
+using ProductAPI.Repositories.Interfaces;
 
 namespace ProductAPI.Controllers
 {
@@ -12,13 +14,17 @@ namespace ProductAPI.Controllers
         private readonly ICartService _cartService;
         private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly IVoucherRepository _voucherRepository;
+        private readonly IVoucherUserRepository _voucherUserRepository;
 
         // Injecting the service in the controller's constructor
-        public CartController(ICartService cartService, IMapper mapper, IOrderRepository orderRepository)
+        public CartController(ICartService cartService, IMapper mapper, IOrderRepository orderRepository, IVoucherRepository voucherRepository, IVoucherUserRepository voucherUserRepository)
         {
             _cartService = cartService;
             _mapper = mapper;
             _orderRepository = orderRepository;
+            _voucherRepository = voucherRepository;
+            _voucherUserRepository = voucherUserRepository;
         }
 
         // Get the cart and display it along with the total price and quantity
@@ -81,9 +87,15 @@ namespace ProductAPI.Controllers
         public async Task<IActionResult> CheckoutAllCart()
         {
             var cart = _cartService.GetCart();
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v=>v.UserId==userId, v=>v.Voucher);
+            var checkoutVM = new CheckoutVM();
+
             if (cart.Count > 0)
             {
-                return View(cart);
+                checkoutVM.cartItems = cart;
+                checkoutVM.voucherUserDTOs = _mapper.Map<List<VoucherUserDTO>>(voucherUsers);
+                return View(checkoutVM);
             }
             else
             {

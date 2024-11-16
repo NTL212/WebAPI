@@ -12,6 +12,7 @@ namespace ProductDataAccess.Models.Response
 		public List<T> Items { get; set; } = new List<T>();
 
         public List<UserDTO> Users { get; set; } = new List<UserDTO>();
+        public List<GroupDTO> UserGroups { get; set; } = new List<GroupDTO>();
 		public int TotalRecords { get; set; }
 		public int PageNumber { get; set; }
 		public int PageSize { get; set; }

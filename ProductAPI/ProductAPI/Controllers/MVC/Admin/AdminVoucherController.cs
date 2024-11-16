@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -14,22 +15,27 @@ using System.Diagnostics;
 namespace ProductAPI.Controllers.MVC.Admin
 {
     [JwtAuthorize("Admin")]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminVoucherController : Controller
     {
         private readonly IVoucherRepository _voucherRepository;
         private readonly IProductRepository _productRepository;
         private readonly IUserRepoisitory _userRepository;
+        private readonly IUserGroupRepository _userGroupRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IVoucherUserRepository _voucherUserRepository;
         private readonly IMapper _mapper;
-        public AdminVoucherController(IVoucherRepository voucherRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IUserRepoisitory userRepository, IMapper mapper)
+        public AdminVoucherController(IVoucherRepository voucherRepository, IProductRepository productRepository, ICategoryRepository categoryRepository, IUserRepoisitory userRepository, IUserGroupRepository userGroupRepository, IVoucherUserRepository voucherUserRepository, IMapper mapper)
         {
             _voucherRepository = voucherRepository;
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
             _userRepository = userRepository;
+            _userGroupRepository = userGroupRepository;
+            _voucherUserRepository = voucherUserRepository;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index(int page=1)
+        public async Task<IActionResult> Index(int page = 1)
         {
 
             var vouchers = await _voucherRepository.GetPagedAsync(page, 10);
@@ -37,7 +43,7 @@ namespace ProductAPI.Controllers.MVC.Admin
             return View(voucherDTO);
         }
 
-        [HttpGet]        
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var products = await _productRepository.GetAllAsync();
@@ -135,11 +141,11 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 TempData["ErrorMessage"] = "Failed to edit voucher";
             }
-            return RedirectToAction("Detail", new {id = voucher.VoucherId});
+            return RedirectToAction("Detail", new { id = voucher.VoucherId });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(int id) 
+        public async Task<IActionResult> Detail(int id)
         {
 
             var voucher = await _voucherRepository.GetByIdAsync(id);
@@ -148,13 +154,15 @@ namespace ProductAPI.Controllers.MVC.Admin
             return View(voucherDTO);
         }
 
-        public async Task<IActionResult> DistributeVoucher(int page=1)
+        public async Task<IActionResult> DistributeVoucher(int page = 1)
         {
 
             var vouchers = await _voucherRepository.GetPagedAsync(page, 10);
             var users = await _userRepository.GetAllAsync();
+            var userGroups = await _userGroupRepository.GetAllAsync();
             var voucherDTO = _mapper.Map<PagedResult<VoucherDTO>>(vouchers);
             voucherDTO.Users = _mapper.Map<List<UserDTO>>(users);
+            voucherDTO.UserGroups = _mapper.Map<List<GroupDTO>>(userGroups);
             return View(voucherDTO);
         }
 
@@ -168,28 +176,37 @@ namespace ProductAPI.Controllers.MVC.Admin
                 if (voucher == null)
                 {
                     TempData["ErrorMessage"] = "Voucher not found!";
-                    return RedirectToAction("VoucherList");
+                    return RedirectToAction("Index");
                 }
 
-                // Phân phát voucher cho người dùng được chọn
-                foreach (var userId in model.UserIds)
+                if (await _voucherRepository.DistributeVoucher(voucher, model.Quantity, model.SelectedUserIds))
                 {
-                    var user = _userRepository.GetByIdAsync(userId);
-
-                    if (user != null)
-                    {
-                            //_voucherService.AssignVoucherToUser(user, voucher);
-                            //_voucherService.SendVoucherToUser(user.Email, voucher.Code);
-                        
-                    }
+                    TempData["SuccessMessage"] = "Voucher successfully distributed!";
+                    return RedirectToAction("Index");
                 }
 
-                TempData["SuccessMessage"] = "Voucher successfully distributed!";
-                return RedirectToAction("VoucherList");
             }
 
             TempData["ErrorMessage"] = "An error occurred. Please try again.";
-            return RedirectToAction("VoucherList");
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetUserVouchers(int userId)
+        {
+            // Lấy tất cả voucherUsers với thông tin liên quan đến Voucher
+            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v => v.UserId == userId, v => v.Voucher);
+
+            // Lọc và ánh xạ từ voucherUser sang VoucherDTO, đồng thời gán RedeemQuantity từ Quantity của voucherUser
+            var vouchers = voucherUsers.Select(voucherUser =>
+            {
+                var voucherDto = _mapper.Map<VoucherDTO>(voucherUser.Voucher); // Ánh xạ Voucher thành VoucherDTO
+                voucherDto.ReedemQuantity = voucherUser.Quantity - voucherUser.TimesUsed; 
+                return voucherDto;
+            }).ToList();
+
+            return PartialView("_UserVouchersModal", vouchers); // Trả về partial view với danh sách vouchers
         }
 
     }

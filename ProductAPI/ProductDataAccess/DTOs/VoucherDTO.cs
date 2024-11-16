@@ -23,5 +23,7 @@
         public string VoucherType { get; set; }
 
         public string Conditions { get; set; }
+
+        public int ReedemQuantity { get; set; }
     }
 }

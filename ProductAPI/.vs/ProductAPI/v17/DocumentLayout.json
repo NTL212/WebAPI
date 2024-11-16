@@ -3,68 +3,228 @@
   "WorkspaceRootPath": "E:\\Work\\ProductAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\filters\\jwtauthorizeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\filters\\jwtauthorizeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\adminproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\adminproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\adminvouchercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\adminvouchercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\adminusercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\adminusercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\apis\\authcontronller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\apis\\authcontronller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\adminproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\adminproductcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\filters\\validatetokenattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\filters\\validatetokenattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\adminordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\adminordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\admincategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\admincategorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminuser\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminuser\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\_uservouchersmodal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\_uservouchersmodal.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\distributevoucher.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\distributevoucher.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\profiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\profiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\response\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\response\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\mvc\\admin\\adminusercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\mvc\\admin\\adminusercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\distributevouchervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\distributevouchervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\dtos\\voucherdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\dtos\\voucherdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\voucheruser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\voucheruser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\voucheruservm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\voucheruservm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\cartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\applyvoucherrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\applyvoucherrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\voucher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\voucher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\cart\\checkoutallcart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\cart\\checkoutallcart.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\dtos\\voucheruserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\dtos\\voucheruserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\checkoutvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\checkoutvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\voucheruser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\voucheruser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\implementations\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\implementations\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\interfaces\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\implementations\\voucheruserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\implementations\\voucheruserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\implementations\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\implementations\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\interfaces\\ivoucheruserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\interfaces\\ivoucheruserrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\distributevoucher.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\distributevoucher.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\implementations\\voucherrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\implementations\\voucherrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminuser\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminuser\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\_footer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\_footer.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\account\\userprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\account\\userprofile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\userorder\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\userorder\\detail.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\interfaces\\ivoucherrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\interfaces\\ivoucherrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\implementations\\vouchercampaignrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\implementations\\vouchercampaignrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\repositories\\interfaces\\iuserrepoisitory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\repositories\\interfaces\\iuserrepoisitory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\distributevouchervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\distributevouchervm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\response\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\response\\pagedresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminvoucher\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\adminvoucher\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\_adminnavbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\_adminnavbar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\apis\\authcontronller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\apis\\authcontronller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\response\\authresponsedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\response\\authresponsedata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\filters\\jwtauthorizeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\filters\\jwtauthorizeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\filters\\validatetokenattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\filters\\validatetokenattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\unauthorized.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\unauthorized.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\apis\\vouchercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\apis\\vouchercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\apis\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\apis\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\apis\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\apis\\productscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\controllers\\apis\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\controllers\\apis\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminproduct\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -79,32 +239,16 @@
       "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\vouchereditvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\voucher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\voucher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\vouchercreatevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\vouchercreatevm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\profiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\profiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\models\\vouchercondition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\models\\vouchercondition.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\dtos\\voucherdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\dtos\\voucherdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\admincategoryeditvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\admincategoryeditvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|e:\\work\\productapi\\productdataaccess\\viewmodels\\applyvoucherrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\applyvoucherrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\adminproduct\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -119,10 +263,6 @@
       "RelativeMoniker": "D:0:0:{3DA9F92F-A5B5-4445-A346-7BA2CBB9C1D5}|ProductDataAccess\\ProductDataAccess.csproj|solutionrelative:productdataaccess\\viewmodels\\adminuserlistvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|e:\\work\\productapi\\productapi\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{615A5297-9922-41D7-8611-D7357F0BF568}|ProductAPI\\ProductAPI.csproj|solutionrelative:productapi\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
@@ -134,11 +274,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 63,
               "Title": "Create.cshtml",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminUser\\Create.cshtml",
               "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminUser\\Create.cshtml",
@@ -147,233 +287,258 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-11-14T09:50:23.233Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\AccountController.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "ProductAPI\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAACcAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Title": "AdminOrderController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminOrderController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminOrderController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminOrderController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminOrderController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T10:56:19.566Z",
+              "WhenOpened": "2024-11-16T02:21:12.877Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AdminProductController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAIwAwAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T06:30:53.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AdminUserController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T06:30:53.132Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "JwtAuthorizeAttribute.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
-              "RelativeDocumentMoniker": "ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
-              "RelativeToolTip": "ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAAACEAAABPAAAAAAAAAA==",
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\DashboardController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\DashboardController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\DashboardController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\DashboardController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T10:54:44.135Z",
+              "WhenOpened": "2024-11-16T02:52:13.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AdminVoucherController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T04:31:41.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "AdminCategoryController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminCategoryController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminCategoryController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminCategoryController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminCategoryController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:21:12.887Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "ValidateTokenAttribute.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\ValidateTokenAttribute.cs",
-              "RelativeDocumentMoniker": "ProductAPI\\Filters\\ValidateTokenAttribute.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\ValidateTokenAttribute.cs",
-              "RelativeToolTip": "ProductAPI\\Filters\\ValidateTokenAttribute.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T10:52:57.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "DistributeVoucher.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAAACcAAABTAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T10:27:55.108Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "DistributeVoucherVM.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
-              "RelativeToolTip": "ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T10:22:20.386Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "PagedResult.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Response\\PagedResult.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\Response\\PagedResult.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Response\\PagedResult.cs",
-              "RelativeToolTip": "ProductDataAccess\\Models\\Response\\PagedResult.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T09:08:22.975Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "_SelectProductModal.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
-              "ViewState": "AgIAAHQAAAAAAAAAAAAqwJsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T08:50:58.075Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "VoucherEditVM.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
-              "RelativeToolTip": "ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBEAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T08:44:30.82Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
-              "ViewState": "AgIAACEAAAAAAAAAAAAAAAYAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T08:44:12.709Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "VoucherDTO.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\VoucherDTO.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\DTOs\\VoucherDTO.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\VoucherDTO.cs",
-              "RelativeToolTip": "ProductDataAccess\\DTOs\\VoucherDTO.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAA1wBEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T08:07:15.848Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "Voucher.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Voucher.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\Voucher.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Voucher.cs",
-              "RelativeToolTip": "ProductDataAccess\\Models\\Voucher.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAA5wBMAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T08:08:36.807Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Detail.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
-              "ViewState": "AgIAADkAAAAAAAAAAAAAAK0AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T08:07:42.491Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
               "Title": "Index.cshtml",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminUser\\Index.cshtml",
               "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminUser\\Index.cshtml",
               "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminUser\\Index.cshtml",
               "RelativeToolTip": "ProductAPI\\Views\\AdminUser\\Index.cshtml",
-              "ViewState": "AgIAAIoAAAAAAAAAAAAAAKEAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAAABsAAABqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-11-15T07:41:55.634Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 7,
+              "Title": "_UserVouchersModal.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_UserVouchersModal.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_UserVouchersModal.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_UserVouchersModal.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_UserVouchersModal.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAA8AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T08:04:54.95Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAAAG0AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T04:58:25.599Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "VoucherDTO.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\VoucherDTO.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\DTOs\\VoucherDTO.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\VoucherDTO.cs",
+              "RelativeToolTip": "ProductDataAccess\\DTOs\\VoucherDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T08:07:15.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAAA4BAAAAAAAAAAAAAC4BAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T05:05:38.749Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "MappingProfile.cs",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Profiles\\MappingProfile.cs",
               "RelativeDocumentMoniker": "ProductAPI\\Profiles\\MappingProfile.cs",
               "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Profiles\\MappingProfile.cs",
               "RelativeToolTip": "ProductAPI\\Profiles\\MappingProfile.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBoAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwBoAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-15T07:38:57.231Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "VoucherCondition.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\VoucherCondition.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\VoucherCondition.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\VoucherCondition.cs",
-              "RelativeToolTip": "ProductDataAccess\\Models\\VoucherCondition.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAwAAAAAAAAAA==",
+              "DocumentIndex": 19,
+              "Title": "User.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\User.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\User.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\User.cs",
+              "RelativeToolTip": "ProductDataAccess\\Models\\User.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA3wAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T07:33:46.638Z",
+              "WhenOpened": "2024-11-16T07:39:14.483Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "AdminUserListVM.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
-              "RelativeToolTip": "ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T07:21:42.063Z",
+              "DocumentIndex": 13,
+              "Title": "VoucherUser.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\VoucherUser.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\VoucherUser.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\VoucherUser.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\VoucherUser.cshtml",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAABMAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T07:35:20.627Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "AdminCategoryEditVM.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
-              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
-              "RelativeToolTip": "ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T07:21:37.439Z",
+              "DocumentIndex": 11,
+              "Title": "Detail.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Detail.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T08:07:42.491Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 14,
+              "Title": "UserDTO.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\UserDTO.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\DTOs\\UserDTO.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\UserDTO.cs",
+              "RelativeToolTip": "ProductDataAccess\\DTOs\\UserDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:39:11.421Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CartController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\CartController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\CartController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\CartController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\CartController.cs",
+              "ViewState": "AgIAAGQAAAAAAAAAAADwv2AAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:21:12.867Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "VoucherUserVM.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherUserVM.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\VoucherUserVM.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherUserVM.cs",
+              "RelativeToolTip": "ProductDataAccess\\ViewModels\\VoucherUserVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:42:25.66Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "CheckoutAllCart.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Cart\\CheckoutAllCart.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Cart\\CheckoutAllCart.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Cart\\CheckoutAllCart.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Cart\\CheckoutAllCart.cshtml",
+              "ViewState": "AgIAAKUAAAAAAAAAAAAAABkAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T07:04:37.038Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "ApplyVoucherRequest.cs",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\ApplyVoucherRequest.cs",
               "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\ApplyVoucherRequest.cs",
@@ -386,59 +551,535 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 28,
+              "Title": "VoucherUserRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\VoucherUserRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Implementations\\VoucherUserRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\VoucherUserRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Implementations\\VoucherUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:14:12.347Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Voucher.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Voucher.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\Voucher.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Voucher.cs",
+              "RelativeToolTip": "ProductDataAccess\\Models\\Voucher.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAkwBMAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T08:08:36.807Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "VoucherUserDTO.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\VoucherUserDTO.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\DTOs\\VoucherUserDTO.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\DTOs\\VoucherUserDTO.cs",
+              "RelativeToolTip": "ProductDataAccess\\DTOs\\VoucherUserDTO.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwBUAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:19:25.151Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Program.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Program.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Program.cs",
+              "RelativeToolTip": "ProductAPI\\Program.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAASwDEAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:17:44.567Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "CheckoutVM.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\CheckoutVM.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\CheckoutVM.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\CheckoutVM.cs",
+              "RelativeToolTip": "ProductDataAccess\\ViewModels\\CheckoutVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:06:15.357Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "RoleRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\RoleRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Implementations\\RoleRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\RoleRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Implementations\\RoleRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:14:37.053Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\AccountController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAjwDQAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T10:56:19.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "VoucherUser.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\VoucherUser.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\VoucherUser.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\VoucherUser.cs",
+              "RelativeToolTip": "ProductDataAccess\\Models\\VoucherUser.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA1wBUAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:19:37.078Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "IRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Interfaces\\IRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Interfaces\\IRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAACPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:10:16.294Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Repository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\Repository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Implementations\\Repository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\Repository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Implementations\\Repository.cs",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAcwJ8AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:10:48.297Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "IVoucherUserRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IVoucherUserRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Interfaces\\IVoucherUserRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IVoucherUserRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Interfaces\\IVoucherUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T07:13:34.083Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "_Footer.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_Footer.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_Footer.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_Footer.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_Footer.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T04:58:17.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T04:58:16.69Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
+              "ViewState": "AgIAAPgAAAAAAAAAAAAqwCIBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T04:36:09.092Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "DistributeVoucher.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\DistributeVoucher.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAACkAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T10:27:55.108Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "VoucherRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\VoucherRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Implementations\\VoucherRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\VoucherRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Implementations\\VoucherRepository.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAewF0AAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T03:50:28.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "UserProfile.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Account\\UserProfile.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Account\\UserProfile.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Account\\UserProfile.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Account\\UserProfile.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T04:29:40.169Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Detail.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\UserOrder\\Detail.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\UserOrder\\Detail.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\UserOrder\\Detail.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\UserOrder\\Detail.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T04:29:12.428Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "IVoucherRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IVoucherRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Interfaces\\IVoucherRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IVoucherRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Interfaces\\IVoucherRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAATAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T03:49:41.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "VoucherCampaignRepository.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\VoucherCampaignRepository.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Implementations\\VoucherCampaignRepository.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Implementations\\VoucherCampaignRepository.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Implementations\\VoucherCampaignRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T04:26:53.229Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "IUserRepoisitory.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IUserRepoisitory.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Repositories\\Interfaces\\IUserRepoisitory.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Repositories\\Interfaces\\IUserRepoisitory.cs",
+              "RelativeToolTip": "ProductAPI\\Repositories\\Interfaces\\IUserRepoisitory.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T03:49:35.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "DistributeVoucherVM.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
+              "RelativeToolTip": "ProductDataAccess\\ViewModels\\DistributeVoucherVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAsAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T10:22:20.386Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "PagedResult.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Response\\PagedResult.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\Response\\PagedResult.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Response\\PagedResult.cs",
+              "RelativeToolTip": "ProductDataAccess\\Models\\Response\\PagedResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T09:08:22.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "Unauthorized.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\Unauthorized.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\Unauthorized.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\Unauthorized.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\Unauthorized.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T02:31:29.539Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "AuthResponseData.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Response\\AuthResponseData.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\Response\\AuthResponseData.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\Response\\AuthResponseData.cs",
+              "RelativeToolTip": "ProductDataAccess\\Models\\Response\\AuthResponseData.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwA4AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:53:55.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "_AdminNavbar.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_AdminNavbar.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_AdminNavbar.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_AdminNavbar.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_AdminNavbar.cshtml",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABYAAABmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T02:57:52.578Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAAAAYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-16T02:59:20.183Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "VoucherController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\VoucherController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\APIs\\VoucherController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\VoucherController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\APIs\\VoucherController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:18:58.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "RoleController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\RoleController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\APIs\\RoleController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\RoleController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\APIs\\RoleController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:18:57.447Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "ProductsController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\ProductsController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\APIs\\ProductsController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\ProductsController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\APIs\\ProductsController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:18:55.287Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "CategoriesController.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\CategoriesController.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\APIs\\CategoriesController.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\CategoriesController.cs",
+              "RelativeToolTip": "ProductAPI\\Controllers\\APIs\\CategoriesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-16T02:18:18.022Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "JwtAuthorizeAttribute.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
+              "RelativeToolTip": "ProductAPI\\Filters\\JwtAuthorizeAttribute.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwCQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T10:54:44.135Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "ValidateTokenAttribute.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\ValidateTokenAttribute.cs",
+              "RelativeDocumentMoniker": "ProductAPI\\Filters\\ValidateTokenAttribute.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Filters\\ValidateTokenAttribute.cs",
+              "RelativeToolTip": "ProductAPI\\Filters\\ValidateTokenAttribute.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAYwDYAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T10:52:57.16Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "_SelectProductModal.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_SelectProductModal.cshtml",
+              "ViewState": "AgIAAHQAAAAAAAAAAAAqwJsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T08:50:58.075Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "VoucherEditVM.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
+              "RelativeToolTip": "ProductDataAccess\\ViewModels\\VoucherEditVM.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAQwBEAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T08:44:30.82Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
+              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
+              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Edit.cshtml",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAGAAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-11-15T08:44:12.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "VoucherCondition.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\VoucherCondition.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\Models\\VoucherCondition.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\Models\\VoucherCondition.cs",
+              "RelativeToolTip": "ProductDataAccess\\Models\\VoucherCondition.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T07:33:46.638Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "AdminUserListVM.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
+              "RelativeToolTip": "ProductDataAccess\\ViewModels\\AdminUserListVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T07:21:42.063Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "AdminCategoryEditVM.cs",
+              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
+              "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
+              "ToolTip": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
+              "RelativeToolTip": "ProductDataAccess\\ViewModels\\AdminCategoryEditVM.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-15T07:21:37.439Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
               "Title": "AuthContronller.cs",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\AuthContronller.cs",
               "RelativeDocumentMoniker": "ProductAPI\\Controllers\\APIs\\AuthContronller.cs",
               "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\APIs\\AuthContronller.cs",
               "RelativeToolTip": "ProductAPI\\Controllers\\APIs\\AuthContronller.cs",
-              "ViewState": "AgIAAB4AAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAA1wCYAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-15T06:30:53.038Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 46,
               "Title": "AuthService.cs",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Services\\AuthService.cs",
               "RelativeDocumentMoniker": "ProductAPI\\Services\\AuthService.cs",
               "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Services\\AuthService.cs",
               "RelativeToolTip": "ProductAPI\\Services\\AuthService.cs",
-              "ViewState": "AgIAADcAAAAAAAAAAADwvz4AAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAEgAAAAAAAAAAAArwEMAAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-15T06:30:53.085Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AdminProductController.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
-              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
-              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminProductController.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAWwBcAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T06:30:53.132Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "AdminUserController.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
-              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
-              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminUserController.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAywBoAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T06:30:53.132Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 65,
               "Title": "Index.cshtml",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "ProductAPI\\Views\\Home\\Index.cshtml",
@@ -446,38 +1087,11 @@
               "RelativeToolTip": "ProductAPI\\Views\\Home\\Index.cshtml",
               "ViewState": "AgIAAEwFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T05:05:49.99Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-15T05:05:49.99Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "_AdminLayout.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\Shared\\_AdminLayout.cshtml",
-              "ViewState": "AgIAAB0BAAAAAAAAAAAAAC4BAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T05:05:38.749Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Index.cshtml",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAAAA0AAAAZAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T04:58:25.599Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 56,
               "Title": "Index.cshtml",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminProduct\\Index.cshtml",
               "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminProduct\\Index.cshtml",
@@ -485,12 +1099,11 @@
               "RelativeToolTip": "ProductAPI\\Views\\AdminProduct\\Index.cshtml",
               "ViewState": "AgIAAGwAAAAAAAAAAAAAAHsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T04:56:36.2Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-15T04:56:36.2Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 59,
               "Title": "VoucherCreateVM.cs",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductDataAccess\\ViewModels\\VoucherCreateVM.cs",
               "RelativeDocumentMoniker": "ProductDataAccess\\ViewModels\\VoucherCreateVM.cs",
@@ -498,12 +1111,11 @@
               "RelativeToolTip": "ProductDataAccess\\ViewModels\\VoucherCreateVM.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAswBUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T04:45:52.208Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-15T04:45:52.208Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 62,
               "Title": "Create.cshtml",
               "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminProduct\\Create.cshtml",
               "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminProduct\\Create.cshtml",
@@ -511,34 +1123,7 @@
               "RelativeToolTip": "ProductAPI\\Views\\AdminProduct\\Create.cshtml",
               "ViewState": "AgIAADkAAAAAAAAAAAAAACgAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T04:36:15.489Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "Create.cshtml",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
-              "RelativeDocumentMoniker": "ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
-              "RelativeToolTip": "ProductAPI\\Views\\AdminVoucher\\Create.cshtml",
-              "ViewState": "AgIAAPsAAAAAAAAAAAAqwCIBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-11-15T04:36:09.092Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AdminVoucherController.cs",
-              "DocumentMoniker": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
-              "RelativeDocumentMoniker": "ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
-              "ToolTip": "E:\\Work\\ProductAPI\\ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
-              "RelativeToolTip": "ProductAPI\\Controllers\\MVC\\Admin\\AdminVoucherController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-15T04:31:41.709Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-11-15T04:36:15.489Z"
             }
           ]
         }

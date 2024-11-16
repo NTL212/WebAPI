@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Models;
 using ProductAPI.Repositories;
+using Newtonsoft.Json;
 
 namespace ProductAPI.Repositories
 {
@@ -53,5 +54,47 @@ namespace ProductAPI.Repositories
             _dbSet.Update(voucher);
             return await _context.SaveChangesAsync() > 0;
         }
-	}
+
+        public async Task<bool> DistributeVoucher(Voucher voucher, int quantity, string userIds)
+        {
+            if (voucher.MaxUsage < quantity * JsonConvert.DeserializeObject<List<int>>(userIds).Count)
+            {
+                return false;
+            }
+
+            List<VoucherUser> vus = new List<VoucherUser>();
+            List<VoucherUser> vuUpdateS = new List<VoucherUser>();
+            var listUserId = JsonConvert.DeserializeObject<List<int>>(userIds);
+
+            foreach(var id in listUserId)
+            {
+                var vuE = await _context.VoucherUsers.FirstOrDefaultAsync(x => x.VoucherId == voucher.VoucherId && x.UserId == id);
+                if (vuE != null)
+                {
+                    vuE.Quantity += quantity;
+                    vuUpdateS.Add(vuE);
+                }
+                else
+                {
+                    VoucherUser vu = new VoucherUser();
+                    vu.VoucherId = voucher.VoucherId;
+                    vu.UserId = id;
+                    vu.TimesUsed = 0;
+                    vu.Quantity = quantity;
+                    vu.DateAssigned = DateTime.Now;
+                    vu.Status = true;
+                    vus.Add(vu);
+                }                
+            }
+
+            await _context.VoucherUsers.AddRangeAsync(vus);
+            _context.VoucherUsers.UpdateRange(vuUpdateS);
+
+            // Trừ số lượng voucher
+            voucher.MaxUsage -= quantity * listUserId.Count;
+            _context.Vouchers.Update(voucher);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+    }
 }

@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProductAPI.Filters;
 using ProductAPI.Repositories;
 using ProductDataAccess.DTOs;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
+    [JwtAuthorize("Admin")]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminOrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;

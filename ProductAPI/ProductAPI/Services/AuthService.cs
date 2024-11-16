@@ -65,7 +65,7 @@ namespace ProductAPI.Services
 			if (user == null || verificationResult== PasswordVerificationResult.Failed)
 				throw new UnauthorizedAccessException("Invalid credentials");
 			var token = GenerateJwtToken(user);
-			var authData = new AuthResponseData(token, user.UserId, user.Username);
+			var authData = new AuthResponseData(token, user.UserId, user.Username, user.Role.Name);
             return authData;
 		}
 

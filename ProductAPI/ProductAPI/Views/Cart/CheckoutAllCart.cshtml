@@ -1,4 +1,4 @@
-﻿@model List<ProductDataAccess.Models.CartItem>
+﻿@model ProductDataAccess.ViewModels.CheckoutVM
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -24,8 +24,16 @@
             <div class="container">
                 <div class="checkout-discount">
                     <form action="#">
-                        <input type="text" class="form-control" required id="checkout-discount-input">
-                        <label for="checkout-discount-input" class="text-truncate">Have a coupon? <span>Click here to enter your code</span></label>
+                        <label for="voucherSelect">Choose Voucher</label>
+                        <select id="voucherSelect" name="voucherId" class="form-control">
+                            <option value="">-- Select Voucher --</option>
+                            @foreach (var item in Model.voucherUserDTOs)
+                            {
+                                <option value="@item.VoucherId">
+                                    @item.Voucher.Code - @item.Voucher.VoucherType - Redeem Quantity: @(item.Quantity - @item.TimesUsed)
+                                </option>
+                            }
+                        </select>
                     </form>
                 </div><!-- End .checkout-discount -->
                 <form id="orderForm">
@@ -64,7 +72,7 @@
                                             decimal subtotal = 0;
                                         }
 
-                                        @foreach (var item in Model)
+                                        @foreach (var item in Model.cartItems)
                                         {
                                             <tr>
                                                 <td><a href="#">@item.Product.ProductName</a></td>

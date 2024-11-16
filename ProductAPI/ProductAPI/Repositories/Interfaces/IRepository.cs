@@ -6,6 +6,7 @@ namespace ProductAPI.Repositories
     public interface IRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllWithPredicateIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdAsync(int id);
         Task<bool> AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);

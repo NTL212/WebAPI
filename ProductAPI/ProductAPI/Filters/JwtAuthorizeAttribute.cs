@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
+using ProductAPI.Services;
 
 namespace ProductAPI.Filters
 {
     public class JwtAuthorizeAttribute : ActionFilterAttribute
     {
         private readonly string _role;
-
         public JwtAuthorizeAttribute(string role)
         {
             _role = role; // Role mà bạn muốn kiểm tra
@@ -35,7 +35,10 @@ namespace ProductAPI.Filters
 
                 if (roles == null || !roles.Contains(_role))
                 {
-                    context.Result = new ForbidResult(); // Nếu không có role phù hợp, trả về Forbidden
+                    context.Result = new ViewResult
+                    {
+                        ViewName = "Unauthorized", // Tên View hiển thị (đặt tên view theo ý bạn)
+                    };
                 }
             }
             catch

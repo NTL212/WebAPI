@@ -110,6 +110,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Wb3VjaGVyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/Work/ProductAPI/ProductAPI/Views/AdminVoucher/VoucherUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5Wb3VjaGVyXFZvdWNoZXJVc2VyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Work/ProductAPI/ProductAPI/Views/Cart/CheckoutAllCart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDaGVja291dEFsbENhcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -150,6 +154,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[E:/Work/ProductAPI/ProductAPI/Views/Shared/Unauthorized.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFVuYXV0aG9yaXplZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/Work/ProductAPI/ProductAPI/Views/Shared/_AdminFooter.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9BZG1pbkZvb3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -168,6 +176,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [E:/Work/ProductAPI/ProductAPI/Views/Shared/_SelectProductModal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TZWxlY3RQcm9kdWN0TW9kYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/Work/ProductAPI/ProductAPI/Views/Shared/_UserVouchersModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Vc2VyVm91Y2hlcnNNb2RhbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/Work/ProductAPI/ProductAPI/Views/Shared/_ValidationScriptsPartial.cshtml]

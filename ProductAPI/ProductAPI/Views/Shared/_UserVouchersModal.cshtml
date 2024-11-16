@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ProductDataAccess.DTOs.VoucherDTO>
+
+<div class="modal-header">
+    <h5 class="modal-title" id="voucherModalLabel">Vouchers</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <div class="table-responsive">
+        @if (Model.Any())
+        {
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Redeem Quantity</th>
+                        <th>Expiration</th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var voucher in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@voucher.Code</td>
+                            <td class="text-center">@voucher.DiscountType</td>
+                            <td class="text-center">@voucher.DiscountValue</td>
+                            <td class="text-center">@voucher.ReedemQuantity</td>
+                            <td class="text-center">@voucher.ExpiryDate.ToString("dd/MM/yyyy")</td>
+                            <td class="align-middle text-center">
+                                <a href="@Url.Action("Detail", "AdminVoucher", new {id = voucher.VoucherId})" class="btn btn-sm btn-info mb-0 d-none d-lg-block">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No vouchers available for this user.</p>
+        }
+    </div>   
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+</div>

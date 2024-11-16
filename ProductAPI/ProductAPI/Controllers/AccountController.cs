@@ -57,6 +57,11 @@ namespace ProductAPI.Controllers
                 HttpContext.Session.SetInt32("UserId", authResponse.Data.UserId);
                 HttpContext.Session.SetString("UserName", authResponse.Data.UserName);
 
+                if(authResponse.Data.RoleName == "Admin")
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+
                 // Nếu có returnUrl thì điều hướng người dùng trở lại trang đó, nếu không thì redirect về trang chủ
                 if (string.IsNullOrEmpty(returnUrl))
                 {

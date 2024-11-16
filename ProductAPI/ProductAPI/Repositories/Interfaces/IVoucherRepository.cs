@@ -10,5 +10,7 @@ namespace ProductAPI.Repositories
         Task UpdateVoucherUsageAsync(int voucherId);
 
         Task<Voucher> CreateVoucherAsync(Voucher voucher);
+
+        Task<bool> DistributeVoucher(Voucher voucher, int quantity,string userIds);
     }
 }
