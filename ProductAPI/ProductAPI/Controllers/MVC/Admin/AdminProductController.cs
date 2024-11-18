@@ -9,8 +9,8 @@ using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
-    [JwtAuthorize("Admin")]
-    [ServiceFilter(typeof(ValidateTokenAttribute))]
+    //[JwtAuthorize("Admin")]
+    //[ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminProductController : Controller
     {
         private readonly IProductRepository _productRepository;

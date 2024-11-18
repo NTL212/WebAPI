@@ -23,8 +23,6 @@ namespace ProductAPI.Profiles
             CreateMap<VoucherCampaign, VoucherCampaignDTO>().ReverseMap();
             CreateMap<OrderVoucher, OrderVoucherDTO>().ReverseMap();
             CreateMap<UserGroup, GroupDTO>().ReverseMap();
-            CreateMap<Voucher, VoucherCreateVM>().ReverseMap();
-            CreateMap<Voucher, VoucherEditVM>().ReverseMap();
             CreateMap<VoucherUser, VoucherUserDTO>().ReverseMap();
         
 
@@ -43,12 +41,20 @@ namespace ProductAPI.Profiles
             CreateMap<PagedResult<Voucher>, PagedResult<VoucherDTO>>()
           .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
 
+            CreateMap<PagedResult<VoucherCampaign>, PagedResult<VoucherCampaignDTO>>()
+         .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
             CreateMap<CartItem, OrderItem>()
            .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.ProductId))
            .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
            .ForMember(dest => dest.Price, opt => opt.MapFrom(src => src.Price));
 
             CreateMap<User, UserDTO>().ReverseMap();
+
+            //View Model MAP
+            CreateMap<Voucher, VoucherCreateVM>().ReverseMap();
+            CreateMap<Voucher, VoucherEditVM>().ReverseMap();
+            CreateMap<VoucherCampaign, CampaignVM>().ReverseMap();
         }
     }
 }

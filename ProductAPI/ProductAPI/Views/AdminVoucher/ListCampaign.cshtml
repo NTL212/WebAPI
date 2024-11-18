@@ -1,10 +1,10 @@
 ﻿@using ProductDataAccess.Models.Response;
 @using ProductDataAccess.DTOs;
 @using Newtonsoft.Json;
-@model PagedResult<VoucherDTO>
+@model PagedResult<VoucherCampaignDTO>
 @{
-    ViewData["PageTitle"] = "Vouchers";
-    ViewData["Vouchers"] = "active";
+    ViewData["PageTitle"] = "Voucher Campaign";
+    ViewData["VoucherCampaign"] = "active";
     ViewData["SearchURL"] = "AdminVoucher";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -15,14 +15,11 @@
             <div class="col-12">
                 <div class="card mb-4">
                     <div class="card-header pb-0 d-flex justify-content-between align-items-center">
-                        <h6>Voucher List</h6>
-                        <p>Total @Model.TotalRecords vochers</p>
+                        <h6>Campaign List</h6>
+                        <p>Total @Model.TotalRecords campaign</p>
 
                         <div class="d-flex justify-content-end">
-                            <a href="@Url.Action("Create", "AdminVoucher")" class="btn btn-primary">Add New Voucher</a>
-                        </div>
-                         <div class="d-flex justify-content-end">
-                            <a href="@Url.Action("DistributeVoucher", "AdminVoucher")" class="btn btn-secondary">Distribute Voucher</a>
+                            <a href="@Url.Action("CreateCampaign", "AdminVoucher")" class="btn btn-primary">Add New Campaign</a>
                         </div>
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
@@ -30,14 +27,13 @@
                             <table class="table align-items-center mb-0">
                                 <thead>
                                     <tr>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">VoucherId</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Code</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Voucher Type</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Discount Type</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Discount Value</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expire Date</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Conditions</th>
-                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reedem Quantity</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">CampaignId</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Name</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Description</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ">Target </th>
+       
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
+                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">End Date</th>
                                         <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                                         <th class="text-secondary opacity-7"></th>
                                     </tr>
@@ -47,57 +43,25 @@
                                     {
                                         <tr>
                                             <td class="text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">#@item.VoucherId</span>
+                                                <span class="text-secondary text-xs font-weight-bold">#@item.CampaignId</span>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                                <p class="text-xs text-secondary mb-0">@item.Code</p>
+                                                <p class="text-xs text-secondary mb-0">@item.Name</p>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                                <p class="text-xs text-secondary mb-0">@item.VoucherType</p>
+                                                <p class="text-xs text-secondary mb-0">@item.Description</p>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                                <p class="text-xs text-secondary mb-0">@item.DiscountType</p>
+                                                <p class="text-xs text-secondary mb-0">@item.TargetAudience</p>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                                <span class="text-secondary text-xs font-weight-bold">@item.DiscountValue.ToString("N0")</span>
+                                                <span class="text-secondary text-xs font-weight-bold">@item.StartDate.ToString("dd/MM/yyyy")</span>
                                             </td>
                                             <td class="align-middle text-center text-sm">
-                                                <span class="text-secondary text-xs font-weight-bold">@item.ExpiryDate</span>
+                                                <span class="text-secondary text-xs font-weight-bold">@item.EndDate.ToString("dd/MM/yyyy")<span>
                                             </td>
-                                            @{
-                                                Dictionary<string, object> conditions = null;
+                                          
 
-                                                try
-                                                {
-                                                    // Kiểm tra xem điều kiện có phải JSON hợp lệ không
-                                                    conditions = JsonConvert.DeserializeObject<Dictionary<string, object>>(@item.Conditions);
-                                                  
-
-                                                }
-                                                catch (JsonReaderException)
-                                                {
-                                                   
-                                                }
-                                            }
-                                            <td class="align-middle text-center text-sm">
-                                                <span class="text-secondary text-xs font-weight-bold">
-                                                    @if (conditions != null && conditions.Any())
-                                                    {
-
-                                                        <span class="text-muted">Yes</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="text-muted">No</span>
-                                                    }
-                                                </span>
-                                            </td>
-
-                                            
-
-                                            <td class="align-middle text-center text-sm">
-                                                <span class="text-secondary text-xs font-weight-bold">@(item.MaxPerUsage - item.UsedCount)</span>
-                                            </td>
                                             <td class="align-middle text-center text-sm">
                                                 <span class="badge badge-sm
                                         @(item.Status == "active" ? "bg-gradient-success" :
@@ -106,7 +70,7 @@
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center">
-                                                <a href="@Url.Action("Detail", "AdminVoucher", new {id = item.VoucherId})" class="btn btn-sm btn-info mb-0 d-none d-lg-block">View</a>
+                                                <a href="@Url.Action("DetailCampaign", "AdminVoucher", new {id = item.CampaignId})" class="btn btn-sm btn-info mb-0 d-none d-lg-block">View</a>
                                             </td>
                                         </tr>
                                     }
@@ -162,7 +126,7 @@
         </div>
     </div>
 </main>
-@section scripts{
+@section scripts {
     <script>
 
         if ('@TempData["SuccessMessage"]' != "") {

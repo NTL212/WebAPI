@@ -162,5 +162,18 @@ namespace ProductAPI.Repositories
             }
             return await query.Where(predicate).ToListAsync();
         }
+
+        public async Task<bool> AddRangeAsync(List<T> entity)
+        {
+            try
+            {
+                await _dbSet.AddRangeAsync(entity);
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@
 @model VoucherEditVM
 @{
     ViewData["PageTitle"] = "Update Voucher";
-    ViewData["Products"] = "active";
+    ViewData["Vouchers"] = "active";
     ViewData["SearchURL"] = "AdminVoucher";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -45,8 +45,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label for="DiscountType" class="form-label">Discount Type</label>
                                     <select class="form-control" id="DiscountType" name="DiscountType" required>
-                                        <option selected="@(Model.VoucherType=="Amount")" value="Amount">Amount</option>
-                                        <option selected="@(Model.VoucherType=="Percentage")" value="Percentage">Percentage</option>
+                                        <option selected="@(Model.DiscountType=="Amount")" value="Amount">Amount</option>
+                                        <option selected="@(Model.DiscountType=="Percent")" value="Percent">Percent</option>
                                     </select>
                                 </div>
 

@@ -4,7 +4,7 @@
 @model VoucherCreateVM
 @{
     ViewData["PageTitle"] = "Create Voucher";
-    ViewData["Products"] = "active";
+    ViewData["Vouchers"] = "active";
     ViewData["SearchURL"] = "AdminVoucher";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -43,7 +43,7 @@
                                     <label for="DiscountType" class="form-label">Discount Type</label>
                                     <select class="form-control" id="DiscountType" name="DiscountType" required>
                                         <option value="Amount">Amount</option>
-                                        <option value="Percentage">Percentage</option>
+                                        <option value="Percent">Percent</option>
                                     </select>
                                 </div>
 

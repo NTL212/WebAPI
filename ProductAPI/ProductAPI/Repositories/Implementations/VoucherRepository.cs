@@ -2,6 +2,7 @@
 using ProductDataAccess.Models;
 using ProductAPI.Repositories;
 using Newtonsoft.Json;
+using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Repositories
 {
@@ -57,44 +58,92 @@ namespace ProductAPI.Repositories
 
         public async Task<bool> DistributeVoucher(Voucher voucher, int quantity, string userIds)
         {
-            if (voucher.MaxUsage < quantity * JsonConvert.DeserializeObject<List<int>>(userIds).Count)
+            var listUserId = JsonConvert.DeserializeObject<List<int>>(userIds);
+            if (voucher.MaxUsage < quantity * listUserId.Count)
+                return false;
+
+            if (voucher.ExpiryDate < DateTime.Now)
+                return false;
+
+            if (voucher.Status == "Inactive")
+                return false;
+
+            var condition = JsonConvert.DeserializeObject<VoucherCondition>(voucher.Conditions);
+            var usersWithGroups = await _context.Users
+                .Include(u => u.Group)
+                .Where(u => listUserId.Contains(u.UserId))
+                .Select(u => new { u.UserId, GroupName = u.Group.GroupName })
+                .ToListAsync();
+
+            var existingVoucherUsers = await _context.VoucherUsers
+                .Where(vu => vu.VoucherId == voucher.VoucherId && listUserId.Contains(vu.UserId))
+                .ToListAsync();
+
+            var newVoucherUsers = new List<VoucherUser>();
+            var updatedVoucherUsers = new List<VoucherUser>();
+
+            foreach (var user in usersWithGroups)
+            {
+                var existingVoucher = existingVoucherUsers.FirstOrDefault(vu => vu.UserId == user.UserId);
+
+                if (existingVoucher.Status == true)
+                {
+                    // User đã có voucher, chỉ cần cập nhật số lượng
+                    existingVoucher.Quantity += quantity;
+                    updatedVoucherUsers.Add(existingVoucher);
+                }
+                else
+                {
+                    // Kiểm tra điều kiện để phân phát voucher mới
+                    if (voucher.Conditions == "All" || condition.GroupName == user.GroupName)
+                    {
+                        newVoucherUsers.Add(new VoucherUser
+                        {
+                            VoucherId = voucher.VoucherId,
+                            UserId = user.UserId,
+                            TimesUsed = 0,
+                            Quantity = quantity,
+                            DateAssigned = DateTime.Now,
+                            Status = true
+                        });
+                    }
+                }
+            }
+
+            if (!newVoucherUsers.Any())
             {
                 return false;
             }
 
-            List<VoucherUser> vus = new List<VoucherUser>();
-            List<VoucherUser> vuUpdateS = new List<VoucherUser>();
-            var listUserId = JsonConvert.DeserializeObject<List<int>>(userIds);
 
-            foreach(var id in listUserId)
-            {
-                var vuE = await _context.VoucherUsers.FirstOrDefaultAsync(x => x.VoucherId == voucher.VoucherId && x.UserId == id);
-                if (vuE != null)
-                {
-                    vuE.Quantity += quantity;
-                    vuUpdateS.Add(vuE);
-                }
-                else
-                {
-                    VoucherUser vu = new VoucherUser();
-                    vu.VoucherId = voucher.VoucherId;
-                    vu.UserId = id;
-                    vu.TimesUsed = 0;
-                    vu.Quantity = quantity;
-                    vu.DateAssigned = DateTime.Now;
-                    vu.Status = true;
-                    vus.Add(vu);
-                }                
-            }
+            // Thêm mới và cập nhật danh sách VoucherUsers
+            await _context.VoucherUsers.AddRangeAsync(newVoucherUsers);
+            _context.VoucherUsers.UpdateRange(updatedVoucherUsers);
 
-            await _context.VoucherUsers.AddRangeAsync(vus);
-            _context.VoucherUsers.UpdateRange(vuUpdateS);
-
-            // Trừ số lượng voucher
+            // Cập nhật số lượng voucher còn lại
             voucher.MaxUsage -= quantity * listUserId.Count;
             _context.Vouchers.Update(voucher);
 
             return await _context.SaveChangesAsync() > 0;
+        }
+
+
+        public async Task<PagedResult<Voucher>> GetVouchersOfUserPaged(int userId, int pageNumber, int pageSize)
+        {
+            var items = await _dbSet
+                .Where(v => v.VoucherUsers.Any(vu => vu.UserId == userId && vu.Status == true))
+                .Include(v => v.VoucherUsers)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<Voucher>
+            {
+                Items = items,
+                TotalRecords = items.Count,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
         }
     }
 }

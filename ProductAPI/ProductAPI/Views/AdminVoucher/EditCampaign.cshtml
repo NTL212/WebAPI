@@ -1,0 +1,90 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@using ProductDataAccess.ViewModels;
+@model CampaignVM
+@{
+    ViewData["PageTitle"] = "Create Campaign";
+    ViewData["VoucherCampaign"] = "active";
+    ViewData["SearchURL"] = "AdminVoucher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h6>Create New Voucher</h6>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("EditCampaign", "AdminVoucher", FormMethod.Post, new { @class = "form-horizontal" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="row">
+                                <input hidden value="@Model.CampaignId" id="CampaignId" name="CampaignId" />
+                                <!-- Voucher Code Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="VoucherCode" class="form-label">Campaign Name</label>
+                                    <input type="text" class="form-control" id="Name" name="Name"value="@Model.Name" required placeholder="Enter Campaign Name">
+                                </div>
+
+                                <!-- Description Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="VoucherType" class="form-label">Description</label>
+                                    <input class="form-control" id="Description" name="Description" value="@Model.Description" required placeholder="Enter Campaign Description">
+                                </div>
+
+                                <!-- Target Audience Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="DiscountType" class="form-label">Target Audience</label>
+                                    <select class="form-control" id="TargetAudience" name="TargetAudience" required>
+                                        <option selected value="@Model.TargetAudience">@Model.TargetAudience</option>
+                                        @foreach (var item in Model.Groups)
+                                        {
+                                            <option value="@item.GroupName">@item.GroupName</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <!-- Start Date Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="ExpiryDate" class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" name="StartDate" required>
+                                </div>
+
+                                <!-- End Date Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="ExpiryDate" class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" name="EndDate" required>
+                                </div>
+
+                                <!-- Voucher Status Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="Status" class="form-label">Voucher Status</label>
+                                    <select class="form-control" id="Status" name="Status" required>
+                                        <option selected="@Model.Status.Contains("active")" value="active">Active</option>
+                                        <option selected="@Model.Status.Contains("Inactive")" value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Submit Button Section -->
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts {
+    <script>
+
+
+    </script>
+}

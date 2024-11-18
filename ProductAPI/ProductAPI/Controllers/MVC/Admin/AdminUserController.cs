@@ -9,8 +9,8 @@ using ProductAPI.Filters;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
-    [JwtAuthorize("Admin")]
-    [ServiceFilter(typeof(ValidateTokenAttribute))]
+    //[JwtAuthorize("Admin")]
+    //[ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminUserController : Controller
     {
         private readonly IUserRepoisitory _userRepoisitory;

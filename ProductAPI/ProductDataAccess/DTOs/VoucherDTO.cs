@@ -24,6 +24,7 @@
 
         public string Conditions { get; set; }
 
-        public int ReedemQuantity { get; set; }
+        public int AvailableQuantity => MaxUsage - UsedCount;
+        public int ReedemQuantity { get; set; } 
     }
 }

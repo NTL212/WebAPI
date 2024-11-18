@@ -6,6 +6,7 @@ using AutoMapper;
 using ProductAPI.Repositories;
 using ProductDataAccess.ViewModels;
 using ProductAPI.Repositories.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace ProductAPI.Controllers
 {
@@ -84,17 +85,46 @@ namespace ProductAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CheckoutAllCart()
+        public async Task<IActionResult> ApplyVoucher (int voucherAppiedId = 0)
         {
             var cart = _cartService.GetCart();
             var userId = HttpContext.Session.GetInt32("UserId");
-            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v=>v.UserId==userId, v=>v.Voucher);
+            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v => v.UserId == userId && v.Status == true, v => v.Voucher);
+            var voucherApplied = await _voucherRepository.GetByIdAsync(voucherAppiedId);
+
             var checkoutVM = new CheckoutVM();
 
             if (cart.Count > 0)
             {
                 checkoutVM.cartItems = cart;
+                checkoutVM.voucherApplied = _mapper.Map<VoucherDTO>(voucherApplied);
                 checkoutVM.voucherUserDTOs = _mapper.Map<List<VoucherUserDTO>>(voucherUsers);
+                return Ok(checkoutVM);
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CheckoutAllCart(int voucherAppiedId=0)
+        {
+            var cart = _cartService.GetCart();
+            var userId = HttpContext.Session.GetInt32("UserId");
+            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v=>v.UserId==userId && v.Status==true, v=>v.Voucher);
+
+            var voucherApplied = await _voucherRepository.GetByIdAsync(voucherAppiedId);
+
+            var checkoutVM = new CheckoutVM();
+
+            if (cart.Count > 0)
+            {
+                checkoutVM.cartItems = cart;
+                checkoutVM.voucherApplied = _mapper.Map<VoucherDTO>(voucherApplied);
+                checkoutVM.voucherUserDTOs = _mapper.Map<List<VoucherUserDTO>>(voucherUsers);
+                ViewBag.VoucherAppliedId = voucherAppiedId;
                 return View(checkoutVM);
             }
             else
@@ -110,6 +140,8 @@ namespace ProductAPI.Controllers
         {
             var userId = HttpContext.Session.GetInt32("UserId");
             var order = _mapper.Map<Order>(orderDTO);
+            order.UserId = (int)userId;
+            order.VoucherId = orderDTO.VoucherAppliedId;
             var orderCreated = await _orderRepository.CreateOrderAsync((int)userId, order);
             if (orderCreated != null)
             {

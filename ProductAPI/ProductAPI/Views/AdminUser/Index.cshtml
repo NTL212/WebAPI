@@ -80,8 +80,8 @@
                                                     <a class="btn btn-sm btn-primary mx-1 view-vouchers" data-user-id="@user.UserId">
                                                         View Vouchers
                                                     </a>
-                                                    <a href="@Url.Action("Edit", "AdminUser", new {id = user.UserId})" class="btn btn-sm btn-info mx-1">Edit</a>
-                                                    <a href="@Url.Action("Detail", "AdminUser", new {id = user.UserId})" class="btn btn-sm btn-secondary mx-1">View</a>
+                                                    <a href="@Url.Action("Edit", "AdminUser", new {id = user.UserId})" class="btn btn-sm btn-warning mx-1">Edit</a>
+                                                    <a href="@Url.Action("Detail", "AdminUser", new {id = user.UserId})" class="btn btn-sm btn-info mx-1">View</a>
                                                 </td>
                                             </tr>
                                         }
@@ -145,7 +145,6 @@
         </div>
     </div>
 </div>
-</div>
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -194,7 +193,28 @@
             })
         }
 
-     
+        function loadPage(pageNumber, userId) {
+            // Lấy từ khóa tìm kiếm từ input
+            var searchKeyword = $('#searchKeyword').val();
+
+            // Gửi yêu cầu AJAX với từ khóa tìm kiếm và số trang
+            $.ajax({
+                url: '/AdminVoucher/GetUserVouchers',  // Thay bằng URL phù hợp
+                data: {
+                    userId: userId,  // userId nếu có
+                    page: pageNumber, // số trang
+                    searchKeyword: searchKeyword // gửi từ khóa tìm kiếm
+                },
+                type: 'GET',
+                success: function (response) {
+                    // Cập nhật lại nội dung modal với dữ liệu mới
+                    $('#voucherModal .modal-content').html(response);  // Update modal body
+                },
+                error: function () {
+                    alert('Error loading data.');
+                }
+            });
+        }
 
     </script>
 }

@@ -1,0 +1,230 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@using ProductDataAccess.ViewModels;
+@using Newtonsoft.Json;
+@model VoucherCampaignDTO
+@{
+    ViewData["PageTitle"] = "Detail Campaign";
+    ViewData["VoucherCampaign"] = "active";
+    ViewData["SearchURL"] = "AdminVoucher";
+    ViewData["CampaignId"] = Model.CampaignId;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4 shadow-sm">
+                    <!-- Header -->
+                    <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="text-white mb-0">Voucher Campaign Details</h5>
+                        <a href="@Url.Action("ListCampaign", "AdminVoucher")" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i> Back to List
+                        </a>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="card-body">
+                        <!-- Basic Information -->
+                        <h6 class="text-uppercase text-muted mb-3">Basic Information</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Voucher ID:</strong> @Model.CampaignId</p>
+                                <p><strong>Name:</strong> @Model.Name</p>
+                                <p><strong>Description:</strong> @Model.Description</p>
+                                <p><strong>Target Audience:</strong> @Model.TargetAudience</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p><strong>Start Date:</strong> @Model.StartDate.ToString("dd MMM yyyy")</p>
+                                <p><strong>End Date:</strong> @Model.EndDate.ToString("dd MMM yyyy")</p>
+                                <p>
+                                    <strong>Status:</strong>
+                                    <span class="badge
+                                        @(Model.Status == "active" ? "bg-success" : "bg-danger")">
+                                        @Model.Status
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Voucher List -->
+                        <h6 class="text-uppercase text-muted mb-3 mt-4">Assigned Vouchers</h6>
+                        @if (Model.AssignedVouchers != null && Model.AssignedVouchers.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Voucher Code</th>
+                                            <th class="text-center">Description</th>
+                                            <th class="text-center">Discount</th>
+                                            <th class="text-center">Expiration Date</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (int i = 0; i < Model.AssignedVouchers.Count; i++)
+                                        {
+                                            var voucher = Model.AssignedVouchers[i];
+                                            <tr>
+                                                <td class="text-center">@(i + 1)</td>
+                                                <td class="text-center">@voucher.Code</td>
+                                                <td class="text-center">@voucher.VoucherType</td>
+                                                <td class="text-center">@voucher.DiscountValue</td>
+                                                <td class="text-center">@voucher.ExpiryDate.ToString("dd MMM yyyy")</td>
+                                                <td class="text-center">
+                                                    <button class="btn btn-sm btn-danger"
+                                                            onclick="removeVoucher('@voucher.VoucherId')">
+                                                        <i class="fas fa-trash-alt me-1"></i> Remove
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-end">
+                                <a class="btn btn-sm btn-primary mx-1 view-vouchers" data-campaign-id="@Model.CampaignId">
+                                    Assign Vouchers
+                                </a>
+                                <a href="@Url.Action("EditCampaign", "AdminVoucher", new { id = Model.CampaignId })"
+                                   class="btn btn-secondary btn-sm">
+                                    <i class="fas fa-edit me-1"></i> Edit
+                                </a>
+                                <button class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt me-1"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+
+                       
+                        }
+                        else
+                        {
+                            <p class="text-muted">No vouchers assigned to this campaign yet.</p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<div class="modal fade" id="voucherModal" tabindex="-1" aria-labelledby="voucherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Content will be injected here -->
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('click', function (event) {
+                if (event.target.matches('.view-vouchers')) {
+                    const userId = event.target.getAttribute('data-user-id');
+                    const campaignId = event.target.getAttribute('data-campaign-id');
+
+                    $.ajax({
+                        url: '/AdminVoucher/GetUserVouchers',  // Thay bằng URL phù hợp
+                        data: {
+                            campaignId: campaignId,
+                        },
+                        type: 'GET',
+                        success: function (response) {
+                            // Cập nhật lại nội dung modal với dữ liệu mới
+                            $('#voucherModal .modal-content').html(response);  // Update modal body
+                            $('#voucherModal').modal('show');
+                        },
+                        error: function () {
+                            alert('Error loading data.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
+        if ('@TempData["SuccessMessage"]' != "") {
+            Swal.fire({
+                title: 'Success!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+        if ('@TempData["ErrorMessage"]' != "") {
+            Swal.fire({
+                title: 'Error!',
+                text: '@TempData["ErrorMessage"]',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+        $(document).ready(function () {
+            // Xử lý nút Apply
+            $('#applySelectedVouchers').click(function () {
+                var selectedVouchers = [];
+
+                // Lặp qua tất cả các checkbox và lấy các voucher đã chọn
+                $('.voucher-checkbox:checked').each(function () {
+                    selectedVouchers.push($(this).data('voucher-id')); // Lấy voucherId từ thuộc tính data-voucher-id
+                });
+
+                if (selectedVouchers.length > 0) {
+                    // Gửi các voucher đã chọn lên server (có thể sử dụng AJAX)
+                    $.ajax({
+                        url: '/AdminVoucher/ApplySelectedVouchers', // Thay đổi URL theo đúng action của bạn
+                        method: 'POST',
+                        data: { voucherIds: selectedVouchers },
+                        success: function (response) {
+                            alert('Vouchers applied successfully!');
+                            // Có thể cập nhật lại modal hoặc đóng modal sau khi thành công
+                            $('#voucherModal').modal('hide');
+                        },
+                        error: function () {
+                            alert('Error applying vouchers.');
+                        }
+                    });
+                } else {
+                    alert('Please select at least one voucher.');
+                }
+            });
+        });
+
+
+        function loadPage(pageNumber, userId) {
+            // Lấy từ khóa tìm kiếm từ input
+            var searchKeyword = $('#searchKeyword').val();
+
+            // Gửi yêu cầu AJAX với từ khóa tìm kiếm và số trang
+            $.ajax({
+                url: '/AdminVoucher/GetUserVouchers',  // Thay bằng URL phù hợp
+                data: {
+                    userId: userId,  // userId nếu có
+                    page: pageNumber, // số trang
+                    searchKeyword: searchKeyword // gửi từ khóa tìm kiếm
+                },
+                type: 'GET',
+                success: function (response) {
+                    // Cập nhật lại nội dung modal với dữ liệu mới
+                    $('#voucherModal .modal-content').html(response);  // Update modal body
+                },
+                error: function () {
+                    alert('Error loading data.');
+                }
+            });
+        }
+
+
+    </script>
+}

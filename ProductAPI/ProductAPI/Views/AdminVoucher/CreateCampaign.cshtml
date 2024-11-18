@@ -1,0 +1,89 @@
+﻿@using ProductDataAccess.Models.Response;
+@using ProductDataAccess.DTOs;
+@using ProductDataAccess.ViewModels;
+@model CampaignVM
+@{
+    ViewData["PageTitle"] = "Create Campaign";
+    ViewData["VoucherCampaign"] = "active";
+    ViewData["SearchURL"] = "AdminVoucher";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<main class="main-content position-relative border-radius-lg">
+    @Html.Partial("~/Views/Shared/_AdminNavbar.cshtml")
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                        <h6>Create New Campaign</h6>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("CreateCampaign", "AdminVoucher", FormMethod.Post, new { @class = "form-horizontal" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="row">
+                                <!-- Voucher Code Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="Name" class="form-label">Campaign Name</label>
+                                    <input type="text" class="form-control" id="Name" name="Name" required placeholder="Enter Campaign Name">
+                                </div>
+
+                                <!-- Description Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="Description" class="form-label">Description</label>
+                                    <input class="form-control" id="Description" name="Description" required placeholder="Enter Campaign Description">
+                                </div>
+                                <!-- Start Date Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="StartDate" class="form-label">Start Date</label>
+                                    <input type="date" class="form-control" id="StartDate" name="StartDate" required>
+                                </div>
+
+                                <!-- Target Audience Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="TargetAudience" class="form-label">Target Audience</label>
+                                    <select class="form-control" id="TargetAudience" name="TargetAudience" required>
+                                        <option selected value="All">All</option>
+                                        @foreach(var item in Model.Groups)
+                                        {
+                                            <option value="@item.GroupName">@item.GroupName</option>
+                                        }
+                                    </select>
+                                </div>
+
+
+                                <!-- End Date Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="EndDate" class="form-label">End Date</label>
+                                    <input type="date" class="form-control" id="EndDate" name="EndDate" required>
+                                </div>
+
+                                <!-- Voucher Status Section -->
+                                <div class="col-md-6 mb-3">
+                                    <label for="Status" class="form-label">Voucher Status</label>
+                                    <select class="form-control" id="Status" name="Status" required>
+                                        <option value="active">Active</option>
+                                        <option value="Inactive">Inactive</option>
+                                    </select>
+                                </div>
+
+                                <!-- Submit Button Section -->
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary">Create Campaign</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section scripts {
+    <script>
+   
+
+    </script>
+}

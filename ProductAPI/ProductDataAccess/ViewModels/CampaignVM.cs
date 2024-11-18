@@ -1,6 +1,13 @@
-﻿namespace ProductDataAccess.DTOs
+﻿using ProductDataAccess.DTOs;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ProductDataAccess.ViewModels
 {
-    public class VoucherCampaignDTO
+    public class CampaignVM
     {
         public int? CampaignId { get; set; }
 
@@ -15,7 +22,6 @@
         public string TargetAudience { get; set; }
 
         public string Status { get; set; }
-
-        public List<VoucherDTO> AssignedVouchers { get; set; } = new List<VoucherDTO>();
+        public List<GroupDTO> Groups { get; set; }
     }
 }

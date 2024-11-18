@@ -23,22 +23,14 @@
         <div class="checkout">
             <div class="container">
                 <div class="checkout-discount">
-                    <form action="#">
-                        <label for="voucherSelect">Choose Voucher</label>
-                        <select id="voucherSelect" name="voucherId" class="form-control">
-                            <option value="">-- Select Voucher --</option>
-                            @foreach (var item in Model.voucherUserDTOs)
-                            {
-                                <option value="@item.VoucherId">
-                                    @item.Voucher.Code - @item.Voucher.VoucherType - Redeem Quantity: @(item.Quantity - @item.TimesUsed)
-                                </option>
-                            }
-                        </select>
-                    </form>
+                    <label for="voucherSelect">Choose Voucher</label>
+                    <input type="text" id="voucherSelect" class="form-control" readonly data-toggle="modal" data-target="#voucherModal">
+                    <input type="hidden" name="voucherId" id="voucherId" />
                 </div><!-- End .checkout-discount -->
                 <form id="orderForm">
                     <div class="row">
                         <div class="col-lg-9">
+                            <input id="voucherAppliedId" name="voucherAppliedId" value="@ViewBag.VoucherAppliedId" hidden />
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
 
                             <label>Receiver Name </label>
@@ -86,15 +78,19 @@
                                         <tr class="summary-subtotal">
                                             <td>Subtotal:</td>
                                             <td>$@subtotal</td>
-                                            <input hidden name="totalAmount" id="subtotal" value="@subtotal" />
+                                            <input hidden name="totalAmount" id="subtotal" value="@Model.SubTotal" />
                                         </tr><!-- End .summary-subtotal -->
                                         <tr>
-                                            <td>Shipping:</td>
-                                            <td>Free shipping</td>
+                                            @if(Model.voucherApplied != null)
+                                            {
+                                                <td>Discount:</td>
+                                                <td>@Model.Discount</td>
+                                            }
                                         </tr>
                                         <tr class="summary-total">
+                                            <input hidden name="totalAmount" id="totalAmount" value="@Model.total" />
                                             <td>Total:</td>
-                                            <td>$@subtotal</td> <!-- Nếu Total là subtotal + shipping, bạn có thể điều chỉnh thêm -->
+                                            <td>@Model.total</td> <!-- Nếu Total là subtotal + shipping, bạn có thể điều chỉnh thêm -->
                                         </tr><!-- End .summary-total -->
                                     </tbody>
 
@@ -144,58 +140,267 @@
             </div><!-- End .container -->
         </div><!-- End .checkout -->
     </div><!-- End .page-content -->
-    @section scripts {
-        <script>
-            document.getElementById("orderForm").addEventListener("submit", async function (event) {
-                event.preventDefault();
+   
+</main><!-- End .main -->
+<!-- Modal for selecting voucher -->
+<!-- Modal -->
+<style>
+    /* Modal Content */
+    .modal-content {
+        border-radius: 8px; /* Bo góc modal */
+    }
 
-                // Lấy dữ liệu từ form
-                const receiverName = document.getElementById("receiverName").value;
-                const address = document.getElementById("address").value;
-                const phone = document.getElementById("phone").value;
-                const orderNotes = document.getElementById("orderNotes").value;
-                const total = document.getElementById("subtotal").value;
-                const userId = '@Context.Session.GetInt32("UserId")';
+    .modal-header {
+        background-color: #007bff; /* Màu nền header */
+        color: white; /* Màu chữ */
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 1.5rem; /* Tăng kích thước chữ của tiêu đề */
+        font-weight: bold;
+    }
+
+    .modal-body {
+        padding: 20px;
+        font-size: 1rem;
+    }
+
+    /* Radio button styling */
+    .form-check {
+        font-size: 1rem; /* Cập nhật kích thước chữ cho radio button */
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-check-input {
+        margin-top: 0.3rem;
+        margin-right: 10px;
+    }
+
+    .form-check-label {
+        font-size: 1.1rem; /* Tăng cỡ chữ cho label */
+        color: #333;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+        .form-check-label:hover {
+            background-color: #f0f0f0; /* Màu nền khi hover */
+        }
+
+    /* Voucher item styles */
+    .voucher-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 12px;
+    }
+
+    .voucher-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .voucher-info strong {
+            font-size: 1.2rem; /* Tăng cỡ chữ cho mã voucher */
+            color: #000;
+        }
+
+    .voucher-details {
+        margin-top: 5px;
+        font-size: 1rem; /* Cỡ chữ thông tin chi tiết voucher */
+        color: #6c757d;
+    }
+
+    /* Voucher Actions */
+    .voucher-actions {
+        font-size: 1rem; /* Tăng cỡ chữ của các hành động */
+        font-weight: bold;
+    }
+
+        .voucher-actions .badge {
+            padding: 0.5rem;
+        }
+
+    /* Scrollable container for vouchers */
+    .voucher-options {
+        max-height: 300px;
+        overflow-y: auto; /* Cho phép cuộn khi danh sách dài */
+        margin-top: 10px;
+    }
+
+        /* Scrollbar styles */
+        .voucher-options::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .voucher-options::-webkit-scrollbar-thumb {
+            background-color: #007bff;
+            border-radius: 10px;
+        }
+
+        .voucher-options::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+        }
+
+    /* Hover effect for buttons */
+    .btn:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+    }
 
 
-                // Tạo dữ liệu để gửi API
-                const orderData = {
-                    receverName: receiverName,
-                    address: address,
-                    phoneNumber: phone,
-                    note: orderNotes,
-                    totalAmount: total
-                };
+</style>
+<div class="modal fade" id="voucherModal" tabindex="-1" role="dialog" aria-labelledby="voucherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-3 shadow-lg">
+            <div class="modal-header border-bottom-0">
+                <h5 class="modal-title" id="voucherModalLabel">Choose Your Voucher</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-3">Select a voucher from the list below to apply to your checkout:</p>
+                <!-- Voucher List (Radio Buttons) -->
+                <div class="voucher-options">
+                    @foreach (var item in Model.voucherUserDTOs)
+                    {
+                        <div class="form-check d-flex justify-content-between align-items-center mb-3">
+                            <input class="form-check-input" type="radio" name="voucherRadio" id="voucherRadio{@item.VoucherId}" value="@item.VoucherId">
+                            <label class="form-check-label d-flex w-100 align-items-center" for="voucherRadio{@item.VoucherId}">
+                                <div id="voucherItem_@item.VoucherId" class="voucher-item d-flex justify-content-between w-100">
+                                    <div class="voucher-info d-flex flex-column">
+                                        <strong>@item.Voucher.Code</strong>
+                                        <div class="voucher-details">
+                                            <span>Redeem Quantity: @(item.Quantity - item.TimesUsed)</span>
+                                            @if (item.Voucher.DiscountType == "Percent")
+                                            {
+                                                <span>DiscountValue: @item.Voucher.DiscountValue %</span>
+                                            }
+                                            else if (item.Voucher.DiscountType == "Amount")
+                                            {
+                                                <span>DiscountValue: $@item.Voucher.DiscountValue.ToString("N0")</span>
+                                            }
 
-                $.ajax({
-                    url: "/Cart/CheckoutAllCart",
-                    type: "POST",
-                    contentType: "application/json",
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("token")}` // Thêm token nếu cần
-                    },
-                    data: JSON.stringify(orderData),
-                    success: function (response) {
-                        console.log(response);
-                        Swal.fire({
-                            title: 'Order Placed Successfully!',
-                            text: 'Your order has been placed successfully. You will be redirected to the order details page.',
-                            icon: 'success',
-                            confirmButtonText: 'View Order'
-                        }).then(()=>{
-                            window.location.href = `/order/details/${response.data.orderId}`;
-                        })
-                    },
-                    error: function (xhr, status, error) {
+                                            <span>Expiry Date: @item.Voucher.ExpiryDate.ToString("yyyy-MM-dd")</span>
+                                        </div>
+                                    </div>
+                                    <div  class="voucher-actions">
+                                        <span style="display:none" class="apply-badge badge bg-success">Apply</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer border-top-0 d-flex justify-content-between">
+                <button type="button" id="modalClose" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="applyVoucher">Apply Voucher</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        // Mở modal khi người dùng muốn chọn voucher
+        document.getElementById('voucherSelect').addEventListener('click', function () {
+            $('#voucherModal').modal('show');
+        });
+        document.getElementById('modalClose').addEventListener('click', function () {
+            $('#voucherModal').modal('hide');
+        });
+        $(document).ready(function () {
+
+            $('.voucher-item').on('click', function () {
+                
+            });
+            // Khi một radio button được click
+            $('input[name="voucherRadio"]').on('change', function () {
+                // Ẩn tất cả các badge "Apply Voucher"
+                $('.apply-badge').hide();
+
+                // Hiển thị badge chỉ khi radio được chọn
+                $(this).closest('.form-check').find('.apply-badge').show();
+            });
+
+            // Đảm bảo hiển thị badge khi radio được chọn lần đầu
+            $('input[name="voucherRadio"]:checked').each(function () {
+                $(this).closest('.form-check').find('.apply-badge').show();
+            });
+        });
+
+        document.getElementById('applyVoucher').addEventListener('click', function () {
+            var selectedVoucherId = document.querySelector('input[name="voucherRadio"]:checked');
+            if (selectedVoucherId) {
+                // Thực hiện hành động áp dụng voucher, ví dụ như cập nhật giỏ hàng.
+                var voucherApplied = document.getElementById('voucherAppliedId')
+
+                window.location.href = `/Cart/CheckoutAllCart?voucherAppiedId=${selectedVoucherId.value}`   
+
+            } else {
+                alert("Please select a voucher.");
+            }
+        });
+
+    </script>
+    <script>
+        document.getElementById("orderForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            // Lấy dữ liệu từ form
+            const receiverName = document.getElementById("receiverName").value;
+            const address = document.getElementById("address").value;
+            const phone = document.getElementById("phone").value;
+            const orderNotes = document.getElementById("orderNotes").value;
+            const total = document.getElementById("totalAmount").value;
+            const subtotal = document.getElementById("subtotal").value;
+            const voucherAppliedId = document.getElementById("voucherAppliedId").value;
+
+
+            // Tạo dữ liệu để gửi API
+            const orderData = {
+                receverName: receiverName,
+                address: address,
+                phoneNumber: phone,
+                note: orderNotes,
+                totalAmount: total,
+                subTotal: subtotal,
+                voucherAppliedId: voucherAppliedId
+            };
+
+            $.ajax({
+                url: "/Cart/CheckoutAllCart",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(orderData),
+                success: function (response) {
+                    console.log(response);
+                    Swal.fire({
+                        title: 'Order Placed Successfully!',
+                        text: 'Your order has been placed successfully. You will be redirected to the order details page.',
+                        icon: 'success',
+                        confirmButtonText: 'View Order'
+                    }).then(() => {
+                        window.location.href = `/product/index/`;
+                    })
+                },
+                error: function (xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Order Failed',
                         text: "An error occurred while placing the order.",
                         confirmButtonText: 'Try Again'
                     })
-                    }
-                });
+                }
             });
-        </script>
-    }
-</main><!-- End .main -->
+        });
+    </script>
+}

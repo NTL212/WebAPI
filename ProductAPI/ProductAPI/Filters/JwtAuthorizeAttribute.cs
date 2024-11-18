@@ -39,6 +39,7 @@ namespace ProductAPI.Filters
                     {
                         ViewName = "Unauthorized", // Tên View hiển thị (đặt tên view theo ý bạn)
                     };
+                    return;
                 }
             }
             catch

@@ -9,6 +9,7 @@ namespace ProductAPI.Repositories
         Task<IEnumerable<T>> GetAllWithPredicateIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdAsync(int id);
         Task<bool> AddAsync(T entity);
+        Task<bool> AddRangeAsync(List<T> entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(int id);
 
