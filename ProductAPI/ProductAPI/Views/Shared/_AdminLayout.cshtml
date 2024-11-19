@@ -120,8 +120,7 @@
                     </div>
                 </div>
             </div>
-            <a href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard" target="_blank" class="btn btn-dark btn-sm w-100 mb-3">Profile</a>
-            <a class="btn btn-primary btn-sm mb-0 w-100" href="https://www.creative-tim.com/product/argon-dashboard-pro?ref=sidebarfree" type="button">Logout</a>
+            <a class="btn btn-primary btn-sm mb-0 w-100" href="@Url.Action("Logout", "Account")" type="button">Logout</a>
         </div>
     </aside>
     @RenderBody()
@@ -306,6 +305,26 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @RenderSection("scripts", required: false)
     @RenderSection("partialScripts", required: false)
+
+    <script>
+          if ('@TempData["SuccessMessage"]' != "") {
+            Swal.fire({
+                title: 'Success!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+        if ('@TempData["ErrorMessage"]' != "") {
+            Swal.fire({
+                title: 'Error!',
+                text: '@TempData["ErrorMessage"]',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+    </script>
 </body>
 
 </html>

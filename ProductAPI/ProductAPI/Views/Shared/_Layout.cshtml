@@ -124,11 +124,11 @@
                     <div class="header-center">
                         <div class="header-search header-search-extended header-search-visible d-none d-lg-block">
                             <a href="#" class="search-toggle" role="button"><i class="icon-search"></i></a>
-                            <form action="#" method="get">
+                            <form action="@Url.Action("Shop", "Product")" method="get">
                                 <div class="header-search-wrapper search-wrapper-wide">
                                     <label for="q" class="sr-only">Search</label>
                                     <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
-                                    <input type="search" class="form-control" name="q" id="q" placeholder="Search product ..." required>
+                                    <input type="search" class="form-control" name="searchKey" id="searchKey" placeholder="Search product ..." required>
                                 </div><!-- End .header-search-wrapper -->
                             </form>
                         </div><!-- End .header-search -->
@@ -176,10 +176,11 @@
 
                         async function loadCategories() {
                             try {
-                                const response = await fetch('https://localhost:7016/api/categories'); // Đảm bảo URL đúng với API của bạn
+                                const response = await fetch('https://localhost:7016/api/categories/parentcategories'); // Đảm bảo URL đúng với API của bạn
                                 if (!response.ok) throw new Error('Failed to fetch categories.');
 
                                 const categories = await response.json();
+
                                 const categoryList = document.getElementById('category-list');
 
                                 // Xóa các danh mục cũ nếu có
@@ -581,14 +582,33 @@
 
             var returnUrl = window.location.pathname; // Lấy returnUrl từ đường dẫn hiện tại của trang
             $("#ReturnUrl").val(returnUrl); // Lưu returnUrl vào modal khi mở
-            var errorMessage = '@TempData["ErrorMessage"]';
+            var errorMessage = '@TempData["LoginErrorMessage"]';
             if (errorMessage) {
                 // Nếu có thông báo lỗi, hiển thị modal và thông báo lỗi
                 $('#signin-modal').modal('show');
             }
         });
         </script>
+    <script>
 
+        if ('@TempData["SuccessMessage"]' != "") {
+            Swal.fire({
+                title: 'Success!',
+                text: '@TempData["SuccessMessage"]',
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            })
+        }
+
+        if ('@TempData["ErrorMessage"]' != "") {
+            Swal.fire({
+                title: 'Error!',
+                text: '@TempData["ErrorMessage"]',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            })
+        }
+    </script>
         @* <script>
         function updateLoginStatus() {
             const token = '@Context.Session.GetString("Token")'; // Hoặc sessionStorage.getItem("authToken");

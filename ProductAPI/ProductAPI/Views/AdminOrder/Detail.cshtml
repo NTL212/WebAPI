@@ -1,7 +1,8 @@
-﻿@using ProductDataAccess.Models;
-@model Order
+﻿@using ProductDataAccess.DTOs;
+@model OrderDTO
 @{
     ViewData["PageTitle"] = "OrderDetail";
+    ViewData["SearchURL"] = "AdminOrder";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -31,7 +32,6 @@
       "bg-secondary")">
                                         @Model.Status
                                     </span>
-
                                 </p>
                             </div>
                             <div class="col-md-6">
@@ -41,6 +41,31 @@
                                 <p><strong>Address:</strong> @Model.Address</p>
                             </div>
                         </div>
+
+                        <!-- Voucher Information -->
+                        @if (Model.Voucher!=null)
+                        {
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <h5><strong>Voucher Applied:</strong></h5>
+                                    <p>
+                                        <strong>Voucher Code:</strong> @Model.Voucher.Code <br />
+                                        @if (Model.Voucher.DiscountType == "Amount")
+                                        {
+                                            <strong>Discount:</strong> <span>$@Model.Voucher.DiscountValue </span>
+
+                                            <br />
+                                        }
+                                        else
+                                        {
+                                            <strong>Discount:</strong> <span>@Model.Voucher.DiscountValue% </span>
+
+                                            <br />
+                                        }
+                                    </p>
+                                </div>
+                            </div>
+                        }
 
                         <!-- Order Items -->
                         <div class="table-responsive">
@@ -66,8 +91,6 @@
                                                         <p class="text-xs font-weight-bold mb-0">@item.Product.ProductName</p>
                                                     </div>
                                                 </div>
-                                                
-                                                
                                             </td>
                                             <td class="text-center">
                                                 <span class="text-xs font-weight-bold">@item.Quantity</span>
@@ -104,6 +127,7 @@
         </div>
     </div>
 </main>
+
 @section scripts{
     <script>
         if ('@ViewBag.Message' == "Success") {

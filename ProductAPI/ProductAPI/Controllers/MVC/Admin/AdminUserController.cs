@@ -9,8 +9,8 @@ using ProductAPI.Filters;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
-    //[JwtAuthorize("Admin")]
-    //[ServiceFilter(typeof(ValidateTokenAttribute))]
+    [JwtAuthorize("Admin")]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminUserController : Controller
     {
         private readonly IUserRepoisitory _userRepoisitory;
@@ -27,6 +27,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         public async Task<IActionResult> Index(int page=1, string searchText=null)
         {
             var users = new PagedResult<User>();
+
             if (searchText != null)
             {
                 users = await _userRepoisitory.GetPagedWithIncludeSearchAsync(page, 10, u => u.Username.ToLower().Contains(searchText.ToLower()), u => u.Group);
@@ -35,6 +36,7 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 users =  await _userRepoisitory.GetPagedWithIncludeAsync(page, 10, u => u.Group);
             }
+            users.Items = users.Items.Where(u=>u.UserId!=1).ToList();
             var userDtos = _mapper.Map<PagedResult<UserDTO>>(users);
             var userGroups = await _userUserGroupRepository.GetAllAsync();
             var userGroupDtos = _mapper.Map<List<GroupDTO>>(userGroups);
@@ -78,6 +80,11 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
+            if (id == 1)
+            {
+                TempData["ErrorMessage"] = "Admin user not allow edit";
+                return RedirectToAction("Index");
+            }
             var user = await _userRepoisitory.GetByIdAsync(id);
             var group = await _userUserGroupRepository.GetAllAsync();
 

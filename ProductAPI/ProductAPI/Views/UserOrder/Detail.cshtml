@@ -1,10 +1,9 @@
-﻿@model ProductDataAccess.Models.Order
+﻿@model ProductDataAccess.DTOs.OrderDTO
 
 @{
-    ViewData["Title"] = "Detail";
+    ViewData["Title"] = "Order Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 
 <div class="container my-5">
     <h2 class="text-center mb-4">Order Details</h2>
@@ -19,10 +18,10 @@
             <p>
                 <strong>Status:</strong>
                 <span class="badge
-      @(Model.Status == "Pending" ? "badge-info" :
-        Model.Status == "Completed" ? "badge-success" :
-        Model.Status == "Cancelled" ? "badge-danger" :
-        "badge-secondary")">
+                    @(Model.Status == "Pending" ? "badge-info" :
+                        Model.Status == "Completed" ? "badge-success" :
+                        Model.Status == "Cancelled" ? "badge-danger" :
+                        "badge-secondary")">
                     @Model.Status
                 </span>
             </p>
@@ -41,7 +40,29 @@
             <p><strong>Shipping Address:</strong> @Model.Address</p>
         </div>
     </div>
-
+    @if (Model.Voucher != null)
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <strong>Voucher Applied</strong>
+            </div>
+            <div class="card-body">
+                <p><strong>Voucher Code:</strong> @Model.Voucher.Code</p>
+                <p><strong>Discount Type:</strong> @Model.Voucher.DiscountType</p>
+                <p>
+                    <strong>Discount Value:</strong>
+                    @if (Model.Voucher.DiscountType == "Amount")
+                    {
+                        <span>$@Model.Voucher.DiscountValue.ToString("N0")</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Voucher.DiscountValue.ToString("N0")%</span>
+                    }
+                </p>
+            </div>
+        </div>
+    }
     <!-- Order Items -->
     <div class="card mb-4">
         <div class="card-header">
@@ -58,14 +79,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach(var item in Model.OrderItems)
+                    @foreach (var item in Model.OrderItems)
                     {
                         <tr>
                             <td>@item.Product.ProductName</td>
                             <td>@item.Quantity</td>
                             <td>$@item.Price</td>
                             <td>$@(item.Quantity * item.Price)</td>
-                        </tr>                   
+                        </tr>
                     }
                     <tr>
                         <td colspan="3" class="text-right"><strong>Total:</strong></td>
@@ -73,6 +94,17 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <!-- Voucher Applied (if any) -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <a href="@Url.Action("Index", "UserOrder", new { id = Context.Session.GetInt32("UserId") })" class="btn btn-primary">Back to list</a>
+            @if (Model.Status == "Pending")
+            {
+                <a href="@Url.Action("CancelOrder", "UserOrder", new { orderId = Model.OrderId })" class="btn btn-outline-danger">Cancel</a>
+            }
         </div>
     </div>
 </div>

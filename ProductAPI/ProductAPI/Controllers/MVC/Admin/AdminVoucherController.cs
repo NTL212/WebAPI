@@ -1,8 +1,6 @@
 ﻿
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using ProductAPI.Filters;
 using ProductAPI.Repositories;
@@ -11,13 +9,12 @@ using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
+
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
-    //[JwtAuthorize("Admin")]
-    //[ServiceFilter(typeof(ValidateTokenAttribute))]
+    [JwtAuthorize("Admin")]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminVoucherController : Controller
     {
         private readonly IVoucherRepository _voucherRepository;
@@ -45,10 +42,10 @@ namespace ProductAPI.Controllers.MVC.Admin
             _voucherAssignmentRepository = voucherAssignmentRepository;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
 
-            var vouchers = await _voucherRepository.GetPagedAsync(page, 10);
+            var vouchers = await _voucherRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.Code.ToLower().Contains(searchText.ToLower()));
             var voucherDTO = _mapper.Map<PagedResult<VoucherDTO>>(vouchers);
             return View(voucherDTO);
         }
@@ -168,7 +165,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
 
             var vouchers = await _voucherRepository.GetPagedAsync(page, 10);
-            var users = await _userRepository.GetAllAsync();
+            var users = await _userRepository.GetAllWithPredicateIncludeAsync(u=>u.UserId!=1);
             var userGroups = await _userGroupRepository.GetAllAsync();
             var voucherDTO = _mapper.Map<PagedResult<VoucherDTO>>(vouchers);
             voucherDTO.Users = _mapper.Map<List<UserDTO>>(users);
@@ -258,6 +255,11 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
 
             var campaign = _mapper.Map<VoucherCampaign>(createVM);
+            if (campaign.EndDate < campaign.StartDate)
+            {
+                TempData["ErrorMessage"] = "Failed to add campaign";
+                return RedirectToAction("ListCampaign");
+            }
 
             var result = await _voucherCampaignRepository.AddAsync(campaign);
             if (result)

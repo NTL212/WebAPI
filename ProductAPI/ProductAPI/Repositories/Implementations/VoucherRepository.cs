@@ -3,6 +3,7 @@ using ProductDataAccess.Models;
 using ProductAPI.Repositories;
 using Newtonsoft.Json;
 using ProductDataAccess.Models.Response;
+using ProductDataAccess.ViewModels;
 
 namespace ProductAPI.Repositories
 {
@@ -86,7 +87,7 @@ namespace ProductAPI.Repositories
             {
                 var existingVoucher = existingVoucherUsers.FirstOrDefault(vu => vu.UserId == user.UserId);
 
-                if (existingVoucher.Status == true)
+                if (existingVoucher !=null)
                 {
                     // User đã có voucher, chỉ cần cập nhật số lượng
                     existingVoucher.Quantity += quantity;
@@ -121,7 +122,7 @@ namespace ProductAPI.Repositories
             _context.VoucherUsers.UpdateRange(updatedVoucherUsers);
 
             // Cập nhật số lượng voucher còn lại
-            voucher.MaxUsage -= quantity * listUserId.Count;
+            voucher.UsedCount += quantity * listUserId.Count;
             _context.Vouchers.Update(voucher);
 
             return await _context.SaveChangesAsync() > 0;
@@ -145,5 +146,71 @@ namespace ProductAPI.Repositories
                 PageSize = pageSize
             };
         }
+
+        public async Task<ValidateVoucherVM> ValidateVoucher(Voucher voucher, User user, List<int> productIds, decimal totalOrder)
+        {
+            var voucherUser = await _context.VoucherUsers.FirstOrDefaultAsync(x => x.VoucherId == voucher.VoucherId && x.UserId == user.UserId);
+
+            if(voucherUser.Status == false)
+            {
+                return new ValidateVoucherVM(false, "The voucher not active.");
+            }
+
+            if (voucherUser.Quantity == voucherUser.TimesUsed)
+            {
+                return new ValidateVoucherVM(false, "The voucher out of stock");
+            }
+
+
+            if (voucher == null)
+            {
+                return new ValidateVoucherVM(false, "The voucher not exist.");
+            }
+
+            // Check expiry date
+            if (voucher.ExpiryDate <= DateTime.Now)
+            {
+                return new ValidateVoucherVM(false, "The voucher has expired.");
+            }
+
+            // Check voucher conditions
+            if (voucher.Conditions != "All")
+            {
+                var conditions = JsonConvert.DeserializeObject<VoucherCondition>(voucher.Conditions);
+
+                // Check user group
+                if (conditions.GroupName != "All" && conditions.GroupName != user.Group.GroupName)
+                {
+                    return new ValidateVoucherVM(false, "The voucher is not valid for your user group.");
+                }
+
+                // Check product list
+                if (conditions.ProductId?.Any() == true && productIds.Any(p => !conditions.ProductId.Contains(p)))
+                {
+                    return new ValidateVoucherVM(false, "The voucher is not valid for some items in your cart.");
+                }
+
+                // Check minimum order value
+                if (conditions.MinOrderValue > 0 && totalOrder < conditions.MinOrderValue)
+                {
+                    return new ValidateVoucherVM(false, $"Your order must be at least {conditions.MinOrderValue:C} to apply this voucher.");
+                }
+
+                // Calculate discount value
+                decimal discount = voucher.DiscountType == "Amount"
+                    ? (decimal)voucher.DiscountValue
+                    : totalOrder * (decimal)voucher.DiscountValue;
+
+                // Check maximum discount amount
+                if (conditions.MaxDiscountAmount > 0 && discount > conditions.MaxDiscountAmount)
+                {
+                    return new ValidateVoucherVM(false, $"The voucher supports a maximum discount of {conditions.MaxDiscountAmount:C}.");
+                }
+            }
+
+            // All conditions are valid
+            return new ValidateVoucherVM(true, "The voucher is valid.");
+        }
+
     }
 }

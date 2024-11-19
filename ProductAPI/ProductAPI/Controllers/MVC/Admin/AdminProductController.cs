@@ -9,8 +9,8 @@ using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
-    //[JwtAuthorize("Admin")]
-    //[ServiceFilter(typeof(ValidateTokenAttribute))]
+    [JwtAuthorize("Admin")]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminProductController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -23,7 +23,7 @@ namespace ProductAPI.Controllers.MVC.Admin
             _mapper = mapper;
             _categoryRepository = categoryRepository;
         }
-        public async Task<IActionResult> Index(int page = 1, string searchText=null)
+        public async Task<IActionResult> Index(int page = 1, string searchText = null)
         {
             var products = new PagedResult<Product>();
             if (searchText != null)
@@ -75,13 +75,14 @@ namespace ProductAPI.Controllers.MVC.Admin
             product.CreatedAt = DateTime.Now;
             if (await _productRepository.AddAsync(product))
             {
-                var createdProductDto = _mapper.Map<ProductDTO>(product);
-                return RedirectToAction("Create", new { mess = "Success" });
+                TempData["SuccessMessage"] = "Add product successfull";
             }
             else
             {
-                return RedirectToAction("Create", new { mess = "Failed" });
+                TempData["ErrorMessage"] = "Failed to add product";
+
             }
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -115,14 +116,17 @@ namespace ProductAPI.Controllers.MVC.Admin
 
                 if (await _productRepository.UpdateAsync(product))
                 {
-                    return RedirectToAction("Edit", new { id = product.ProductId, mess = "Success" });
+                    TempData["SuccessMessage"] = "Edit product successfull";
                 }
                 else
                 {
-                    return RedirectToAction("Edit", new { id = product.ProductId, mess = "Error" });
+                    TempData["ErrorMessage"] = "Failed to edit product";
+
                 }
+                return RedirectToAction("Edit", new { id = product.ProductId });
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
 
                 return RedirectToAction("Edit", new { id = productDTO.ProductId, mess = ex.Message });
             }
@@ -134,13 +138,19 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 if (await _productRepository.DeleteProduct(id))
                 {
-                    return RedirectToAction("Detail", new { id = id, mess = "Success" });
+                    TempData["SuccessMessage"] = "Delete product successfull";
                 }
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to delete product";
+
+                }
+                return RedirectToAction("Detail", new { id = id });
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                return RedirectToAction("Detail", new { id = id, mess = "Error"});
+                TempData["ErrorMessage"] = "Error";
+                return RedirectToAction("Detail", new { id = id });
             }
         }
 
@@ -150,13 +160,19 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 if (await _productRepository.RestoreProduct(id))
                 {
-                    return RedirectToAction("Detail", new { id = id, mess = "Success" });
+                    TempData["SuccessMessage"] = "Restore product successfull";
                 }
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to Restore product";
+
+                }
+                return RedirectToAction("Detail", new { id = id });
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
+                TempData["ErrorMessage"] = "Error";
+                return RedirectToAction("Detail", new { id = id });
             }
         }
     }

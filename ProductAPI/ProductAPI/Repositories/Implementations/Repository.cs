@@ -132,6 +132,7 @@ namespace ProductAPI.Repositories
         {
 
             IQueryable<T> query = _dbSet;
+            var totalRecords = _dbSet.Where(predicate).ToList().Count;
 
             foreach (var include in includes)
             {
@@ -146,7 +147,7 @@ namespace ProductAPI.Repositories
             return new PagedResult<T>
             {
                 Items = items,
-                TotalRecords = items.Count,
+                TotalRecords = totalRecords,
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };

@@ -9,8 +9,8 @@ using ProductAPI.Filters;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
-    //[JwtAuthorize("Admin")]
-    //[ServiceFilter(typeof(ValidateTokenAttribute))]
+    [JwtAuthorize("Admin")]
+    [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminCategoryController : Controller
     {
         private readonly IProductRepository _productRepository;
@@ -23,9 +23,9 @@ namespace ProductAPI.Controllers.MVC.Admin
             _mapper = mapper;
             _categoryRepository = categoryRepository;
         }
-        public async Task<IActionResult> Index(int page = 1)
+        public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
-            var categories = await _categoryRepository.GetPagedAsync(page, 10);
+            var categories = await _categoryRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.CategoryName.ToLower().Contains(searchText.ToLower()));
             var categoryDtos = _mapper.Map<PagedResult<CategoryDTO>>(categories);
             return View(categoryDtos);
         }

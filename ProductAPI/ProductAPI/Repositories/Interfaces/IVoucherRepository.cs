@@ -1,5 +1,6 @@
 ﻿using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
+using ProductDataAccess.ViewModels;
 
 namespace ProductAPI.Repositories
 {
@@ -15,5 +16,8 @@ namespace ProductAPI.Repositories
         Task<bool> DistributeVoucher(Voucher voucher, int quantity,string userIds);
 
         Task<PagedResult<Voucher>> GetVouchersOfUserPaged(int userId, int pageNumber, int pageSize);
+
+
+        Task<ValidateVoucherVM> ValidateVoucher(Voucher voucher, User user, List<int> productIds, decimal totalOrder);
     }
 }

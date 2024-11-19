@@ -40,6 +40,14 @@ namespace ProductAPI.Controllers.APIs
             return Ok(categoriesDto);
         }
 
+        [HttpGet("parentcategories")]
+        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllParentCategory()
+        {
+            var categories = await _categoryRepository.GetAllParentCategory();
+            var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+            return Ok(categoriesDto);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDTO>> GetById(int id)
         {

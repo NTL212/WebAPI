@@ -27,6 +27,13 @@ namespace ProductAPI.Repositories
 			order.OrderDate = DateTime.Now;
 			order.Status = "Pending";
 
+			if(order.VoucherId != null)
+			{
+				var voucherUser = await _context.VoucherUsers.FirstOrDefaultAsync(x=>x.VoucherId==order.VoucherId && x.UserId==userId);
+				voucherUser.TimesUsed += 1;
+				_context.VoucherUsers.Update(voucherUser);
+			}
+
 			_dbSet.Add(order);
             await _context.SaveChangesAsync();
 
@@ -65,11 +72,12 @@ namespace ProductAPI.Repositories
 
 		public async Task<PagedResult<Order>> GetPagedByUserAsync(int userId, int pageNumber, int pageSize)
 		{
-			var totalRecords = await _dbSet.CountAsync();
+			var totalRecords = await _dbSet.Where(o => o.UserId == userId).CountAsync();
 			var items = await _dbSet
 				.Where (o => o.UserId == userId)
-				.Skip((pageNumber - 1) * pageSize)
-				.Take(pageSize)
+                .OrderByDescending(o => o.OrderDate)
+                .Skip((pageNumber - 1) * pageSize)              
+                .Take(pageSize)			
 				.ToListAsync();
 
 			return new PagedResult<Order>

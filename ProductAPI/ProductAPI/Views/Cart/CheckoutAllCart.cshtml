@@ -12,8 +12,8 @@
     <nav aria-label="breadcrumb" class="breadcrumb-nav">
         <div class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Shop", "Product")">Shop</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Checkout</li>
             </ol>
         </div><!-- End .container -->
@@ -22,30 +22,30 @@
     <div class="page-content">
         <div class="checkout">
             <div class="container">
-                <div class="checkout-discount">
-                    <label for="voucherSelect">Choose Voucher</label>
-                    <input type="text" id="voucherSelect" class="form-control" readonly data-toggle="modal" data-target="#voucherModal">
-                    <input type="hidden" name="voucherId" id="voucherId" />
-                </div><!-- End .checkout-discount -->
-                <form id="orderForm">
+                <form method="post" action="@Url.Action("CheckoutAllCart", "Cart")">
                     <div class="row">
                         <div class="col-lg-9">
-                            <input id="voucherAppliedId" name="voucherAppliedId" value="@ViewBag.VoucherAppliedId" hidden />
+                            
+
+                            <input id="voucherAppliedId" name="VoucherAppliedId" value="@ViewBag.VoucherAppliedId" hidden />
                             <h2 class="checkout-title">Billing Details</h2><!-- End .checkout-title -->
 
+                            <label for="voucherSelect">Choose Voucher</label>
+                            <input type="text" class="form-control" id="voucherSelect" readonly data-toggle="modal" data-target="#voucherModal" value="@ViewBag.VoucherCode">
+
                             <label>Receiver Name </label>
-                            <input type="text" id="receiverName" name="receiverName" class="form-control" required>
+                            <input type="text" id="receiverName" name="ReceverName" class="form-control" required>
 
                             <label>Address *</label>
-                            <input type="text" id="address" name="address" class="form-control" required>
+                            <input type="text" id="address" name="Address" class="form-control" required>
 
                             <label>Phone *</label>
-                            <input type="text" id="phone" name="phoneNumber" class="form-control" required>
+                            <input type="text" id="phone" name="PhoneNumber" class="form-control" required>
 
                             
 
                             <label>Order notes (optional)</label>
-                            <textarea id="orderNotes" name="note" class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
+                            <textarea id="orderNotes" name="Note" class="form-control" cols="30" rows="4" placeholder="Notes about your order, e.g. special notes for delivery"></textarea>
                         </div><!-- End .col-lg-9 -->
                         <aside class="col-lg-3">
                             <div class="summary">
@@ -67,7 +67,7 @@
                                         @foreach (var item in Model.cartItems)
                                         {
                                             <tr>
-                                                <td><a href="#">@item.Product.ProductName</a></td>
+                                                <td><a href="#">@item.Product.ProductName x @item.Quantity</a></td>
                                                 <td>$@(item.Price * item.Quantity)</td>
                                             </tr>
                                             {
@@ -78,19 +78,34 @@
                                         <tr class="summary-subtotal">
                                             <td>Subtotal:</td>
                                             <td>$@subtotal</td>
-                                            <input hidden name="totalAmount" id="subtotal" value="@Model.SubTotal" />
+                                            <input hidden name="SubTotal" id="SubTotal" value="@Model.SubTotal" />
                                         </tr><!-- End .summary-subtotal -->
+                                        <tr>
+                                            @if (Model.voucherApplied != null)
+                                            {
+                                                if (Model.voucherApplied.DiscountType.Contains("Amount"))
+                                                {
+                                                    <td>Voucher Discount:</td>
+                                                    <td>$@Model.voucherApplied.DiscountValue.ToString("N0")</td>
+                                                }
+                                                else
+                                                {
+                                                    <td>Voucher Discount:</td>
+                                                    <td>@Model.voucherApplied.DiscountValue.ToString("N0")%</td>
+                                                }
+                                            }
+                                        </tr>
                                         <tr>
                                             @if(Model.voucherApplied != null)
                                             {
                                                 <td>Discount:</td>
-                                                <td>@Model.Discount</td>
+                                                <td>$@Model.Discount</td>
                                             }
                                         </tr>
                                         <tr class="summary-total">
-                                            <input hidden name="totalAmount" id="totalAmount" value="@Model.total" />
+                                            <input hidden name="totalAmount" id="TotalAmount" value="@Model.total" />
                                             <td>Total:</td>
-                                            <td>@Model.total</td> <!-- Nếu Total là subtotal + shipping, bạn có thể điều chỉnh thêm -->
+                                            <td>$@Model.total.ToString("N0")</td> <!-- Nếu Total là subtotal + shipping, bạn có thể điều chỉnh thêm -->
                                         </tr><!-- End .summary-total -->
                                     </tbody>
 
@@ -350,57 +365,5 @@
             }
         });
 
-    </script>
-    <script>
-        document.getElementById("orderForm").addEventListener("submit", async function (event) {
-            event.preventDefault();
-
-            // Lấy dữ liệu từ form
-            const receiverName = document.getElementById("receiverName").value;
-            const address = document.getElementById("address").value;
-            const phone = document.getElementById("phone").value;
-            const orderNotes = document.getElementById("orderNotes").value;
-            const total = document.getElementById("totalAmount").value;
-            const subtotal = document.getElementById("subtotal").value;
-            const voucherAppliedId = document.getElementById("voucherAppliedId").value;
-
-
-            // Tạo dữ liệu để gửi API
-            const orderData = {
-                receverName: receiverName,
-                address: address,
-                phoneNumber: phone,
-                note: orderNotes,
-                totalAmount: total,
-                subTotal: subtotal,
-                voucherAppliedId: voucherAppliedId
-            };
-
-            $.ajax({
-                url: "/Cart/CheckoutAllCart",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(orderData),
-                success: function (response) {
-                    console.log(response);
-                    Swal.fire({
-                        title: 'Order Placed Successfully!',
-                        text: 'Your order has been placed successfully. You will be redirected to the order details page.',
-                        icon: 'success',
-                        confirmButtonText: 'View Order'
-                    }).then(() => {
-                        window.location.href = `/product/index/`;
-                    })
-                },
-                error: function (xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Order Failed',
-                        text: "An error occurred while placing the order.",
-                        confirmButtonText: 'Try Again'
-                    })
-                }
-            });
-        });
     </script>
 }

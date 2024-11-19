@@ -6,6 +6,7 @@ using ProductDataAccess.DTOs;
 using ProductAPI.Filters;
 using ProductDataAccess.Models;
 using ProductAPI.Repositories;
+using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Controllers.APIs
 {
@@ -40,6 +41,21 @@ namespace ProductAPI.Controllers.APIs
             return Ok(productsDto);
         }
 
+        [HttpGet("{id}/category/paged/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProductsByCategory(int id, int pageNumber,string searchKey= "")
+        {
+            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9, p => p.ProductName.ToLower().Contains(searchKey.ToLower()) && (p.CategoryId==id || p.Category.ParentId == id), p => p.Category);
+            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
+            return Ok(productsDto);
+        }
+
+        [HttpGet("paged/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllPaged(int pageNumber, string searchKey="")
+        {
+            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9,p=>p.ProductName.ToLower().Contains(searchKey.ToLower()) ,p=>p.Category);
+            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
+            return Ok(productsDto);
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
