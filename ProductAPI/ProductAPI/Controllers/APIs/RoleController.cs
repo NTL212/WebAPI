@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductAPI.Repositories;
-using ProductAPI.Repositories.Interfaces;
+using ProductDataAccess.Repositories;
+using ProductDataAccess.Repositories.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 

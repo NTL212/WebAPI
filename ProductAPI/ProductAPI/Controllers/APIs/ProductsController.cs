@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
 using ProductAPI.Filters;
 using ProductDataAccess.Models;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.Models.Response;
 
 namespace ProductAPI.Controllers.APIs
@@ -44,7 +44,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet("{id}/category/paged/{pageNumber}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProductsByCategory(int id, int pageNumber,string searchKey= "")
         {
-            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9, p => p.ProductName.ToLower().Contains(searchKey.ToLower()) && (p.CategoryId==id || p.Category.ParentId == id), p => p.Category);
+            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9, p => p.ProductName.ToLower().Contains(searchKey.ToLower()) && p.IsDeleted==false && p.Category.IsDeleted == false && (p.CategoryId==id || p.Category.ParentId == id), p => p.Category);
             var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
             return Ok(productsDto);
         }
@@ -52,7 +52,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet("paged/{pageNumber}")]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllPaged(int pageNumber, string searchKey="")
         {
-            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9,p=>p.ProductName.ToLower().Contains(searchKey.ToLower()) ,p=>p.Category);
+            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9,p=>p.ProductName.ToLower().Contains(searchKey.ToLower()) && p.IsDeleted==false && p.Category.IsDeleted==false ,p=>p.Category);
             var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
             return Ok(productsDto);
         }

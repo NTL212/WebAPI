@@ -6,9 +6,9 @@ using Microsoft.OpenApi.Models;
 using ProductAPI.Email;
 using ProductAPI.Filters;
 using ProductAPI.Profiles;
-using ProductAPI.Repositories;
-using ProductAPI.Repositories.Implementations;
-using ProductAPI.Repositories.Interfaces;
+using ProductDataAccess.Repositories;
+using ProductDataAccess.Repositories.Implementations;
+using ProductDataAccess.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
 using System.Text;
@@ -123,6 +123,8 @@ builder.Services.AddCors(options =>
 						.AllowAnyMethod());
 });
 
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 var app = builder.Build();
 

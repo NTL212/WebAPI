@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
 using ProductAPI.Filters;
 using ProductDataAccess.Models;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 
 
 namespace ProductAPI.Controllers.APIs

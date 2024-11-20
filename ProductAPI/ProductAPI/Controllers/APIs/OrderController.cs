@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.Models;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
 
 namespace ProductAPI.Controllers.APIs
@@ -20,17 +20,17 @@ namespace ProductAPI.Controllers.APIs
         }
 
         // Tạo đơn hàng mới
-        [HttpPost("{userId}")]
-        public async Task<IActionResult> CreateOrder(int userId, OrderDTO orderDto)
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] Order order)
         {
-            var newOrder = _mapper.Map<Order>(orderDto);
-            var order = await _orderRepository.CreateOrderAsync(userId, newOrder);
-            if (order == null)
+            var result = await _orderRepository.CreateOrderAsync(order);
+            if (result == null)
                 return BadRequest("Could not create order.");
 
             // Ánh xạ lại Order sang OrderDTO
             var orderDTO = _mapper.Map<OrderDTO>(order);
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = order.OrderId }, orderDTO);
+            return CreatedAtAction(nameof(GetOrderById), new { orderId = orderDTO.OrderId }, orderDTO);
+
         }
 
 		// Lấy tất cả đơn hàng 
@@ -79,5 +79,17 @@ namespace ProductAPI.Controllers.APIs
 
             return NoContent();
         }
+
+        [HttpDelete("{orderId}")]
+        public async Task<IActionResult> CancelOrder(int orderId)
+        {
+            var updated = await _orderRepository.CancelOrderAsync(orderId);
+            if (!updated)
+                return BadRequest("Could not update order status.");
+
+            return NoContent();
+        }
+
+
     }
 }

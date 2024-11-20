@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.Models;
 using System.Text.Json;
 

@@ -2,7 +2,7 @@
 using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;

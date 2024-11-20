@@ -2,8 +2,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
+using Newtonsoft.Json;
+using ProductDataAccess.Models.Request;
+using RabbitMQ.Client;
+using System.Text;
+using static MassTransit.ValidationResultExtensions;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -54,7 +59,11 @@ namespace ProductAPI.Controllers.MVC.Admin
             var updated = await _orderRepository.UpdateOrderStatusAsync(orderId, status);
             if (updated)
             {
-                message = "Success";
+                TempData["SuccessMessage"] = "Confirm order successfull";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to confirm order";
             }
             return RedirectToAction("Detail", new { id = orderId, mess = message });
         }

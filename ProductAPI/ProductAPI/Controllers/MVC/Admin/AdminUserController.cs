@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ProductAPI.Repositories.Interfaces;
+using ProductDataAccess.Repositories.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.Models;

@@ -230,6 +230,22 @@
   },
   {
     "ContainingType": "ProductAPI.Controllers.APIs.OrderController",
+    "Method": "CreateOrder",
+    "RelativePath": "api/Order",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "order",
+        "Type": "ProductDataAccess.Models.Order",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.OrderController",
     "Method": "GetAllOrder",
     "RelativePath": "api/Order",
     "HttpMethod": "GET",
@@ -243,6 +259,22 @@
     "Method": "GetOrderById",
     "RelativePath": "api/Order/{orderId}",
     "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ProductAPI.Controllers.APIs.OrderController",
+    "Method": "CancelOrder",
+    "RelativePath": "api/Order/{orderId}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -270,27 +302,6 @@
       {
         "Name": "status",
         "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ProductAPI.Controllers.APIs.OrderController",
-    "Method": "CreateOrder",
-    "RelativePath": "api/Order/{userId}",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "orderDto",
-        "Type": "ProductDataAccess.DTOs.OrderDTO",
         "IsRequired": true
       }
     ],

@@ -57,13 +57,21 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "MassTransit": {
+              "target": "Package",
+              "version": "[8.3.1, )"
+            },
+            "MassTransit.RabbitMQ": {
+              "target": "Package",
+              "version": "[8.3.1, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
             },
-            "RabbitMQ.Client": {
+            "Polly": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[8.5.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -138,6 +146,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Identity": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.10, )"
@@ -151,6 +163,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[8.0.10, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           },
           "imports": [

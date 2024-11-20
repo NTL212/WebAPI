@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProductAPI.Filters;
-using ProductAPI.Repositories.Interfaces;
+using ProductDataAccess.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Request;

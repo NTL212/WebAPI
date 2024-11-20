@@ -1,7 +1,7 @@
 ﻿using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;

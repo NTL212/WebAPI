@@ -1,23 +1,27 @@
-﻿namespace OrderService.Services
+﻿using OrderService;
+using ProductDataAccess.Models;
+using ProductDataAccess.Repositories;
+using RabbitMQ.Client;
+
+
+public class OrderConsumerBackgroundService : BackgroundService
 {
-    public class OrderConsumerBackgroundService : BackgroundService
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<OrderConsumerBackgroundService> _logger;
+
+    public OrderConsumerBackgroundService(IServiceProvider serviceProvider, ILogger<OrderConsumerBackgroundService> logger)
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public OrderConsumerBackgroundService(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            // Đảm bảo rằng consumer chỉ được tạo trong scope hợp lệ
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var orderConsumer = scope.ServiceProvider.GetRequiredService<OrderConsumer>();
-                await orderConsumer.StartConsuming();
-            }
-        }
+        _serviceProvider = serviceProvider;
+        _logger = logger;
     }
 
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var orderConsumer = scope.ServiceProvider.GetRequiredService<OrderConsumer>();
+            await orderConsumer.StartConsuming();
+        }
+    }
 }

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
-using ProductAPI.Repositories;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.ViewModels;
-using ProductAPI.Repositories.Interfaces;
+using ProductDataAccess.Repositories.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
