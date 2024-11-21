@@ -47,9 +47,12 @@
                                                     </div>
                                                     @if (category.InverseParent.Count > 0)
                                                     {
-                                                        <div>
-                                                            <a href="javascript:void(0);" class="btn btn-sm btn-info mb-0" onclick="toggleSubcategories(@category.CategoryId)">
+                                                        <div class="d-flex justify-content-between">
+                                                            <a href="javascript:void(0);" class="btn btn-sm btn-info mb-0 me-4" onclick="toggleSubcategories(@category.CategoryId)">
                                                                 <i class="fas fa-chevron-down"></i> View Subcategories
+                                                            </a>
+                                                            <a href="@Url.Action("ProductsOfCategory", "AdminCategory", new {categoryId=category.CategoryId})" class="btn btn-sm btn-success mb-0">
+                                                                <i class="fas fa-chevron-down"></i> View Products
                                                             </a>
                                                         </div>
                                                     }

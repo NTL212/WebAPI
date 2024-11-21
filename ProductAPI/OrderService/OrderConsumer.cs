@@ -9,6 +9,7 @@ using System.Text;
 using ProductDataAccess.Models.Request;
 using System.Threading.Channels;
 using MassTransit.Transports;
+using ProductDataAccess.ViewModels;
 
 namespace OrderService
 {
@@ -138,13 +139,15 @@ namespace OrderService
 
             // Gọi API để tạo đơn hàng
             var client = _httpClientFactory.CreateClient();
-            var resultJson = JsonConvert.SerializeObject(order);
+            var resultJson = JsonConvert.SerializeObject(order);       
 
             try
             {
                 var response = await client.PostAsync($"{_apiUrl}api/order", new StringContent(resultJson, Encoding.UTF8, "application/json"));
                if (response.IsSuccessStatusCode)
                 {
+                    var content = await response.Content.ReadAsStringAsync();
+                    await client.PostAsync($"{_apiUrl}Cart/OrderResult", new StringContent(content, Encoding.UTF8, "application/json"));
                     _logger.LogInformation($"Order {order.OrderId} created successfully via API.");
                 }
                 else

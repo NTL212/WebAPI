@@ -19,8 +19,6 @@ public partial class Voucher
 
     public int? MaxUsage { get; set; }
 
-    public int? MaxPerUsage { get; set; }
-
     public int? UsedCount { get; set; }
 
     public string? VoucherType { get; set; }

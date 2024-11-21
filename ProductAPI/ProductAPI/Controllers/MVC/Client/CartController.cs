@@ -25,11 +25,13 @@ namespace ProductAPI.Controllers.MVC.Client
         private readonly IVoucherUserRepository _voucherUserRepository;
         private readonly IUserRepoisitory _userRepository;
         private readonly IProductRepository _productRepository;
+        private readonly RabbitMqService _rabbitMqService;
 
         // Injecting the service in the controller's constructor
         public CartController(ICartService cartService, IMapper mapper, IOrderRepository orderRepository,
             IVoucherRepository voucherRepository, IVoucherUserRepository voucherUserRepository,
-            IUserRepoisitory userRepository, IProductRepository productRepository)
+            IUserRepoisitory userRepository, IProductRepository productRepository,
+            RabbitMqService rabbitMqService)
         {
             _cartService = cartService;
             _mapper = mapper;
@@ -38,6 +40,7 @@ namespace ProductAPI.Controllers.MVC.Client
             _voucherUserRepository = voucherUserRepository;
             _userRepository = userRepository;
             _productRepository = productRepository;
+            _rabbitMqService = rabbitMqService;
         }
 
         // Get the cart and display it along with the total price and quantity
@@ -147,8 +150,13 @@ namespace ProductAPI.Controllers.MVC.Client
         [HttpPost]
         public async Task<IActionResult> CheckoutAllCart(OrderDTO orderDTO)
         {
+            if (!ModelState.IsValid) { 
+
+            }
+
             var cart = _cartService.GetCart();
             var userId = HttpContext.Session.GetInt32("UserId");
+            var user = await _userRepository.GetByIdAsync((int)userId);
             var order = _mapper.Map<Order>(orderDTO);
             foreach (var item in cart)
             {
@@ -178,39 +186,40 @@ namespace ProductAPI.Controllers.MVC.Client
             var rabbitMessageJson = JsonConvert.SerializeObject(rabbitMessage);
 
             // Send order data to RabbitMQ
-            var factory = new ConnectionFactory
-            {
-                HostName = "localhost",
-                AutomaticRecoveryEnabled = true, // Tự động khôi phục kết nối
-                NetworkRecoveryInterval = TimeSpan.FromSeconds(10) // Khoảng thời gian thử lại
-            };
-            using (var connection =  factory.CreateConnection())
-            using (var channel =  connection.CreateModel())
-            {
-                channel.QueueDeclare(queue: "OrderQueue2",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+            //var factory = new ConnectionFactory
+            //{
+            //    HostName = "localhost",
+            //    AutomaticRecoveryEnabled = true, // Tự động khôi phục kết nối
+            //    NetworkRecoveryInterval = TimeSpan.FromSeconds(10) // Khoảng thời gian thử lại
+            //};
+            //using (var connection = factory.CreateConnection())
+            //using (var channel = connection.CreateModel())
+            //{
+            //    channel.QueueDeclare(queue: "OrderQueue2",
+            //                         durable: false,
+            //                         exclusive: false,
+            //                         autoDelete: false,
+            //                         arguments: null);
 
-                var body = Encoding.UTF8.GetBytes(rabbitMessageJson);
+            //    var body = Encoding.UTF8.GetBytes(rabbitMessageJson);
 
-                channel.BasicPublish(
-                    exchange: "",
-                    routingKey: "OrderQueue2",
-                    basicProperties: null,
-                    body: body
-                );
-            }
+            //    channel.BasicPublish(
+            //        exchange: "",
+            //        routingKey: "OrderQueue2",
+            //        basicProperties: null,
+            //        body: body
+            //    );
+            //}
+
+            _rabbitMqService.PublishOrderMessage(rabbitMessageJson);
 
             TempData["SuccessMessage"] = "Your order has been submitted for processing!";
             return RedirectToAction("Index", "UserOrder", new { userId });
         }
 
-        [HttpGet]
-        public async Task<IActionResult> OrderResult(string result)
+        [HttpPost]
+        public async Task<IActionResult> OrderResult([FromBody] ResultVM resultVM)
         {
-            var resultVM = JsonConvert.DeserializeObject<ResultVM>(result);
             var userId = HttpContext.Session.GetInt32("UserId");
             if (resultVM.IsSuccess)
             {

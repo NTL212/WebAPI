@@ -65,6 +65,18 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpPost]
         public async Task<IActionResult> Create(UserDTO userDTO, string password)
         {
+            if (!ModelState.IsValid)
+            {
+                return await ReturnModelError(userDTO);
+            }
+
+            var userExist = _userRepoisitory.GetByIdWithIncludeAsync(u=>u.Email == userDTO.Email);
+            if (userExist != null)
+            {
+                ModelState.AddModelError("", "Email had exist");
+                return await ReturnModelError(userDTO);
+            }
+
             var user = _mapper.Map<User>(userDTO);
             var result = await _userRepoisitory.CreateUser(user, password);
             if (result)
@@ -97,7 +109,17 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpPost]
         public async Task<IActionResult> Edit(UserDTO userDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return await ReturnModelError(userDto);
+            }
+
             var user = await _userRepoisitory.GetByIdAsync(userDto.UserId);
+
+            if(user == null)
+            {
+                return await ReturnModelError(userDto);
+            }
             user.Username = userDto.Username;
             user.Email = userDto.Email;
             user.GroupId = userDto.GroupId;
@@ -132,6 +154,13 @@ namespace ProductAPI.Controllers.MVC.Admin
             }
 
             return RedirectToAction("Index");
+        }
+
+        private async Task<IActionResult> ReturnModelError(UserDTO userDTO)
+        {
+            var group = await _userUserGroupRepository.GetAllAsync();
+            ViewData["groups"] = _mapper.Map<List<GroupDTO>>(group);
+            return View(userDTO);
         }
     }
 }

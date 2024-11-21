@@ -19,10 +19,12 @@
                     </div>
                     <div class="card-body">
                         <form method="post" enctype="multipart/form-data">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <!-- Product Name -->
                             <div class="mb-3">
                                 <label for="ProductName" class="form-label">Product Name</label>
                                 <input type="text" class="form-control" id="ProductName" name="ProductName" value="" required />
+                                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Category -->
@@ -50,12 +52,14 @@
                             <div class="mb-3">
                                 <label for="Price" class="form-label">Price ($)</label>
                                 <input type="number" class="form-control" id="Price" name="Price" value="" required />
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Stock -->
                             <div class="mb-3">
                                 <label for="Stock" class="form-label">Stock</label>
                                 <input type="number" class="form-control" id="Stock" name="Stock" value="" required />
+                                @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
                             </div>
 
                            @*   <!-- Description -->
@@ -67,7 +71,7 @@
                             <!-- Product Image -->
                             <div class="mb-3">
                                 <label for="ProductImage" class="form-label">Product Image</label>
-                                <input type="file" class="form-control" id="productImage" name="productImage" />
+                                <input type="file" class="form-control" id="productImage" name="productImage" required/>
                             </div>
 
                             <!-- Status  -->

@@ -9,6 +9,7 @@ using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
+using System.Text.RegularExpressions;
 
 
 namespace ProductAPI.Controllers.MVC.Admin
@@ -66,6 +67,17 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpPost]
         public async Task<IActionResult> Create(VoucherCreateVM createVM)
         {
+             if (!ModelState.IsValid)
+            {
+                return await ReturnModelError(createVM);
+            }
+
+            if (createVM.ExpiryDate < DateTime.Now)
+            {
+                ModelState.AddModelError("", "The expiry date is not a valid.");
+                return await ReturnModelError(createVM);
+            }
+
             List<int> selectedProductIds = createVM.ProductId != null
     ? JsonConvert.DeserializeObject<List<int>>(createVM.ProductId) ?? new List<int>()
     : new List<int>();
@@ -101,6 +113,8 @@ namespace ProductAPI.Controllers.MVC.Admin
             var categories = await _categoryRepository.GetAllAsync();
             var voucher = await _voucherRepository.GetByIdAsync(id);
 
+           
+
             VoucherEditVM vm = _mapper.Map<VoucherEditVM>(voucher);
             try
             {
@@ -121,22 +135,33 @@ namespace ProductAPI.Controllers.MVC.Admin
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(VoucherEditVM createVM)
+        public async Task<IActionResult> Edit(VoucherEditVM editVM)
         {
-            List<int> selectedProductIds = createVM.ProductId != null
-    ? JsonConvert.DeserializeObject<List<int>>(createVM.ProductId) ?? new List<int>()
+            if (!ModelState.IsValid)
+            {
+                return await ReturnModelError(editVM);
+            }
+
+            if(editVM.ExpiryDate < DateTime.Now)
+            {
+                ModelState.AddModelError("", "The expiry date is not a valid.");
+                return await ReturnModelError(editVM);
+            }
+
+            List<int> selectedProductIds = editVM.ProductId != null
+    ? JsonConvert.DeserializeObject<List<int>>(editVM.ProductId) ?? new List<int>()
     : new List<int>();
 
 
             var voucherCondition = new VoucherCondition();
 
-            voucherCondition.MinOrderValue = createVM.MinOrderValue ?? 0m; // Gán mặc định là 0 nếu null
-            voucherCondition.MaxDiscountAmount = createVM.MaxDiscountAmount ?? 0m; // Gán mặc định là 0 nếu null
-            voucherCondition.GroupName = createVM.GroupName ?? "Default Group Name"; // Gán mặc định nếu null
+            voucherCondition.MinOrderValue = editVM.MinOrderValue ?? 0m; // Gán mặc định là 0 nếu null
+            voucherCondition.MaxDiscountAmount = editVM.MaxDiscountAmount ?? 0m; // Gán mặc định là 0 nếu null
+            voucherCondition.GroupName = editVM.GroupName ?? "Default Group Name"; // Gán mặc định nếu null
             voucherCondition.ProductId = selectedProductIds ?? new List<int>(); // Gán danh sách rỗng nếu null
 
 
-            var voucher = _mapper.Map<Voucher>(createVM);
+            var voucher = _mapper.Map<Voucher>(editVM);
             voucher.Conditions = JsonConvert.SerializeObject(voucherCondition);
 
             var result = await _voucherRepository.UpdateAsync(voucher);
@@ -253,13 +278,20 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpPost]
         public async Task<IActionResult> CreateCampaign(CampaignVM createVM)
         {
+            if (!ModelState.IsValid)
+            {
+
+                return await ReturnModelError(createVM);
+            }
+
+            if(createVM.StartDate > createVM.EndDate)
+            {
+                ModelState.AddModelError("", "The expiry date is not a valid.");
+                return await ReturnModelError(createVM);
+            }
 
             var campaign = _mapper.Map<VoucherCampaign>(createVM);
-            if (campaign.EndDate < campaign.StartDate)
-            {
-                TempData["ErrorMessage"] = "Failed to add campaign";
-                return RedirectToAction("ListCampaign");
-            }
+
 
             var result = await _voucherCampaignRepository.AddAsync(campaign);
             if (result)
@@ -297,6 +329,17 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpPost]
         public async Task<IActionResult> EditCampaign(CampaignVM editVM)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return await ReturnModelError(editVM);
+            }
+
+            if (editVM.StartDate > editVM.EndDate)
+            {
+                ModelState.AddModelError("", "The expiry date is not a valid.");
+                return await ReturnModelError(editVM);
+            }
 
             var campaign = _mapper.Map<VoucherCampaign>(editVM);
 
@@ -354,5 +397,49 @@ namespace ProductAPI.Controllers.MVC.Admin
             }
             return RedirectToAction("Index", "AdminUser");
         }
+
+        public async Task<IActionResult> DeteleVoucherOrCampaign(int voucherId, int campaignId)
+        {
+            var voucherAssign = await _voucherAssignmentRepository.GetByIdWithIncludeAsync(v=>v.VoucherId == voucherId && v.CampaignId==campaignId);
+            var result = await _voucherAssignmentRepository.DeleteAsync(voucherAssign.AssignmentId);     
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Delete successfull";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete voucher";
+            }
+            return RedirectToAction("DetailCampaign", new {id = campaignId});
+        }
+
+        private async Task<IActionResult> ReturnModelError(VoucherCreateVM vm)
+        {
+            vm = await PrepareViewModel(vm);
+            return View(vm);
+        }
+
+        private async Task<IActionResult> ReturnModelError(VoucherEditVM vm)
+        {
+            vm = await PrepareViewModel(vm);
+            return View(vm);
+        }
+
+        private async Task<IActionResult> ReturnModelError(CampaignVM vm)
+        {
+            var groups = await _userGroupRepository.GetAllAsync();
+            vm.Groups = _mapper.Map<List<GroupDTO>>(groups);
+            return View(vm);
+        }
+
+        private async Task<T> PrepareViewModel<T>(T vm) where T : VoucherBaseVM
+        {
+            var products = await _productRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
+            vm.Products = _mapper.Map<List<ProductDTO>>(products);
+            vm.Categories = _mapper.Map<List<CategoryDTO>>(categories);
+            return vm;
+        }
+
     }
 }

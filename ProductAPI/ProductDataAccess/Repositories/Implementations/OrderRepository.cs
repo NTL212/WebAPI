@@ -124,5 +124,13 @@ namespace ProductDataAccess.Repositories
             _context.Orders.Update(order);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> ConfirmOrders(List<int> selectedOrderIds)
+        {
+            var orders = await _dbSet.Where(o=>selectedOrderIds.Contains(o.OrderId)).ToListAsync();
+
+            orders.ForEach(o => o.Status = "Confirmed");
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

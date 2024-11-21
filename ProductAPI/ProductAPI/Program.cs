@@ -55,6 +55,7 @@ builder.Services.AddScoped<PasswordHasher<User>>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<RabbitMqService>();
 builder.Services.AddScoped<ValidateTokenAttribute>();
 
 //Mail

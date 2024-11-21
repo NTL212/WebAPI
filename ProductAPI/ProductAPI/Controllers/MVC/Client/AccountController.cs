@@ -36,6 +36,17 @@ namespace ProductAPI.Controllers.MVC.Client
                 return RedirectToAction("Index", "Home");
             }
 
+            var user = await _userRepository.GetByIdWithIncludeAsync(u => u.Email == loginDto.Email);
+            if (user == null)
+            {
+                TempData["LoginErrorMessage"] = "Account not exist.";
+                return RedirectToAction("Index", "Home");
+            }
+            else if(user.IsActive == false)
+            {
+                TempData["LoginErrorMessage"] = "Account not active";
+                return RedirectToAction("Index", "Home");
+            }
             // Tạo HttpClient từ IHttpClientFactory
             var client = _httpClientFactory.CreateClient();
 

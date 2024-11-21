@@ -13,5 +13,7 @@ namespace ProductDataAccess.Repositories
 		Task<bool> CancelOrderAsync(int orderId);
 
         Task<Order> GetOrderById(int orderId);
+
+        Task<bool> ConfirmOrders(List<int> selectedOrderIds);
     }
 }

@@ -32,7 +32,7 @@ namespace ProductDataAccess.Repositories.Implementations
             {
                 user.PasswordHash = user.PasswordHash = _passwordHasher.HashPassword(user, password); // Mã hóa mật khẩu
                 user.CreatedAt = DateTime.Now;
-                user.RoleId = 1;
+                user.RoleId = 2;
                 await _dbSet.AddAsync(user);
                 return await _context.SaveChangesAsync() > 0;
             }

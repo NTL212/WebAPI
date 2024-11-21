@@ -25,7 +25,6 @@
                             <i class="fas fa-arrow-left me-1"></i> Back to List
                         </a>
                     </div>
-
                     <!-- Card Body -->
                     <div class="card-body">
                         <!-- Basic Information -->
@@ -77,10 +76,10 @@
                                                 <td class="text-center">@voucher.DiscountValue</td>
                                                 <td class="text-center">@voucher.ExpiryDate.ToString("dd MMM yyyy")</td>
                                                 <td class="text-center">
-                                                    <button class="btn btn-sm btn-danger"
-                                                            onclick="removeVoucher('@voucher.VoucherId')">
+                                                    <a class="btn btn-sm btn-danger"
+                                                       href="@Url.Action("DeteleVoucherOrCampaign", "AdminVoucher", new {voucherId= voucher.VoucherId, campaignId = Model.CampaignId})">
                                                         <i class="fas fa-trash-alt me-1"></i> Remove
-                                                    </button>
+                                                    </a>
                                                 </td>
                                             </tr>
                                         }
@@ -88,6 +87,14 @@
                                 </table>
                             </div>
 
+                     
+
+                       
+                        }
+                        else
+                        {
+                            <p class="text-muted">No vouchers assigned to this campaign yet.</p>
+                        }
                         <!-- Action Buttons -->
                         <div class="row mt-4">
                             <div class="col-12 text-end">
@@ -98,19 +105,9 @@
                                    class="btn btn-secondary btn-sm">
                                     <i class="fas fa-edit me-1"></i> Edit
                                 </a>
-                                <button class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash-alt me-1"></i> Delete
-                                </button>
+                            
                             </div>
                         </div>
-
-                       
-                        }
-                        else
-                        {
-                            <p class="text-muted">No vouchers assigned to this campaign yet.</p>
-                        }
-
                     </div>
                 </div>
             </div>
@@ -170,52 +167,26 @@
             })
         }
 
-        $(document).ready(function () {
-            // Xử lý nút Apply
-            $('#applySelectedVouchers').click(function () {
-                var selectedVouchers = [];
-
-                // Lặp qua tất cả các checkbox và lấy các voucher đã chọn
-                $('.voucher-checkbox:checked').each(function () {
-                    selectedVouchers.push($(this).data('voucher-id')); // Lấy voucherId từ thuộc tính data-voucher-id
-                });
-
-                if (selectedVouchers.length > 0) {
-                    // Gửi các voucher đã chọn lên server (có thể sử dụng AJAX)
-                    $.ajax({
-                        url: '/AdminVoucher/ApplySelectedVouchers', // Thay đổi URL theo đúng action của bạn
-                        method: 'POST',
-                        data: { voucherIds: selectedVouchers },
-                        success: function (response) {
-                            alert('Vouchers applied successfully!');
-                            // Có thể cập nhật lại modal hoặc đóng modal sau khi thành công
-                            $('#voucherModal').modal('hide');
-                        },
-                        error: function () {
-                            alert('Error applying vouchers.');
-                        }
-                    });
-                } else {
-                    alert('Please select at least one voucher.');
-                }
-            });
-        });
-
+   
 
         function loadPage(pageNumber, userId) {
             // Lấy từ khóa tìm kiếm từ input
-            var searchKeyword = $('#searchKeyword').val();
+            var searchKeyword = $('#searchKeyword').value;
+           
 
             // Gửi yêu cầu AJAX với từ khóa tìm kiếm và số trang
             $.ajax({
                 url: '/AdminVoucher/GetUserVouchers',  // Thay bằng URL phù hợp
                 data: {
+                    campaignId: '@Model.CampaignId',
                     userId: userId,  // userId nếu có
                     page: pageNumber, // số trang
                     searchKeyword: searchKeyword // gửi từ khóa tìm kiếm
                 },
                 type: 'GET',
                 success: function (response) {
+                 
+                    console.log($('#voucherForm'))
                     // Cập nhật lại nội dung modal với dữ liệu mới
                     $('#voucherModal .modal-content').html(response);  // Update modal body
                 },

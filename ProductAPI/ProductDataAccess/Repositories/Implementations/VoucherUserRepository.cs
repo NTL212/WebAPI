@@ -14,9 +14,14 @@ namespace ProductDataAccess.Repositories.Implementations
         public async Task<bool> DeleteDistributeVoucher(int id)
         {
             var vu = await _dbSet.FirstOrDefaultAsync(v=>v.VoucherUserId == id);
+            var voucher = await _context.Vouchers.FirstOrDefaultAsync(v => v.VoucherId == vu.VoucherId);
             try
             {
-                vu.Status = false; 
+                vu.Status = false;
+                if (voucher.UsedCount > 0)
+                {
+                    voucher.UsedCount -= vu.Quantity;
+                }             
                 _dbSet.Update(vu);
                 return await _context.SaveChangesAsync() > 0;
             }

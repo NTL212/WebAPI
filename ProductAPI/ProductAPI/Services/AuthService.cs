@@ -60,13 +60,19 @@ namespace ProductAPI.Services
 
 		public async Task<AuthResponseData> Login(LoginDTO loginDto)
 		{
-			var user = await _context.Set<User>().Include(u=>u.Role).FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive==true);
-			var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
-			if (user == null || verificationResult== PasswordVerificationResult.Failed)
-				throw new UnauthorizedAccessException("Invalid credentials");
-			var token = GenerateJwtToken(user);
-			var authData = new AuthResponseData(token, user.UserId, user.Username, user.Role.Name);
-            return authData;
+			try
+			{
+				var user = await _context.Set<User>().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == loginDto.Email && u.IsActive == true);
+				var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
+				if (user == null || verificationResult == PasswordVerificationResult.Failed)
+					throw new UnauthorizedAccessException("Invalid credentials");
+				var token = GenerateJwtToken(user);
+				var authData = new AuthResponseData(token, user.UserId, user.Username, user.Role.Name);
+				return authData;
+			}
+			catch (Exception ex) {
+				return null;
+			}
 		}
 
 		private string GenerateEmailConfirmationToken(User user)

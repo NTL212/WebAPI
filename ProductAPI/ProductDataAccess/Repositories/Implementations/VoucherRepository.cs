@@ -150,6 +150,28 @@ namespace ProductDataAccess.Repositories
         public async Task<ValidateVoucherVM> ValidateVoucher(Voucher voucher, User user, List<int> productIds, decimal totalOrder)
         {
             var voucherUser = await _context.VoucherUsers.FirstOrDefaultAsync(x => x.VoucherId == voucher.VoucherId && x.UserId == user.UserId);
+            var voucherAssigns = await _context.VoucherAssignments.Where(c=>c.VoucherId==voucher.VoucherId).Select(v=>v.CampaignId).ToListAsync();
+            var campaigns = await _context.VoucherCampaigns.Where(c=>voucherAssigns.Contains(c.CampaignId)).ToListAsync();
+
+            if(campaigns !=null && campaigns.Count > 0)
+            {
+                foreach (var campaign in campaigns)
+                {
+                    if (campaign.Status == "Inactive")
+                    {
+                        return new ValidateVoucherVM(false, "The campaign not active.");
+                    }
+                    if (campaign.EndDate < DateTime.Now)
+                    {
+                        return new ValidateVoucherVM(false, "The campaign has expired.");
+                    }
+
+                    if (campaign.TargetAudience != "All" && campaign.TargetAudience != user.Group.GroupName)
+                    {
+                        return new ValidateVoucherVM(false, "The campagin of voucher is not valid for your user group.");
+                    }
+            }
+            }
 
             if(voucherUser.Status == false)
             {

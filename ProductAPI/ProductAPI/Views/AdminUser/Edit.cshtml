@@ -18,17 +18,20 @@
                     </div>
                     <div class="card-body">
                         <form asp-action="Edit" method="post">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <input hidden name="UserId" value="@Model.UserId" />
                             <!-- Username Field -->
                             <div class="mb-3">
                                 <label for="Username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="Username" name="Username" value="@Model.Username" required />
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Email Field -->
                             <div class="mb-3">
                                 <label for="Email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="Email" name="Email" value="@Model.Email" required />
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                             </div>
 
 
@@ -36,7 +39,7 @@
                             <div class="mb-3">
                                 <label for="GroupId" class="form-label">Group</label>
                                 <select class="form-select" id="GroupId" name="GroupId" required>
-                                    <option value="@Model.GroupId">@Model.Group.GroupName</option>
+                                    <option value="@Model.GroupId">@((ViewData["groups"] as List<GroupDTO>).FirstOrDefault(g=>g.GroupId==Model.GroupId).GroupName)</option>
                                     @foreach (var group in (List<GroupDTO>)ViewData["groups"])
                                     {
                                         if (group.GroupId != Model.GroupId)

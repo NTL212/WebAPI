@@ -43,7 +43,7 @@
                         </div>
 
                         <!-- Voucher Information -->
-                        @if (Model.Voucher!=null)
+                        @if (Model.Voucher != null)
                         {
                             <div class="row mb-3">
                                 <div class="col-md-12">
@@ -112,15 +112,19 @@
                                 </tfoot>
                             </table>
                         </div>
+                        <form method="post">
+                            <!-- Actions -->
+                            <div class="text-center mt-4">
+                                <a href="@Url.Action("Index", "AdminOrder")" class="btn btn-secondary me-2">Back to Orders</a>
+                                @if (Model.Status == "Pending")
+                                {
 
-                        <!-- Actions -->
-                        <div class="text-center mt-4">
-                            <a href="@Url.Action("Index", "AdminOrder")" class="btn btn-secondary me-2">Back to Orders</a>
-                            @if (Model.Status == "Pending")
-                            {
-                                <a href="@Url.Action("ConfirmOrder", "AdminOrder", new {orderId = Model.OrderId})"><button class="btn btn-primary">Confirm Order</button></a>
-                            }
-                        </div>
+                                    <input hidden checked type="checkbox" name="selectedOrderIds" value="@Model.OrderId" />
+                                    <button type="submit" formaction="@Url.Action("ConfirmOrders", "AdminOrder")" class="btn btn-primary">Confirm Order</button>
+
+                                }
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -128,7 +132,7 @@
     </div>
 </main>
 
-@section scripts{
+@section scripts {
     <script>
         if ('@ViewBag.Message' == "Success") {
             Swal.fire({

@@ -20,18 +20,20 @@
                     </div>
                     <div class="card-body">
                         <form method="post" action="@Url.Action("Edit", "AdminProduct")" enctype="multipart/form-data">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <!-- Product Name -->
                             <div class="mb-3">
                                 <label for="ProductName" class="form-label">Product Name</label>
                                 <input type="text" class="form-control" id="ProductName" name="ProductName" value="@Model.ProductName" required />
+                                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Category -->
                             <div class="mb-3">
                                 <label for="CategoryId" class="form-label">Category</label>
                                 <select class="form-select" id="CategoryId" name="CategoryId" required>
-                                    <option value="@Model.Category.CategoryId">@Model.Category.CategoryName</option>
-                                    @foreach (var category in (List<CategoryDTO>)ViewData["Categories"])
+                                    <option value="@Model.CategoryId">@((ViewData["Categories"] as List<CategoryDTO>).FirstOrDefault(c=>c.CategoryId==Model.CategoryId).CategoryName)</option>
+                                    @foreach (var category in ViewData["Categories"] as List<CategoryDTO>)
                                     {
                                         <option value="@category.CategoryId">@category.CategoryName</option>
                                     }
@@ -44,12 +46,14 @@
                             <div class="mb-3">
                                 <label for="Price" class="form-label">Price ($)</label>
                                 <input type="number" class="form-control" id="Price" name="Price" value="@Model.Price" required />
+                                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Stock -->
                             <div class="mb-3">
                                 <label for="Stock" class="form-label">Stock</label>
                                 <input type="number" class="form-control" id="Stock" name="Stock" value="@Model.Stock" required />
+                                @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Product Image -->

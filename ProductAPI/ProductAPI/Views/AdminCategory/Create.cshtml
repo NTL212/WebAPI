@@ -1,7 +1,7 @@
 ﻿@using ProductDataAccess.Models.Request;
 @using ProductDataAccess.ViewModels;
 @using ProductDataAccess.DTOs;
-@model List<CategoryDTO>
+@model CategoryDTO
 @{
     ViewData["PageTitle"] = "Add Category";
     ViewData["Categories"] = "active";
@@ -21,11 +21,20 @@
                     </div>
                     <div class="card-body">
                         <form asp-action="Create" asp-controller="AdminCategory" method="post">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <!-- Category Name -->
                             <div class="mb-3">
                                 <label for="CategoryName" class="form-label">Category Name</label>
                                 <input type="text" class="form-control" id="CategoryName" name="CategoryName" required aria-describedby="CategoryNameHelp" />
                                 <div id="CategoryNameHelp" class="form-text">Enter the name of the category.</div>
+                                @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="Description" name="Description" required aria-describedby="DescriptionHelp" />
+                                <div id="DescriptionHelp" class="form-text">Enter the description of the category.</div>
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Status -->
@@ -42,7 +51,7 @@
                                 <label for="ParentId" class="form-label">Parent Category</label>
                                 <select class="form-select" id="ParentId" name="ParentId">
                                     <option value="">Select a Parent Category (Optional)</option>
-                                    @foreach (var parentCategory in Model)
+                                    @foreach (var parentCategory in (List<CategoryDTO>)ViewData["ParentCategories"])
                                     {
                                         <option value="@parentCategory.CategoryId">
                                             @parentCategory.CategoryName

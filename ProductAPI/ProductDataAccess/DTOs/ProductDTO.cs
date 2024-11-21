@@ -1,4 +1,5 @@
 ﻿using ProductDataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProductDataAccess.DTOs
 {
@@ -6,18 +7,23 @@ namespace ProductDataAccess.DTOs
 	{
 		public int ProductId { get; set; }
 
-		public string ProductName { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Name is required.")]
+        public string ProductName { get; set; } = string.Empty;
 
 		public int CategoryId { get; set; }
 
-		public decimal Price { get; set; }
+        [Required(ErrorMessage = "Price is required.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0.")]
+        public decimal Price { get; set; }
 
-		public int Stock { get; set; }
+        [Required(ErrorMessage = "Stock is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Stock cannot be negative.")]
+        public int Stock { get; set; }
 
-		public string ImgName { get; set; }
+		public string? ImgName { get; set; }
 
 		public DateTime CreatedAt { get; set; }
-        public CategoryDTO Category { get; set; }
+        public CategoryDTO? Category { get; set; }
         public bool IsDeleted { get; set; }
 	}
 }

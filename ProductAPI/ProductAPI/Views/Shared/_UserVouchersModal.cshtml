@@ -2,6 +2,10 @@
 @using ProductDataAccess.DTOs;
 @model PagedResult<VoucherDTO>
 
+@{
+    ViewBag.ReCampaignId = ViewData["CampaignId"];
+}
+
 <div class="modal-header">
     <h5 class="modal-title" id="voucherModalLabel">Vouchers</h5>
     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -9,15 +13,15 @@
 <div class="modal-body">
     <div class="d-flex mb-3">
         <!-- Tìm kiếm theo mã voucher -->
-        <input type="text" id="searchKeyword" class="form-control" placeholder="Search by Code" >
+        <input type="text" id="searchKeyword" class="form-control" placeholder="Search by Code">
         <button class="btn btn-primary ms-2" onclick="loadPage(1)">Search</button>
     </div>
     @{
         var hiddenFlag = ViewBag.UserId !=null;
     }
-    <form method="post" action="/AdminVoucher/ApplySelectedVouchers" id="voucherForm" name="voucherForm">
+    <form method="post" action="@Url.Action("ApplySelectedVouchers", "AdminVoucher")" id="voucherForm" name="voucherForm">
+        <input hidden value="@ViewData["CampaignId"]" name="campaignId" />
         <div class="table-responsive">
-            <input hidden value="@ViewData["CampaignId"]" name="campaignId" id="campaignId" />
             @if (Model.Items.Any())
             {
                 <table class="table align-items-center mb-0">
@@ -63,10 +67,14 @@
                                 <td class="text-center">
                                     <a href="@Url.Action("Detail", "AdminVoucher", new { id = voucher.VoucherId })" class="btn btn-sm btn-info mb-0">View</a>                           
                                 </td>
-                                <td class="text-center">
-                                    <a href="@Url.Action("DeteleVoucherUser", "AdminVoucher", new { voucherId = voucher.VoucherId, userId = ViewBag.UserId })" class="btn btn-sm btn-danger mb-0">Remove</a>
+                                @if (@ViewData["CampaignId"] == null)
+                                {
+                                    <td class="text-center">
+                                        <a href="@Url.Action("DeteleVoucherUser", "AdminVoucher", new { voucherId = voucher.VoucherId, userId = ViewBag.UserId })" class="btn btn-sm btn-danger mb-0">Remove</a>
 
-                                </td>
+                                    </td>
+                                }
+                               
                                 
                                 <td class="text-center">
                                     <input hidden="@hiddenFlag" type="checkbox" class="voucher-checkbox" value="@voucher.VoucherId" name="voucherIds" data-voucher-id="@voucher.VoucherId" />

@@ -21,12 +21,14 @@
                     <div class="card-body">
                         @using (Html.BeginForm("Create", "AdminVoucher", FormMethod.Post, new { @class = "form-horizontal" }))
                         {
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             @Html.AntiForgeryToken()
                             <div class="row">
                                 <!-- Voucher Code Section -->
                                 <div class="col-md-6 mb-3">
                                     <label for="VoucherCode" class="form-label">Voucher Code</label>
                                     <input type="text" class="form-control" id="Code" name="Code" required placeholder="Enter Voucher Code">
+                                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Voucher Type Section -->
@@ -36,6 +38,7 @@
                                         <option value="Discount">Discount</option>
                                         <option value="FreeShipping">Free Shipping</option>
                                     </select>
+                                    @Html.ValidationMessageFor(model => model.VoucherType, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Discount Type Section -->
@@ -45,18 +48,21 @@
                                         <option value="Amount">Amount</option>
                                         <option value="Percent">Percent</option>
                                     </select>
+                                    @Html.ValidationMessageFor(model => model.DiscountType, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Discount Value Section -->
                                 <div class="col-md-6 mb-3">
                                     <label for="DiscountValue" class="form-label">Discount Value</label>
                                     <input type="number" class="form-control" id="DiscountValue" name="DiscountValue" required placeholder="Enter Discount Value">
+                                    @Html.ValidationMessageFor(model => model.DiscountValue, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Expiry Date Section -->
                                 <div class="col-md-6 mb-3">
                                     <label for="ExpiryDate" class="form-label">Expiry Date</label>
                                     <input type="date" class="form-control" id="ExpiryDate" name="ExpiryDate" required>
+                                    @Html.ValidationMessageFor(model => model.ExpiryDate, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Voucher Conditions Group (Min Order, Max Discount, Group, Product) -->
@@ -67,12 +73,14 @@
                                         <div class="mb-3">
                                             <label for="MinOrderValue" class="form-label">Minimum Order Amount</label>
                                             <input type="number" class="form-control" id="MinOrderValue" name="MinOrderValue" placeholder="Enter minimum order amount">
+                                            @Html.ValidationMessageFor(model => model.MinOrderValue, "", new { @class = "text-danger" })
                                         </div>
 
                                         <!-- Maximum Discount Amount Section -->
                                         <div class="mb-3">
                                             <label for="MaxDiscountAmount" class="form-label">Max Discount Amount</label>
                                             <input type="number" class="form-control" id="MaxDiscountAmount" name="MaxDiscountAmount" placeholder="Enter max discount amount">
+                                            @Html.ValidationMessageFor(model => model.MaxDiscountAmount, "", new { @class = "text-danger" })
                                         </div>
 
                                         <!-- Group Section -->
@@ -83,6 +91,7 @@
                                                 <option value="VIP">VIP</option>
                                                 <option value="Member">Member</option>
                                             </select>
+                                            @Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
                                         </div>
 
                                         <!-- Product Selection Section -->
@@ -92,20 +101,16 @@
                                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#productSelectionModal">
                                                 Select Products
                                             </button>
+                                            @Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                </div>
-
-                                <!-- Max Redeem Quantity Section -->
-                                <div class="col-md-6 mb-3">
-                                    <label for="MaxPerUsage" class="form-label">Max Redeem Quantity</label>
-                                    <input type="number" class="form-control" id="MaxPerUsage" name="MaxPerUsage" required placeholder="Enter Max Redeem Quantity">
                                 </div>
 
                                 <!-- Max Quantity Section -->
                                 <div class="col-md-6 mb-3">
                                     <label for="MaxUsage" class="form-label">Max Quantity</label>
                                     <input type="number" class="form-control" id="MaxUsage" name="MaxUsage" required placeholder="Enter Max Quantity">
+                                    @Html.ValidationMessageFor(model => model.MaxUsage, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Voucher Status Section -->
@@ -115,6 +120,7 @@
                                         <option value="active">Active</option>
                                         <option value="Inactive">Inactive</option>
                                     </select>
+                                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
                                 </div>
 
                                 <!-- Submit Button Section -->

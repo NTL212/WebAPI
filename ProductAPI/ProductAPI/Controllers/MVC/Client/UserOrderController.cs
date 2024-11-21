@@ -9,6 +9,7 @@ using ProductDataAccess.Models.Request;
 using ProductDataAccess.Models;
 using System.Text;
 using RabbitMQ.Client;
+using ProductAPI.Services;
 
 
 namespace ProductAPI.Controllers.MVC.Client
@@ -19,13 +20,15 @@ namespace ProductAPI.Controllers.MVC.Client
     {
         private readonly IOrderRepository _orderRepository;
         private readonly IVoucherRepository _voucherRepository;
+        private readonly RabbitMqService _rabbitMqService;
         private readonly IMapper _mapper;
 
-        public UserOrderController(IOrderRepository orderRepository, IVoucherRepository voucherRepository, IMapper mapper)
+        public UserOrderController(IOrderRepository orderRepository, IVoucherRepository voucherRepository, RabbitMqService rabbitMqService, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _voucherRepository = voucherRepository;
             _mapper = mapper;
+            _rabbitMqService = rabbitMqService;
         }
 
         public async Task<IActionResult> Index(int userId, int pageNumber = 1, string mess = null)
@@ -74,29 +77,30 @@ namespace ProductAPI.Controllers.MVC.Client
             // Serialize RabbitMessage to JSON
             var rabbitMessageJson = JsonConvert.SerializeObject(rabbitMessage);
 
-            // Send order data to RabbitMQ
-            var factory = new ConnectionFactory
-            {
-                HostName = "localhost"
-            };
-            using (var connection = factory.CreateConnection())
-            using (var channel =  connection.CreateModel())
-            {
-                channel.QueueDeclare(queue: "OrderQueue2",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
+            //// Send order data to RabbitMQ
+            //var factory = new ConnectionFactory
+            //{
+            //    HostName = "localhost"
+            //};
+            //using (var connection = factory.CreateConnection())
+            //using (var channel =  connection.CreateModel())
+            //{
+            //    channel.QueueDeclare(queue: "OrderQueue2",
+            //                         durable: false,
+            //                         exclusive: false,
+            //                         autoDelete: false,
+            //                         arguments: null);
 
-                var body = Encoding.UTF8.GetBytes(rabbitMessageJson);
+            //    var body = Encoding.UTF8.GetBytes(rabbitMessageJson);
 
-                channel.BasicPublish(
-                    exchange: "",
-                    routingKey: "OrderQueue2",
-                    basicProperties: null,
-                    body: body
-                );
-            }
+            //    channel.BasicPublish(
+            //        exchange: "",
+            //        routingKey: "OrderQueue2",
+            //        basicProperties: null,
+            //        body: body
+            //    );
+            //}
+            _rabbitMqService.PublishOrderMessage(rabbitMessageJson);
 
             TempData["SuccessMessage"] = "Your order has been cancled for processing!";
             return RedirectToAction("Index", new { userId });

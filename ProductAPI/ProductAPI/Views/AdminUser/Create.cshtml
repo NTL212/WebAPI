@@ -18,16 +18,19 @@
                     </div>
                     <div class="card-body">
                         <form asp-action="Create" asp-controller="AdminUser" method="post">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <!-- Username Field -->
                             <div class="mb-3">
                                 <label for="Username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="Username" name="Username" required />
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Email Field -->
                             <div class="mb-3">
                                 <label for="Email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="Email" name="Email" required />
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Group -->

@@ -60,9 +60,26 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpPost]
         public async Task<IActionResult> Create(ProductDTO productDto, IFormFile productImage)
         {
+            if (!ModelState.IsValid)
+            {
+                return await ReturnModelError(productDto);
+            }
+
             // Lưu sản phẩm và hình ảnh vào cơ sở dữ liệu
             if (productImage != null)
             {
+                if (!productImage.ContentType.StartsWith("image/"))
+                {
+                    ModelState.AddModelError("", "The uploaded file is not a valid image.");
+                    return await ReturnModelError(productDto);
+                }
+
+                if (productImage.Length > 5 * 1024 * 1024) // 2MB
+                {
+                    ModelState.AddModelError("", "Image size must be less than 2MB.");
+                    return await ReturnModelError(productDto);
+                }
+
                 var filePath = Path.Combine("wwwroot", "assets", "images", "products", productImage.FileName);
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
@@ -97,8 +114,13 @@ namespace ProductAPI.Controllers.MVC.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductDTO productDTO, IFormFile productImage)
-        {
+        public async Task<IActionResult> Edit(ProductDTO productDTO, IFormFile productImage=null)
+            {
+
+            if (!ModelState.IsValid) {
+                return await ReturnModelError(productDTO);
+            }
+
             try
             {
                 var product = _mapper.Map<Product>(productDTO);
@@ -106,6 +128,18 @@ namespace ProductAPI.Controllers.MVC.Admin
                 // Lưu sản phẩm và hình ảnh vào cơ sở dữ liệu
                 if (productImage != null)
                 {
+                    if (!productImage.ContentType.StartsWith("image/"))
+                    {
+                        ModelState.AddModelError("", "The uploaded file is not a valid image.");
+                        return await ReturnModelError(productDTO);
+                    }
+
+                    if (productImage.Length > 5 * 1024 * 1024) // 2MB
+                    {
+                        ModelState.AddModelError("", "Image size must be less than 2MB.");
+                        return await ReturnModelError(productDTO);
+                    }
+
                     var filePath = Path.Combine("wwwroot", "assets", "images", "products", productImage.FileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
@@ -174,6 +208,13 @@ namespace ProductAPI.Controllers.MVC.Admin
                 TempData["ErrorMessage"] = "Error";
                 return RedirectToAction("Detail", new { id = id });
             }
+        }
+
+        private async Task<IActionResult> ReturnModelError(ProductDTO productDTO)
+        {
+            var categories = await _categoryRepository.GetAllAsync();
+            ViewData["Categories"] = _mapper.Map<List<CategoryDTO>>(categories);
+            return View(productDTO);
         }
     }
 }

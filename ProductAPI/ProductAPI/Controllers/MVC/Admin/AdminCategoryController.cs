@@ -6,6 +6,7 @@ using ProductDataAccess.Models.Response;
 using ProductDataAccess.Models;
 using ProductDataAccess.ViewModels;
 using ProductAPI.Filters;
+using MailKit.Search;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -30,18 +31,32 @@ namespace ProductAPI.Controllers.MVC.Admin
             return View(categoryDtos);
         }
 
+        public async Task<IActionResult> ProductsOfCategory(int categoryId,int page = 1)
+        {
+            var products = new PagedResult<Product>();
+            products = await _productRepository.GetPagedWithIncludeSearchAsync(page, 10, p=>p.CategoryId==categoryId);
+            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
+            return View(productsDto);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Create(string mess = null)
         {
             var parentCategories = await _categoryRepository.GetAllParentCategory();
-            var parentCategoryDtos = _mapper.Map<List<CategoryDTO>>(parentCategories);
+            ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
             ViewBag.Message = mess;
-            return View(parentCategoryDtos);
+            return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(CategoryDTO categoryDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                var parentCategories = await _categoryRepository.GetAllParentCategory();
+                ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
+                return View(categoryDTO);
+            }
             try
             {
                 var category = _mapper.Map<Category>(categoryDTO);
@@ -65,24 +80,28 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpGet]
         public async Task<IActionResult> Edit(int id, string mess = null)
         {
-            var categoryEVM = new AdminCategoryEditVM();
             var parentCategories = await _categoryRepository.GetAllParentCategory();
             var category = await _categoryRepository.GetByIdAsync(id);
             if (category.ParentId != null)
             {
                 var parentCategory = await _categoryRepository.GetByIdAsync((int)category.ParentId);
-                categoryEVM.ParentCategory = _mapper.Map<CategoryDTO>(parentCategory);
             }
            
             ViewBag.Message = mess;
-            categoryEVM.ParentCategories = _mapper.Map<List<CategoryDTO>>(parentCategories);
-            categoryEVM.Category = _mapper.Map<CategoryDTO>(category);
-            return View(categoryEVM);
+            ViewBag.ParentCategories = _mapper.Map<List<CategoryDTO>>(parentCategories);
+            var categoryDTO= _mapper.Map<CategoryDTO>(category);
+            return View(categoryDTO);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(CategoryDTO categoryDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                var parentCategories = await _categoryRepository.GetAllParentCategory();
+                ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
+                return View(categoryDTO);
+            }
             try
             {
                 var category = _mapper.Map<Category>(categoryDTO);

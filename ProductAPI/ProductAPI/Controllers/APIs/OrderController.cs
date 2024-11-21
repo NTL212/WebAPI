@@ -29,7 +29,7 @@ namespace ProductAPI.Controllers.APIs
 
             // Ánh xạ lại Order sang OrderDTO
             var orderDTO = _mapper.Map<OrderDTO>(order);
-            return CreatedAtAction(nameof(GetOrderById), new { orderId = orderDTO.OrderId }, orderDTO);
+            return Ok(result);
 
         }
 

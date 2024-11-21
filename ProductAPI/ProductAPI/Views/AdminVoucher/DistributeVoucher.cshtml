@@ -13,7 +13,7 @@
     <div class="container-fluid py-4">
         <div class="row">
             <!-- Phần bên trái -->
-            <div class="col-lg-8 col-md-12">
+            <div class="col-lg-8 col-md-12">    
                 <div class="card mb-4">
                     <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                         <h6>Distribute Voucher</h6>
@@ -36,7 +36,7 @@
                                                 data-status="@item.Status"
                                                 data-expiryDate="@item.ExpiryDate"
                                                 data-quantity="@(item.MaxUsage - item.UsedCount)">
-                                            @item.Code - @item.VoucherType
+                                            @item.Code - @item.VoucherType - @item.DiscountType - @item.DiscountValue - @item.Status
                                         </option>
                                     }
                                 </select>

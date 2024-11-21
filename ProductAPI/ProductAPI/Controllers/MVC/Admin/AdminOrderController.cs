@@ -52,20 +52,23 @@ namespace ProductAPI.Controllers.MVC.Admin
             return View(orderDto);
         }
 
-        public async Task<IActionResult> ConfirmOrder(int orderId)
+        [HttpPost]
+        public async Task<IActionResult> ConfirmOrders(List<int> selectedOrderIds, int page=1)
         {
-            string status = "Confirmed";
-            string message = "Failed";
-            var updated = await _orderRepository.UpdateOrderStatusAsync(orderId, status);
+            var updated = await _orderRepository.ConfirmOrders(selectedOrderIds);
             if (updated)
             {
-                TempData["SuccessMessage"] = "Confirm order successfull";
+                TempData["SuccessMessage"] = "Confirm orders successfull";
             }
             else
             {
                 TempData["ErrorMessage"] = "Failed to confirm order";
             }
-            return RedirectToAction("Detail", new { id = orderId, mess = message });
+            if (selectedOrderIds.Count >1 )
+            {
+                return RedirectToAction("Index", new { page = page });
+            }
+            return RedirectToAction("Detail", new { id = selectedOrderIds.ElementAt(0)});
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@using ProductDataAccess.Models.Request;
 @using ProductDataAccess.ViewModels;
 @using ProductDataAccess.DTOs;
-@model AdminCategoryEditVM
+@model CategoryDTO
 @{
     ViewData["PageTitle"] = "Edit Category";
     ViewData["Categories"] = "active";
@@ -20,33 +20,43 @@
                     </div>
                     <div class="card-body">
                         <form asp-action="Edit" asp-controller="AdminCategory" method="post">
-                            <input hidden name="CategoryId" value="@Model.Category.CategoryId" />
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <input hidden name="CategoryId" value="@Model.CategoryId" />
                             <!-- Category Name -->
                             <div class="mb-3">
                                 <label for="CategoryName" class="form-label">Category Name</label>
-                                <input type="text" class="form-control" id="CategoryName" name="CategoryName" value="@Model.Category.CategoryName" required aria-describedby="CategoryNameHelp"/>
+                                <input type="text" class="form-control" id="CategoryName" name="CategoryName" value="@Model.CategoryName" required aria-describedby="CategoryNameHelp"/>
                                 <div id="CategoryNameHelp" class="form-text">Enter the name of the category.</div>
+                                @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="Description" name="Description" value="@Model.Description" required aria-describedby="DescriptionHelp" />
+                                <div id="DescriptionHelp" class="form-text">Enter the description of the category.</div>
+                                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                             </div>
 
                             <!-- Status -->
                             <div class="mb-3">
                                 <label for="IsDeleted" class="form-label">Status</label>
                                 <select class="form-select" id="IsDeleted" name="IsDeleted" required>
-                                    <option value="false" selected="@Model.Category.IsDeleted" >Active</option>
-                                    <option value="true" selected="@Model.Category.IsDeleted">Deleted</option>
+                                    <option value="false" selected="@Model.IsDeleted" >Active</option>
+                                    <option value="true" selected="@Model.IsDeleted">Deleted</option>
                                 </select>
                             </div>
-
+                            
                             <!-- Parent Category -->
                             <div class="mb-3">
                                 <label for="ParentId" class="form-label">Parent Category</label>
                                 <select class="form-select" id="ParentId" name="ParentId">
                                     <option value="">Select a Parent Category (Optional)</option>
-                                    @if (Model.Category.ParentId != null)
+                                    @if (Model.ParentId != null)
                                     {
-                                        <option value="@Model.Category.ParentId" selected>@Model.ParentCategory.CategoryName</option>
+                                        <option value="@Model.ParentId" selected>@((ViewBag.ParentCategories as List<CategoryDTO>).FirstOrDefault(c => c.CategoryId == Model.ParentId).CategoryName)</option>
                                     }
-                                    @foreach (var parentCategory in (List<CategoryDTO>)Model.ParentCategories)
+                                    @foreach (var parentCategory in (List<CategoryDTO>)ViewBag.ParentCategories)
                                     {
                                         <option value="@parentCategory.CategoryId" >
                                             @parentCategory.CategoryName
@@ -59,7 +69,7 @@
                             <!-- Submit Button -->
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success">Save Changes</button>
-                                <a href="@Url.Action("Index", "AdminUser")" class="btn btn-secondary ms-2">Cancel</a>
+                                <a href="@Url.Action("Index", "AdminCategory")" class="btn btn-secondary ms-2">Cancel</a>
                             </div>
                         </form>
                     </div>
