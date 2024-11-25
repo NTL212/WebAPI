@@ -55,6 +55,7 @@ namespace ProductAPI.Profiles
             CreateMap<Voucher, VoucherCreateVM>().ReverseMap();
             CreateMap<Voucher, VoucherEditVM>().ReverseMap();
             CreateMap<VoucherCampaign, CampaignVM>().ReverseMap();
+            CreateMap<OrderDTO, CheckoutVM>().ReverseMap();
         }
     }
 }

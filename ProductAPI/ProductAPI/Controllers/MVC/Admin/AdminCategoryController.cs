@@ -82,12 +82,9 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             var parentCategories = await _categoryRepository.GetAllParentCategory();
             var category = await _categoryRepository.GetByIdAsync(id);
-            if (category.ParentId != null)
-            {
-                var parentCategory = await _categoryRepository.GetByIdAsync((int)category.ParentId);
-            }
-           
+         
             ViewBag.Message = mess;
+            parentCategories = parentCategories.Where(c => c.IsDeleted == false);
             ViewBag.ParentCategories = _mapper.Map<List<CategoryDTO>>(parentCategories);
             var categoryDTO= _mapper.Map<CategoryDTO>(category);
             return View(categoryDTO);
@@ -99,6 +96,7 @@ namespace ProductAPI.Controllers.MVC.Admin
             if (!ModelState.IsValid)
             {
                 var parentCategories = await _categoryRepository.GetAllParentCategory();
+                parentCategories = parentCategories.Where(c => c.IsDeleted == false);
                 ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
                 return View(categoryDTO);
             }

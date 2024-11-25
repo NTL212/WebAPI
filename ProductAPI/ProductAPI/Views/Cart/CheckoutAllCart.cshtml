@@ -23,6 +23,7 @@
         <div class="checkout">
             <div class="container">
                 <form method="post" action="@Url.Action("CheckoutAllCart", "Cart")">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="row">
                         <div class="col-lg-9">
                             
@@ -35,13 +36,13 @@
 
                             <label>Receiver Name </label>
                             <input type="text" id="receiverName" name="ReceverName" class="form-control" required>
-
+                            @Html.ValidationMessageFor(model => model.ReceverName, "", new { @class = "text-danger" })
                             <label>Address *</label>
                             <input type="text" id="address" name="Address" class="form-control" required>
-
+                             @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                             <label>Phone *</label>
                             <input type="text" id="phone" name="PhoneNumber" class="form-control" required>
-
+                             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                             
 
                             <label>Order notes (optional)</label>

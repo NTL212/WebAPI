@@ -15,14 +15,16 @@ namespace ProductAPI.Controllers.MVC.Client
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IUserRepoisitory _userRepository;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
-        public AccountController(IHttpClientFactory httpClientFactory, IUserRepoisitory userRepository, IMapper mapper, IAuthService authService)
+        public AccountController(IHttpClientFactory httpClientFactory, IUserRepoisitory userRepository, IMapper mapper, IAuthService authService, IEmailService emailService)
         {
             _httpClientFactory = httpClientFactory;
             _userRepository = userRepository;
             _mapper = mapper;
             _authService = authService;
+            _emailService = emailService;
         }
         private readonly string _apiBaseUrl = "https://localhost:7016/api/AuthContronller/";
         private readonly string _apiBaseEmailUrl = "https://localhost:7016/api/Email/ConfirmEmail";
@@ -205,6 +207,28 @@ namespace ProductAPI.Controllers.MVC.Client
                 message = "Success";
             }
             return RedirectToAction("ChangePass", new { mess = message });
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var result = await _emailService.SendForgotPasswordEmail(email);
+            if (result)
+            {
+                TempData["SuccessMessage"] = "New Password sent to your email";
+               
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "An error occurred. Please try again.";
+            }
+            return View();
         }
     }
 }

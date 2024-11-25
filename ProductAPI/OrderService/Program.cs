@@ -36,8 +36,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Logging.AddConsole(); 
-builder.Logging.AddDebug();   
+builder.Logging.AddDebug();
 
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(80);
+});
+
+
+builder.WebHost.UseUrls("http://*:80");
 var app = builder.Build();
 
 

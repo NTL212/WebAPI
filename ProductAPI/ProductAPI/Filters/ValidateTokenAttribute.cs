@@ -34,6 +34,8 @@ namespace ProductAPI.Filters
             if (!IsTokenValid(jwtToken))
             {
                 SetUnauthorizedResult(context, "Token is invalid or has expired.");
+
+               
                 return;
             }
 
@@ -49,6 +51,9 @@ namespace ProductAPI.Filters
         // Phương thức thiết lập kết quả Unauthorized
         private void SetUnauthorizedResult(ActionExecutingContext context, string message)
         {
+            context.HttpContext.Session.Remove("Token");
+            context.HttpContext.Session.Remove("UserId");
+            context.HttpContext.Session.Remove("UserName");
             context.Result = new ViewResult
             {
                 ViewName = "Unauthorized", // Tên View hiển thị (đặt tên view theo ý bạn)

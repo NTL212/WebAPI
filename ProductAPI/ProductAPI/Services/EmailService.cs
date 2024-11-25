@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ProductDataAccess.Repositories.Interfaces;
 
 namespace ProductAPI.Services
 {
@@ -17,12 +18,14 @@ namespace ProductAPI.Services
 		private readonly EmailSetting _emailSettings;
 		private readonly IConfiguration _configuration;
 		private readonly ProductCategoryContext _context;
+		private readonly IUserRepoisitory _userRepoisitory;
 
-		public EmailService(IOptions<EmailSetting> emailSettings, IConfiguration configuration, ProductCategoryContext context)
+		public EmailService(IOptions<EmailSetting> emailSettings, IConfiguration configuration, ProductCategoryContext context, IUserRepoisitory userRepoisitory)
 		{
 			_emailSettings = emailSettings.Value;
 			_configuration = configuration;
 			_context = context;
+			_userRepoisitory = userRepoisitory;
 		}
 
 		public async Task SendEmailAsync(EmailModel emailData)
@@ -113,9 +116,26 @@ namespace ProductAPI.Services
 				Subject = "Xác nhận email của bạn",
 				Body = $"Vui lòng nhấp vào <a href='{confirmationLink}'>liên kết này</a> để xác nhận email của bạn."
 			};
-
 			await SendEmailAsync(emailModel);
 		}
 
-	}
+        public async Task<bool> SendForgotPasswordEmail(string email)
+        {
+			var newPass = await _userRepoisitory.ForgotPassword(email);
+            var emailModel = new EmailModel
+            {
+                FromEmail = "noreply@yourapp.com",
+                ToEmails = email,
+                Subject = "Molla forgot password",
+                Body = $"Your new password is <h2>{newPass}</h2>"
+            };
+			if(newPass != "")
+			{
+                await SendEmailAsync(emailModel);
+				return true;
+            }
+			return false;
+        }
+
+    }
 }

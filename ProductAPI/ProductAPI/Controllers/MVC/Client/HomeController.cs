@@ -36,7 +36,7 @@ namespace ProductAPI.Controllers.MVC.Client
 
                 HomeVM homeVM = new HomeVM();
 
-                homeVM.categories = categories.Take(6).ToList();
+                homeVM.categories = categories.Where(c=>c.IsDeleted==false).Take(6).ToList();
                 homeVM.products = products.Take(10).ToList();
 
                 // Trả về view với danh sách sản phẩm

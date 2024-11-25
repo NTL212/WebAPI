@@ -525,12 +525,7 @@
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
 
-@*                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="signin-remember">
-                                                <label class="custom-control-label" for="signin-remember">Remember Me</label>
-                                            </div>
-
-                                            <a href="#" class="forgot-link">Forgot Your Password?</a> *@
+                                            <a href="@Url.Action("ForgotPassword", "Account")" class="forgot-link">Forgot Your Password?</a> 
                                         </div>
                                         <span class="alert-danger">@TempData["LoginErrorMessage"]</span>
                                     </form>
@@ -543,7 +538,7 @@
                                         </div><!-- End .form-group -->
                                         <div class="form-group">
                                             <label for="register-email">Your email address *</label>
-                                            <input type="email" class="form-control" id="Email" name="Email" required>
+                                            <input type="email" class="form-control" id="Email" name="Email" required>  
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
@@ -609,7 +604,7 @@
             })
         }
     </script>
-        @* <script>
+         @* <script>
         function updateLoginStatus() {
             const token = '@Context.Session.GetString("Token")'; // Hoặc sessionStorage.getItem("authToken");
             const authLink = $("#authLink a");

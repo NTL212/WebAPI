@@ -1,5 +1,6 @@
 ﻿using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ProductDataAccess.ViewModels
@@ -9,6 +10,30 @@ namespace ProductDataAccess.ViewModels
         public List<CartItem> cartItems = new List<CartItem>();
         public List<VoucherUserDTO> voucherUserDTOs = new List<VoucherUserDTO>();
         public VoucherDTO voucherApplied { get; set; }
+
+        public int OrderId { get; set; }
+        public int VoucherAppliedId { get; set; }
+        public int UserId { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public string? Status { get; set; }
+
+        [Required(ErrorMessage = "TotalAmount is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Stock TotalAmount be negative.")]
+        public decimal TotalAmount { get; set; }
+
+        public string? ReceverName { get; set; }
+
+        [Required(ErrorMessage = "Address is required.")]
+        [StringLength(200, ErrorMessage = "PhoneNumber cannot exceed 200 characters.")]
+        public string? Address { get; set; }
+
+        public string? Note { get; set; }
+
+        public VoucherDTO Voucher { get; set; }
+
+        [Required(ErrorMessage = "PhoneNumber is required.")]
+        [StringLength(15, ErrorMessage = "PhoneNumber cannot exceed 15 characters.")]
+        public string? PhoneNumber { get; set; }
 
         // Subtotal tính từ tổng giá trị của các item trong giỏ hàng
         public decimal SubTotal
@@ -41,5 +66,7 @@ namespace ProductDataAccess.ViewModels
         }
 
         public decimal total => SubTotal - Discount;
+
+
     }
 }

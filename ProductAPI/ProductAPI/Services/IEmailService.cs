@@ -8,5 +8,7 @@ namespace ProductAPI.Services
 		Task<bool> ConfirmEmailAsync(string token, string email);
 
 		Task SendConfirmationEmailAsync(string email, string token);
-	}
+		Task<bool> SendForgotPasswordEmail(string email);
+
+    }
 }

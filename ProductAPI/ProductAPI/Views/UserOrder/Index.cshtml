@@ -62,7 +62,7 @@
 									<li class="page-item @if(i == (int)ViewData["CurrentPage"]) {
 								<text>active</text>
 }">
-										<a class="page-link" href="@Url.Action("Index", "UserOrder", new { userId=1, pageNumber = i })">@i</a>
+										<a class="page-link" href="@Url.Action("Index", "UserOrder", new { userId=Context.Session.GetInt32("UserId"), pageNumber = i })">@i</a>
 									</li>
 								}
 							</ul>

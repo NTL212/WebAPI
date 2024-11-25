@@ -31,7 +31,13 @@ builder.Services.AddDbContext<ProductCategoryContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddDistributedMemoryCache();
+
+// Add Redis distributed cache
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("MyRedisConStr");
+    options.InstanceName = "ProductAPI"; // Optional: Prefix for Redis keys
+});
 
 builder.Services.AddSession(options =>
 {
@@ -61,6 +67,7 @@ builder.Services.AddScoped<ValidateTokenAttribute>();
 //Mail
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -84,6 +91,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
 
 builder.Services.AddSwaggerGen(c =>
 {
@@ -126,6 +134,15 @@ builder.Services.AddCors(options =>
 
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
+
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(80);
+});
+
+
+builder.WebHost.UseUrls("http://*:80");
 
 var app = builder.Build();
 

@@ -150,8 +150,9 @@ namespace ProductAPI.Controllers.MVC.Client
         [HttpPost]
         public async Task<IActionResult> CheckoutAllCart(OrderDTO orderDTO)
         {
-            if (!ModelState.IsValid) { 
-
+            if (!ModelState.IsValid) {
+                var checkoutVM = _mapper.Map<CheckoutVM>(orderDTO);
+                return View(checkoutVM);
             }
 
             var cart = _cartService.GetCart();
@@ -185,31 +186,6 @@ namespace ProductAPI.Controllers.MVC.Client
             // Serialize RabbitMessage to JSON
             var rabbitMessageJson = JsonConvert.SerializeObject(rabbitMessage);
 
-            // Send order data to RabbitMQ
-            //var factory = new ConnectionFactory
-            //{
-            //    HostName = "localhost",
-            //    AutomaticRecoveryEnabled = true, // Tự động khôi phục kết nối
-            //    NetworkRecoveryInterval = TimeSpan.FromSeconds(10) // Khoảng thời gian thử lại
-            //};
-            //using (var connection = factory.CreateConnection())
-            //using (var channel = connection.CreateModel())
-            //{
-            //    channel.QueueDeclare(queue: "OrderQueue2",
-            //                         durable: false,
-            //                         exclusive: false,
-            //                         autoDelete: false,
-            //                         arguments: null);
-
-            //    var body = Encoding.UTF8.GetBytes(rabbitMessageJson);
-
-            //    channel.BasicPublish(
-            //        exchange: "",
-            //        routingKey: "OrderQueue2",
-            //        basicProperties: null,
-            //        body: body
-            //    );
-            //}
 
             _rabbitMqService.PublishOrderMessage(rabbitMessageJson);
 

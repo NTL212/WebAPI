@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Repositories.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProductDataAccess.Repositories.Implementations
 {
@@ -40,6 +41,40 @@ namespace ProductDataAccess.Repositories.Implementations
             {
                 return false;
             }
+        }
+
+        public async Task<string> ForgotPassword(string email)
+        {
+            var newPassword = GenerateRandomPassword();
+            var user = _dbSet.FirstOrDefault(u => u.Email == email);
+            user.PasswordHash = user.PasswordHash = user.PasswordHash = _passwordHasher.HashPassword(user, newPassword); // Mã hóa mật khẩu
+            _dbSet.Update(user);
+
+            if (await _context.SaveChangesAsync() > 0)
+                return newPassword;
+            else
+                return "";
+        }
+
+    
+
+        private string GenerateRandomPassword(int length = 6)
+        {
+            // Định nghĩa các ký tự có thể sử dụng trong mật khẩu
+            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+            // Tạo đối tượng Random để sinh số ngẫu nhiên
+            Random random = new Random();
+
+            // Xây dựng mật khẩu
+            char[] password = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                password[i] = validChars[random.Next(validChars.Length)];
+            }
+
+            // Trả về mật khẩu dưới dạng chuỗi
+            return new string(password);
         }
     }
 }
