@@ -65,7 +65,7 @@
                                         @foreach (var item in Model)
                                         {
                                             <tr>
-                                                <td><a href="#">@item.Product.ProductName</a></td>
+                                                <td><a href="@Url.Action("Detail", "Product", new {id = item.ProductId})">@item.Product.ProductName</a></td>
                                                 <td>$@(item.Price *item.Quantity)</td>
                                             </tr>
                                             {

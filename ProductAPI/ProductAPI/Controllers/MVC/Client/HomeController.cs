@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
@@ -10,44 +11,78 @@ namespace ProductAPI.Controllers.MVC.Client
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ICartService _cartService;
-        public HomeController(IHttpClientFactory httpClientFactory, ICartService cartService)
+        private readonly IDistributedCache _cache;
+        private readonly string _apiBaseUrl = "https://localhost:7016/api/";
+
+        public HomeController(IHttpClientFactory httpClientFactory, ICartService cartService, IDistributedCache cache)
         {
             _httpClientFactory = httpClientFactory;
             _cartService = cartService;
+            _cache = cache;
         }
-        private readonly string _apiBaseUrl = "https://localhost:7016/api/";
 
         public async Task<IActionResult> Index()
         {
-            // Tạo HttpClient từ IHttpClientFactory
-            var client = _httpClientFactory.CreateClient();
+            // Cache keys
+            const string categoriesCacheKey = "home:categories";
+            const string productsCacheKey = "home:products";
 
-            // Gửi GET request tới API
-            var response = await client.GetAsync(_apiBaseUrl + "categories");
-            var response2 = await client.GetAsync(_apiBaseUrl + "products");
-            if (response.IsSuccessStatusCode && response2.IsSuccessStatusCode)
+            // Attempt to get categories from cache
+            var cachedCategories = await _cache.GetStringAsync(categoriesCacheKey);
+            var cachedProducts = await _cache.GetStringAsync(productsCacheKey);
+
+            List<Category> categories;
+            List<Product> products;
+
+            if (!string.IsNullOrEmpty(cachedCategories) && !string.IsNullOrEmpty(cachedProducts))
             {
-                // Đọc nội dung trả về từ API
-                var content = await response.Content.ReadAsStringAsync();
-                var content2 = await response2.Content.ReadAsStringAsync();
-
-                var categories = JsonConvert.DeserializeObject<List<Category>>(content);
-                var products = JsonConvert.DeserializeObject<List<Product>>(content2);
-
-                HomeVM homeVM = new HomeVM();
-
-                homeVM.categories = categories.Where(c=>c.IsDeleted==false).Take(6).ToList();
-                homeVM.products = products.Take(10).ToList();
-
-                // Trả về view với danh sách sản phẩm
-                return View(homeVM);
+                // Deserialize cached data
+                categories = JsonConvert.DeserializeObject<List<Category>>(cachedCategories);
+                products = JsonConvert.DeserializeObject<List<Product>>(cachedProducts);
             }
             else
             {
-                // Xử lý nếu API không trả về kết quả thành công
-                ViewBag.ErrorMessage = "Có lỗi khi lấy dữ liệu từ API.";
-                return View();
+                // Create HttpClient from IHttpClientFactory
+                var client = _httpClientFactory.CreateClient();
+
+                // Send GET requests to APIs
+                var categoriesResponse = await client.GetAsync(_apiBaseUrl + "categories");
+                var productsResponse = await client.GetAsync(_apiBaseUrl + "products");
+
+                if (categoriesResponse.IsSuccessStatusCode && productsResponse.IsSuccessStatusCode)
+                {
+                    var categoriesContent = await categoriesResponse.Content.ReadAsStringAsync();
+                    var productsContent = await productsResponse.Content.ReadAsStringAsync();
+
+                    // Deserialize API data
+                    categories = JsonConvert.DeserializeObject<List<Category>>(categoriesContent);
+                    products = JsonConvert.DeserializeObject<List<Product>>(productsContent);
+
+                    // Store data in cache with expiration time
+                    var cacheOptions = new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) // Cache expires after 1 hour
+                    };
+
+                    await _cache.SetStringAsync(categoriesCacheKey, JsonConvert.SerializeObject(categories), cacheOptions);
+                    await _cache.SetStringAsync(productsCacheKey, JsonConvert.SerializeObject(products), cacheOptions);
+                }
+                else
+                {
+                    // Handle API errors
+                    ViewBag.ErrorMessage = "Có lỗi khi lấy dữ liệu từ API.";
+                    return View();
+                }
             }
+
+            // Filter and prepare data for the view
+            HomeVM homeVM = new HomeVM
+            {
+                categories = categories.Where(c =>c.IsDeleted==false).Take(6).ToList(),
+                products = products.Take(10).ToList()
+            };
+
+            return View(homeVM);
         }
     }
 }

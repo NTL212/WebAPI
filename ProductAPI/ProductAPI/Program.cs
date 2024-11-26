@@ -12,6 +12,7 @@ using ProductDataAccess.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
 using System.Text;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ProductCategoryContext>(options =>
     options.UseSqlServer(connectionString));
+
 
 builder.Services.AddHttpContextAccessor();
 
@@ -126,23 +128,19 @@ builder.Services.AddSwaggerGen(c =>
 //Add CORS Policy
 builder.Services.AddCors(options =>
 {
-	options.AddPolicy("AllowSpecificOrigin",
-		policy => policy.WithOrigins("https://localhost:7291")
-						.AllowAnyHeader()
-						.AllowAnyMethod());
+    options.AddPolicy("AllowSpecificOrigins", builder =>
+    {
+        builder.WithOrigins("https://client-origin.com") 
+               .AllowCredentials() 
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
 
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.ListenAnyIP(80);
-});
-
-
-builder.WebHost.UseUrls("http://*:80");
 
 var app = builder.Build();
 
@@ -158,7 +156,7 @@ else
     app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 }
 
-app.UseCors("AllowSpecificOrigin");
+app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 

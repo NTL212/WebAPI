@@ -12,6 +12,8 @@ namespace ProductAPI.Services
         {
             var factory = new ConnectionFactory
             {
+                UserName = "loimq",
+                Password = "123456",
                 HostName = "localhost",
                 AutomaticRecoveryEnabled = true, // Tự động khôi phục kết nối
                 NetworkRecoveryInterval = TimeSpan.FromSeconds(10) // Khoảng thời gian thử lại

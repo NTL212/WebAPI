@@ -7,6 +7,7 @@ using ProductDataAccess.Models;
 using ProductDataAccess.ViewModels;
 using ProductAPI.Filters;
 using MailKit.Search;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -16,13 +17,15 @@ namespace ProductAPI.Controllers.MVC.Admin
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IDistributedCache _cache;
         private readonly IMapper _mapper;
 
-        public AdminCategoryController(IProductRepository productRepository, ICategoryRepository categoryRepository, IMapper mapper)
+        public AdminCategoryController(IProductRepository productRepository, ICategoryRepository categoryRepository, IDistributedCache cache, IMapper mapper)
         {
             _productRepository = productRepository;
             _mapper = mapper;
             _categoryRepository = categoryRepository;
+            _cache = cache;
         }
         public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
@@ -106,6 +109,8 @@ namespace ProductAPI.Controllers.MVC.Admin
 
                 if (await _categoryRepository.UpdateAsync(category))
                 {
+                    const string cacheKey = "categories";
+                    await _cache.RemoveAsync(cacheKey);
                     return RedirectToAction("Edit", new { id = category.CategoryId, mess = "Success" });
                 }
                 else
@@ -126,6 +131,8 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 if (await _productRepository.DeleteProduct(id))
                 {
+                    const string cacheKey = "categories";
+                    await _cache.RemoveAsync(cacheKey);
                     return RedirectToAction("Detail", new { id = id, mess = "Success" });
                 }
                 return RedirectToAction("Detail", new { id = id, mess = "Error" });
@@ -142,6 +149,8 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 if (await _productRepository.RestoreProduct(id))
                 {
+                    const string cacheKey = "categories";
+                    await _cache.RemoveAsync(cacheKey);
                     return RedirectToAction("Detail", new { id = id, mess = "Success" });
                 }
                 return RedirectToAction("Detail", new { id = id, mess = "Error" });

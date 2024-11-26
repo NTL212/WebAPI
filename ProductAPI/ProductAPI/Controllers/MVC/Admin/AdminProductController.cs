@@ -6,6 +6,7 @@ using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -15,13 +16,15 @@ namespace ProductAPI.Controllers.MVC.Admin
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IDistributedCache _cache;
         private readonly IMapper _mapper;
 
-        public AdminProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IMapper mapper)
+        public AdminProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IDistributedCache cache, IMapper mapper)
         {
             _productRepository = productRepository;
             _mapper = mapper;
             _categoryRepository = categoryRepository;
+            _cache = cache;
         }
         public async Task<IActionResult> Index(int page = 1, string searchText = null)
         {
@@ -151,6 +154,8 @@ namespace ProductAPI.Controllers.MVC.Admin
                 if (await _productRepository.UpdateAsync(product))
                 {
                     TempData["SuccessMessage"] = "Edit product successfull";
+                    string cacheKey = $"product:{productDTO.ProductId}";
+                    await _cache.RemoveAsync(cacheKey);
                 }
                 else
                 {

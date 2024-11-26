@@ -13,6 +13,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Models.Request;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ProductAPI.Controllers.MVC.Client
 {
@@ -26,12 +27,13 @@ namespace ProductAPI.Controllers.MVC.Client
         private readonly IUserRepoisitory _userRepository;
         private readonly IProductRepository _productRepository;
         private readonly RabbitMqService _rabbitMqService;
+        private readonly IDistributedCache _distributedCache;
 
         // Injecting the service in the controller's constructor
         public CartController(ICartService cartService, IMapper mapper, IOrderRepository orderRepository,
             IVoucherRepository voucherRepository, IVoucherUserRepository voucherUserRepository,
             IUserRepoisitory userRepository, IProductRepository productRepository,
-            RabbitMqService rabbitMqService)
+            RabbitMqService rabbitMqService, IDistributedCache distributedCache)
         {
             _cartService = cartService;
             _mapper = mapper;
@@ -41,6 +43,7 @@ namespace ProductAPI.Controllers.MVC.Client
             _userRepository = userRepository;
             _productRepository = productRepository;
             _rabbitMqService = rabbitMqService;
+            _distributedCache = distributedCache;
         }
 
         // Get the cart and display it along with the total price and quantity
@@ -116,8 +119,7 @@ namespace ProductAPI.Controllers.MVC.Client
 
             if (cart.Count > 0)
             {
-                checkoutVM.cartItems = cart;
-                checkoutVM.voucherApplied = _mapper.Map<VoucherDTO>(voucherApplied);
+                checkoutVM.cartItems = cart;             
                 checkoutVM.voucherUserDTOs = _mapper.Map<List<VoucherUserDTO>>(voucherUsers);
                 if (voucherAppiedId > 0)
                 {
@@ -126,6 +128,7 @@ namespace ProductAPI.Controllers.MVC.Client
                     if (check.Success)
                     {
                         TempData["SuccessMessage"] = check.Message;
+                        checkoutVM.voucherApplied = _mapper.Map<VoucherDTO>(voucherApplied);
                         ViewBag.VoucherAppliedId = voucherAppiedId;
                         ViewBag.VoucherCode = voucherApplied.Code;
                     }
@@ -188,16 +191,18 @@ namespace ProductAPI.Controllers.MVC.Client
 
 
             _rabbitMqService.PublishOrderMessage(rabbitMessageJson);
-
+            _cartService.ClearCart();
             TempData["SuccessMessage"] = "Your order has been submitted for processing!";
-            return RedirectToAction("Index", "UserOrder", new { userId });
+            return RedirectToAction("Index", "UserOrder", new { userId = userId, resetCached = true });
         }
 
         [HttpPost]
         public async Task<IActionResult> OrderResult([FromBody] ResultVM resultVM)
         {
             var userId = HttpContext.Session.GetInt32("UserId");
-            if (resultVM.IsSuccess)
+            var cart = _cartService.GetCart();
+            var data = await _distributedCache.GetStringAsync("df32753a-e2d3-7127-6736-049d9ad9dc8d");
+            if (resultVM.IsSuccess) 
             {
                 TempData["SuccessMessage"] = resultVM.Message;
                 _cartService.ClearCart();
@@ -222,6 +227,23 @@ namespace ProductAPI.Controllers.MVC.Client
             });
         }
 
+        public async Task InvalidateUserOrdersCache(int userId)
+        {
+            // Xóa cache cho tất cả các trang của người dùng (giả sử bạn biết số lượng trang)
+            int pageCount = await GetTotalPageCountForUser(userId); // Giả định bạn có cách lấy số trang
+            for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
+            {
+                string cacheKey = $"UserOrders:{userId}:Page:{pageNumber}";
+                await _distributedCache.RemoveAsync(cacheKey); // Xóa cache cho từng trang
+            }
+        }
 
+        private async Task<int> GetTotalPageCountForUser(int userId)
+        {
+            // Giả sử bạn có phương thức trả về tổng số đơn hàng
+            var orders = await _orderRepository.GetPagedByUserAsync(userId, 1, 5);
+            const int pageSize = 5;
+            return orders.TotalPages;
+        }
     }
 }

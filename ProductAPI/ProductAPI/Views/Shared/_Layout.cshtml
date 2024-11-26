@@ -191,12 +191,15 @@
                                 // Duyệt qua danh sách danh mục từ API và thêm vào danh sách
                                 categories.forEach(category => {
                                     const categoryItem = document.createElement('li');
-                                    categoryItem.classList.add('dropdown', 'item');
-                                    categoryItem.innerHTML = `<a href="/product/shopbycategory?id=${category.categoryId}"">${category.categoryName}</a>`;
+                                    if(category.isDeleted==false){
+                                        categoryItem.classList.add('dropdown', 'item');
+                                        categoryItem.innerHTML = `<a href="/product/shopbycategory?id=${category.categoryId}"">${category.categoryName}</a>`;
+                                        categoryList.appendChild(categoryItem);
+                                    }
 
                             
 
-                                    categoryList.appendChild(categoryItem);
+                                    
                                 });
                             } catch (error) {
                                 console.error('Error loading categories:', error);

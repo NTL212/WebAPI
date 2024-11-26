@@ -10,6 +10,7 @@ using ProductDataAccess.Models.Request;
 using System.Threading.Channels;
 using MassTransit.Transports;
 using ProductDataAccess.ViewModels;
+using System.Net;
 
 namespace OrderService
 {
@@ -49,7 +50,9 @@ namespace OrderService
             {
                 var factory = new ConnectionFactory
                 {
-                    HostName = "localhost"
+                    HostName = "localhost",
+                    UserName = "loimq",
+                    Password = "123456",
                 };
 
                 // Tạo connection và channel ngoài khối using để không bị dispose quá sớm
@@ -138,9 +141,16 @@ namespace OrderService
             }
 
             // Gọi API để tạo đơn hàng
-            var client = _httpClientFactory.CreateClient();
-            var resultJson = JsonConvert.SerializeObject(order);       
+            var handler = new HttpClientHandler
+            {
+                UseCookies = true,
+                CookieContainer = new CookieContainer(),
+            };
+            var client = new HttpClient(handler);
+            client.DefaultRequestHeaders.Add("Origin", "https://client-origin.com");
 
+            var resultJson = JsonConvert.SerializeObject(order);
+            await client.PostAsync($"{_apiUrl}Cart/OrderResult", new StringContent(resultJson, Encoding.UTF8, "application/json"));
             try
             {
                 var response = await client.PostAsync($"{_apiUrl}api/order", new StringContent(resultJson, Encoding.UTF8, "application/json"));

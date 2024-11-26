@@ -9,6 +9,8 @@ using ProductDataAccess.Models.Request;
 
 using ProductAPI.Services;
 using Microsoft.Extensions.Caching.Distributed;
+using ProductDataAccess.Models;
+using System.Drawing.Printing;
 
 
 namespace ProductAPI.Controllers.MVC.Client
@@ -33,10 +35,14 @@ namespace ProductAPI.Controllers.MVC.Client
             _distributedCache = distributedCache;
         }
 
-        public async Task<IActionResult> Index(int userId, int pageNumber = 1, string mess = null)
+        public async Task<IActionResult> Index(int userId, bool resetCached=false, int pageNumber = 1, string mess = null)
         {
             const int pageSize = 5;
             string cacheKey = $"UserOrders:{userId}:Page:{pageNumber}";
+            if (resetCached)
+            {
+                await InvalidateUserOrdersCache(userId);
+            }
             PagedResult<OrderDTO> cachedPageResult;
 
             // Try to get cached data
@@ -92,17 +98,45 @@ namespace ProductAPI.Controllers.MVC.Client
 
         public async Task<IActionResult> Detail(int id)
         {
-          
+            var userId = HttpContext.Session.GetInt32("UserId");
+            string cacheKey = $"UserOrders:{userId}:Order:{id}";
+            var cachedData = await _distributedCache.GetStringAsync(cacheKey);
+            OrderDTO cachedResult;
 
-            var order = await _orderRepository.GetOrderById(id);
-            var voucher = await _voucherRepository.GetByIdAsync((int)order.VoucherId);
-            if (order == null)
-                return NotFound();
+            if (!string.IsNullOrEmpty(cachedData))
+            {
+                // Deserialize cached JSON data to object
+                cachedResult = JsonConvert.DeserializeObject<OrderDTO>(cachedData);
+            }
+            else
+            {
+                // If not found in cache, fetch from DB
+                var order = await _orderRepository.GetOrderById(id);
+                Voucher voucher=null;
+                if (order.VoucherId != null)
+                {
+                    voucher = await _voucherRepository.GetByIdAsync((int)order.VoucherId);
+                }
+                if (order == null)
+                    return NotFound();
 
-            // Ánh xạ từ Order sang OrderDTO
-            var orderDTO = _mapper.Map<OrderDTO>(order);
-            orderDTO.Voucher = _mapper.Map<VoucherDTO>(voucher);
-            return View(orderDTO);
+                // Ánh xạ từ Order sang OrderDTO
+                cachedResult = _mapper.Map<OrderDTO>(order);
+                if (voucher != null)
+                {
+                    cachedResult.Voucher = _mapper.Map<VoucherDTO>(voucher);
+                }
+              
+                // Serialize data to JSON and store in Redis
+                var serializedData = JsonConvert.SerializeObject(cachedResult);
+                await _distributedCache.SetStringAsync(cacheKey, serializedData, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = _cacheDuration
+                });
+            }
+
+           
+            return View(cachedResult);
         }
 
         public async Task<IActionResult> CancelOrder(int orderId)
@@ -119,35 +153,13 @@ namespace ProductAPI.Controllers.MVC.Client
             // Serialize RabbitMessage to JSON
             var rabbitMessageJson = JsonConvert.SerializeObject(rabbitMessage);
 
-            //// Send order data to RabbitMQ
-            //var factory = new ConnectionFactory
-            //{
-            //    HostName = "localhost"
-            //};
-            //using (var connection = factory.CreateConnection())
-            //using (var channel =  connection.CreateModel())
-            //{
-            //    channel.QueueDeclare(queue: "OrderQueue2",
-            //                         durable: false,
-            //                         exclusive: false,
-            //                         autoDelete: false,
-            //                         arguments: null);
-
-            //    var body = Encoding.UTF8.GetBytes(rabbitMessageJson);
-
-            //    channel.BasicPublish(
-            //        exchange: "",
-            //        routingKey: "OrderQueue2",
-            //        basicProperties: null,
-            //        body: body
-            //    );
-            //}
             _rabbitMqService.PublishOrderMessage(rabbitMessageJson);
 
-            await InvalidateUserOrdersCache((int)userId);
+            string cacheKey = $"UserOrders:{userId}:Order:{orderId}";
+            await _distributedCache.RemoveAsync(cacheKey);
 
             TempData["SuccessMessage"] = "Your order has been cancled for processing!";
-            return RedirectToAction("Index", new { userId });
+            return RedirectToAction("Index", new { userId=userId, resetCached = true });
         }
     }
 }

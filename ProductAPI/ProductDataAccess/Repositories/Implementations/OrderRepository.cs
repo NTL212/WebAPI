@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
@@ -42,6 +44,7 @@ namespace ProductDataAccess.Repositories
                 await _dbSet.AddAsync(order);
                 if (await _context.SaveChangesAsync() > 0)
                 {
+
                     return new ResultVM(true, "Place order successfully");
                 }
                 return new ResultVM(false, "Place order failed");
