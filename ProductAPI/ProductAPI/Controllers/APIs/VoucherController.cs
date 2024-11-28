@@ -73,7 +73,8 @@ namespace ProductAPI.Controllers.APIs
         public async Task<ActionResult> UpdateVoucher([FromBody] VoucherDTO voucherDTO)
         {
             var voucher = _mapper.Map<Voucher>(voucherDTO);
-            var success = await _voucherRepository.UpdateAsync(voucher);
+            _voucherRepository.Update(voucher);
+            var success = await _voucherRepository.SaveChangesAsync();
             if (success)
             {
                 return Ok("Voucher updated successfully");
@@ -85,7 +86,9 @@ namespace ProductAPI.Controllers.APIs
         [HttpDelete("{voucherId}")]
         public async Task<ActionResult> DeleteVoucher(int voucherId)
         {
-            var success = await _voucherRepository.DeleteAsync(voucherId);
+            var voucher = await _voucherRepository.GetByIdAsync(voucherId);
+            _voucherRepository.Delete(voucher);
+            var success = await _voucherRepository.SaveChangesAsync();
             if (success)
             {
                 return NoContent();
@@ -114,7 +117,8 @@ namespace ProductAPI.Controllers.APIs
         public async Task<ActionResult<VoucherCampaign>> CreateVoucherCampaign([FromBody] VoucherCampaignDTO voucherDTO)
         {
             var voucher = _mapper.Map<VoucherCampaign>(voucherDTO);
-            var createdVoucher = await _voucherCampaignRepository.AddAsync(voucher);
+            await _voucherCampaignRepository.AddAsync(voucher);
+            var createdVoucher = await _voucherCampaignRepository.SaveChangesAsync();
             if (createdVoucher)
             {
                 return Ok(voucher);
@@ -129,7 +133,8 @@ namespace ProductAPI.Controllers.APIs
         public async Task<ActionResult> UpdateVoucherCampaign([FromBody] VoucherCampaignDTO voucherDTO)
         {
             var voucher = _mapper.Map<VoucherCampaign>(voucherDTO);
-            var success = await _voucherCampaignRepository.UpdateAsync(voucher);
+            _voucherCampaignRepository.Update(voucher);
+            var success = await _voucherCampaignRepository.SaveChangesAsync();
             if (success)
             {
                 return Ok("Voucher updated successfully");

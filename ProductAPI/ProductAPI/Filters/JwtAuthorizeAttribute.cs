@@ -33,6 +33,12 @@ namespace ProductAPI.Filters
                 // Kiểm tra role trong token
                 var roles = jwtToken?.Claims.Where(c => c.Type.Contains("role")).Select(c => c.Value).ToList();
 
+                if(_role=="Customer" && roles.Contains("Admin"))
+                {
+                    context.Result = new RedirectToActionResult("Index", "Dashboard", null);
+                    return;
+                }
+
                 if (roles == null || !roles.Contains(_role))
                 {
                     context.Result = new ViewResult

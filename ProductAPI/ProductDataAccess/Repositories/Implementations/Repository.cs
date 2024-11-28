@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Models;
-using ProductDataAccess.Models.Response;
 using System.Linq.Expressions;
 
 namespace ProductDataAccess.Repositories
@@ -9,36 +8,12 @@ namespace ProductDataAccess.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         public readonly ProductCategoryContext _context;
-		public readonly DbSet<T> _dbSet;
+        public readonly DbSet<T> _dbSet;
 
         public Repository(ProductCategoryContext context)
         {
-           _context = context;
-           _dbSet = context.Set<T>();
-        }
-        public async Task<bool> AddAsync(T entity)
-        {
-            try
-            {
-                await _dbSet.AddAsync(entity);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-
-            var entity = await GetByIdAsync(id);
-            if (entity != null)
-            {
-                _dbSet.Remove(entity);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            return false;
+            _context = context;
+            _dbSet = context.Set<T>();
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -51,35 +26,14 @@ namespace ProductDataAccess.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<bool> UpdateAsync(T entity)
+
+        public async Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize)
         {
-            try
-            {
-                _dbSet.Update(entity);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            catch
-            {
-                return false;
-            }
+            return await _dbSet
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
-
-		public async Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize)
-		{
-			var totalRecords = await _dbSet.CountAsync();
-			var items = await _dbSet
-				.Skip((pageNumber - 1) * pageSize)
-				.Take(pageSize)
-				.ToListAsync();
-
-			return new PagedResult<T>
-			{
-				Items = items,
-				TotalRecords = totalRecords,
-				PageNumber = pageNumber,
-				PageSize = pageSize
-			};
-		}
 
         public async Task<IEnumerable<T>> GetAllWithIncludeAsync(params Expression<Func<T, object>>[] includes)
         {
@@ -105,7 +59,7 @@ namespace ProductDataAccess.Repositories
             return await query.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<PagedResult<T>> GetPagedWithIncludeAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> GetPagedWithIncludeAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes)
         {
             IQueryable<T> query = _dbSet;
 
@@ -113,44 +67,27 @@ namespace ProductDataAccess.Repositories
             {
                 query = query.Include(include);
             }
-            var totalRecords = await _dbSet.CountAsync();
-            var items = await query
+
+            return await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-            
-            return new PagedResult<T>
-            {
-                Items = items,
-                TotalRecords = totalRecords,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
         }
 
-        public async Task<PagedResult<T>> GetPagedWithIncludeSearchAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        public async Task<IEnumerable<T>> GetPagedWithIncludeSearchAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
 
             IQueryable<T> query = _dbSet;
-            var totalRecords = _dbSet.Where(predicate).ToList().Count;
-
             foreach (var include in includes)
             {
                 query = query.Include(include);
             }
-            var items = await query
+
+            return await query
                 .Where(predicate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-
-            return new PagedResult<T>
-            {
-                Items = items,
-                TotalRecords = totalRecords,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
         }
 
         public async Task<IEnumerable<T>> GetAllWithPredicateIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
@@ -164,17 +101,47 @@ namespace ProductDataAccess.Repositories
             return await query.Where(predicate).ToListAsync();
         }
 
-        public async Task<bool> AddRangeAsync(List<T> entity)
+        public async Task<bool> SaveChangesAsync()
         {
-            try
-            {
-                await _dbSet.AddRangeAsync(entity);
-                return await _context.SaveChangesAsync() > 0;
-            }
-            catch
-            {
-                return false;
-            }
+            return await _context.SaveChangesAsync() > 0;
+        }
+        public async Task<int> CountAsync(Expression<Func<T, bool>> predicate)
+        {
+            var totalRecords = await _dbSet.Where(predicate).CountAsync();
+
+            return totalRecords;
+        }
+
+        public virtual async Task<int> CountAsync()
+        {
+            var totalRecords = await _dbSet.CountAsync();
+
+            return totalRecords;
+        }
+
+        public async Task AddAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+        }
+
+        public async Task AddRangeAsync(List<T> entity)
+        {
+            await _dbSet.AddRangeAsync(entity);
+        }
+
+        public void Update(T entity)
+        {
+            _dbSet.Update(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            _dbSet.Remove(entity);
+        }
+
+        public void UpdateRange(List<T> entity)
+        {
+            _dbSet.UpdateRange(entity);
         }
     }
 }

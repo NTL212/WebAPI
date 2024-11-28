@@ -1,0 +1,14 @@
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.csproj.AssemblyReference.cache
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.AssemblyInfoInputs.cache
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.AssemblyInfo.cs
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.csproj.CoreCompileInputs.cache
+E:\Work\ProductAPI\DataAccessLayer\bin\Debug\net8.0\DataAccessLayer.deps.json
+E:\Work\ProductAPI\DataAccessLayer\bin\Debug\net8.0\DataAccessLayer.runtimeconfig.json
+E:\Work\ProductAPI\DataAccessLayer\bin\Debug\net8.0\DataAccessLayer.dll
+E:\Work\ProductAPI\DataAccessLayer\bin\Debug\net8.0\DataAccessLayer.pdb
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.dll
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\refint\DataAccessLayer.dll
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.pdb
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\DataAccessLayer.genruntimeconfig.cache
+E:\Work\ProductAPI\DataAccessLayer\obj\Debug\net8.0\ref\DataAccessLayer.dll

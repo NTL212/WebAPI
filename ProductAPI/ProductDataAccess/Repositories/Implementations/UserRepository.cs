@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Repositories.Interfaces;
-using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
-using System.ComponentModel.DataAnnotations;
+
 
 namespace ProductDataAccess.Repositories.Implementations
 {

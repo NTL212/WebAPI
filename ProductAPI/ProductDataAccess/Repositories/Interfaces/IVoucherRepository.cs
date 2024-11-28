@@ -17,7 +17,5 @@ namespace ProductDataAccess.Repositories
 
         Task<PagedResult<Voucher>> GetVouchersOfUserPaged(int userId, int pageNumber, int pageSize);
 
-
-        Task<ValidateVoucherVM> ValidateVoucher(Voucher voucher, User user, List<int> productIds, decimal totalOrder);
     }
 }

@@ -7,6 +7,7 @@ using ProductAPI.Filters;
 using ProductDataAccess.Models;
 using ProductDataAccess.Repositories;
 using ProductDataAccess.Models.Response;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.APIs
 {
@@ -16,67 +17,60 @@ namespace ProductAPI.Controllers.APIs
     //[ServiceFilter(typeof(ValidateTokenAttribute))]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IProductService _productService;
         private readonly IMapper _mapper;
 
-        public ProductsController(IProductRepository productRepository, IMapper mapper)
+        public ProductsController(IProductService productService, IMapper mapper)
         {
-            _productRepository = productRepository;
+            _productService = productService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
+        public async Task<ActionResult<List<ProductDTO>>> GetAll()
         {
-            var products = await _productRepository.GetAllIncludeProducts();
-            var productsDto = _mapper.Map<IEnumerable<ProductDTO>>(products);
-            return Ok(productsDto);
+            var products = await _productService.GetAllAsync();
+            return Ok(products);
         }
 
         [HttpGet("{id}/category")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProductsByCategory(int id)
+        public async Task<ActionResult<List<ProductDTO>>> GetAllProductsByCategory(int id)
         {
-            var products = await _productRepository.GetAllProductsByCategory(id);
-            var productsDto = _mapper.Map<IEnumerable<ProductDTO>>(products);
-            return Ok(productsDto);
+            var products = await _productService.GetAllProductsByCategory(id);
+            return Ok(products);
         }
 
         [HttpGet("{id}/category/paged/{pageNumber}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProductsByCategory(int id, int pageNumber,string searchKey= "")
+        public async Task<ActionResult<PagedResult<ProductDTO>>> GetAllProductsByCategory(int id, int pageNumber,string searchKey= "")
         {
-            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9, p => p.ProductName.ToLower().Contains(searchKey.ToLower()) && p.IsDeleted==false && p.Category.IsDeleted == false && (p.CategoryId==id || p.Category.ParentId == id), p => p.Category);
-            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
-            return Ok(productsDto);
+            var products = await _productService.GetAllProductsByCategory(pageNumber, 9, id, searchKey);
+            return Ok(products);
         }
 
         [HttpGet("paged/{pageNumber}")]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllPaged(int pageNumber, string searchKey="")
+        public async Task<ActionResult<PagedResult<ProductDTO>>> GetAllPaged(int pageNumber, string searchKey="")
         {
-            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, 9,p=>p.ProductName.ToLower().Contains(searchKey.ToLower()) && p.IsDeleted==false && p.Category.IsDeleted==false ,p=>p.Category);
-            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
-            return Ok(productsDto);
+            var products = await _productService.GetAllProductsPaged(pageNumber, 9, searchKey);
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var product = await _productService.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
 
-            var productDto = _mapper.Map<ProductDTO>(product);
-            return Ok(productDto);
+            return Ok(product);
         }
 
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<ProductDTO>> Create(ProductDTO productDto)
         {
-            var product = _mapper.Map<Product>(productDto);
-            if (await _productRepository.AddAsync(product))
+            if (await _productService.AddAsync(productDto))
             {
-                var createdProductDto = _mapper.Map<ProductDTO>(product);
-                return CreatedAtAction(nameof(GetById), new { id = createdProductDto.ProductId }, createdProductDto);
+                return Ok();
             }
             else
             {
@@ -92,8 +86,7 @@ namespace ProductAPI.Controllers.APIs
             if (id != productDto.ProductId)
                 return BadRequest();
 
-            var product = _mapper.Map<Product>(productDto);
-            if (await _productRepository.UpdateAsync(product))
+            if (await _productService.UpdateAsync(productDto))
             {
                 return NoContent();
             }
@@ -108,7 +101,7 @@ namespace ProductAPI.Controllers.APIs
         [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await _productRepository.DeleteProduct(id))
+            if (await _productService.DeleteAsync(id))
             {
                 return NoContent();
             }

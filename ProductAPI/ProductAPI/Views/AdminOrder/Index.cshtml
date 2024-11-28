@@ -1,6 +1,7 @@
 ﻿@using ProductDataAccess.Models.Response;
 @using ProductDataAccess.Models;
-@model PagedResult<Order>
+@using ProductDataAccess.DTOs;
+@model PagedResult<OrderDTO>
 @{
     ViewData["PageTitle"] = "Orders";
     ViewData["Orders"] = "active";

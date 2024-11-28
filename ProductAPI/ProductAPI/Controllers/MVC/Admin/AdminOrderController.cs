@@ -1,14 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
-using ProductDataAccess.Repositories;
-using ProductDataAccess.DTOs;
-using Newtonsoft.Json;
-using ProductDataAccess.Models.Request;
-using RabbitMQ.Client;
-using System.Text;
-using static MassTransit.ValidationResultExtensions;
+using Microsoft.Extensions.Caching.Distributed;
+using ProductAPI.Helper;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -16,49 +11,53 @@ namespace ProductAPI.Controllers.MVC.Admin
     [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminOrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IVoucherRepository _voucherRepository;
-        private readonly IMapper _mapper;
-        public AdminOrderController(IOrderRepository orderRepository, IVoucherRepository voucherRepository, IMapper mapper)
+        private readonly IOrderService _orderService;
+        private readonly IVoucherService _voucherService;
+        private readonly IDistributedCache _distributedCache;
+        public AdminOrderController(IOrderService orderService, IVoucherService voucherService, IDistributedCache distributedCache, IMapper mapper)
         {
-            _orderRepository = orderRepository;
-            _voucherRepository = voucherRepository;
-            _mapper = mapper;
+            _orderService = orderService;
+            _voucherService = voucherService;
+            _distributedCache = distributedCache;
         }
-        public async Task<IActionResult> Index(int page = 1, string mess = null, string searchText = "")
+        public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
-            var orders = await _orderRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.PhoneNumber.ToLower().Contains(searchText.ToLower()));
-            ViewBag.Message = mess;
+            var orders = await _orderService.GetOrderPagedWithSearch(page, 10, searchText);
             return View(orders);
         }
 
-        public async Task<IActionResult> Detail(int id, string mess = null)
+        public async Task<IActionResult> Detail(int id)
         {
-            var order = await _orderRepository.GetOrderById(id);
-            var orderDto = _mapper.Map<OrderDTO>(order);
+            var order = await _orderService.GetOrderById(id);
 
-            if (order.VoucherId != null)
+            if (order.VoucherAppliedId != null)
             {
-                var voucher = await _voucherRepository.GetByIdAsync((int)order.VoucherId);
+                var voucher = await _voucherService.GetByIdAsync((int)order.VoucherAppliedId);
                 if (voucher != null)
                 {
-                    orderDto.Voucher = _mapper.Map<VoucherDTO>(voucher);
+                    order.Voucher = voucher;
                 }
             }
 
             if (order == null)
                 return NotFound();
-            ViewBag.Message = mess;
-            return View(orderDto);
+            return View(order);
         }
 
         [HttpPost]
         public async Task<IActionResult> ConfirmOrders(List<int> selectedOrderIds, int page=1)
         {
-            var updated = await _orderRepository.ConfirmOrders(selectedOrderIds);
+            var updated = await _orderService.ConfirmOrders(selectedOrderIds);
             if (updated)
             {
                 TempData["SuccessMessage"] = "Confirm orders successfull";
+                var orders = await _orderService.GetSelectedOrders(selectedOrderIds);
+                CacheHelper helper = new CacheHelper();
+                foreach (var item in orders)
+                {
+                    var pageCount = await _orderService.GetOrderCountByUserAsync(item.UserId);
+                    await helper.InvalidateUserOrdersCache(item.UserId, pageCount, _distributedCache);
+                }            
             }
             else
             {

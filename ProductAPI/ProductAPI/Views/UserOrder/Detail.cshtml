@@ -100,7 +100,7 @@
     <!-- Voucher Applied (if any) -->
     <div class="card mb-4">
         <div class="card-body">
-            <a href="@Url.Action("Index", "UserOrder", new { id = Context.Session.GetInt32("UserId") })" class="btn btn-primary">Back to list</a>
+            <a href="@Url.Action("Index", "UserOrder", new { userId = Context.Session.GetInt32("UserId") })" class="btn btn-primary">Back to list</a>
             @if (Model.Status == "Pending")
             {
                 <a href="@Url.Action("CancelOrder", "UserOrder", new { orderId = Model.OrderId })" class="btn btn-outline-danger">Cancel</a>

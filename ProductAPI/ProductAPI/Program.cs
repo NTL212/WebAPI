@@ -12,7 +12,8 @@ using ProductDataAccess.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
 using System.Text;
-using StackExchange.Redis;
+using ProductBusinessLogic.Interfaces;
+using ProductBusinessLogic.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddDbContext<ProductCategoryContext>(options =>
     options.UseSqlServer(connectionString));
-
 
 builder.Services.AddHttpContextAccessor();
 
@@ -63,6 +63,16 @@ builder.Services.AddScoped<PasswordHasher<User>>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserGroupService, UserGroupService>();
+builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<IVoucherUserService, VoucherUserService>();
+builder.Services.AddScoped<IVoucherCampaignService, VoucherCampaignService>();
+builder.Services.AddScoped<IVoucherAssignmentService, VoucherAssignmentService>();
+
 builder.Services.AddScoped<RabbitMqService>();
 builder.Services.AddScoped<ValidateTokenAttribute>();
 

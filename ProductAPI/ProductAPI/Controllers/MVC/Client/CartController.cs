@@ -6,14 +6,11 @@ using AutoMapper;
 using ProductDataAccess.Repositories;
 using ProductDataAccess.ViewModels;
 using ProductDataAccess.Repositories.Interfaces;
-using Newtonsoft.Json.Linq;
 using ProductAPI.Filters;
-using RabbitMQ.Client;
-using System.Text;
 using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
 using ProductDataAccess.Models.Request;
 using Microsoft.Extensions.Caching.Distributed;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.MVC.Client
 {
@@ -28,12 +25,15 @@ namespace ProductAPI.Controllers.MVC.Client
         private readonly IProductRepository _productRepository;
         private readonly RabbitMqService _rabbitMqService;
         private readonly IDistributedCache _distributedCache;
+        private readonly IOrderService _orderService;
+        private readonly IVoucherService _voucherService;
 
         // Injecting the service in the controller's constructor
         public CartController(ICartService cartService, IMapper mapper, IOrderRepository orderRepository,
             IVoucherRepository voucherRepository, IVoucherUserRepository voucherUserRepository,
             IUserRepoisitory userRepository, IProductRepository productRepository,
-            RabbitMqService rabbitMqService, IDistributedCache distributedCache)
+            RabbitMqService rabbitMqService, IDistributedCache distributedCache,
+            IOrderService orderService, IVoucherService voucherService)
         {
             _cartService = cartService;
             _mapper = mapper;
@@ -44,6 +44,7 @@ namespace ProductAPI.Controllers.MVC.Client
             _productRepository = productRepository;
             _rabbitMqService = rabbitMqService;
             _distributedCache = distributedCache;
+            _voucherService = voucherService;
         }
 
         // Get the cart and display it along with the total price and quantity
@@ -111,9 +112,11 @@ namespace ProductAPI.Controllers.MVC.Client
             var cart = _cartService.GetCart();
             var userId = HttpContext.Session.GetInt32("UserId");
             var user = await _userRepository.GetByIdWithIncludeAsync(u => u.UserId == userId, u => u.Group);
+            var userDTO = _mapper.Map<UserDTO>(user);
             var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v => v.UserId == userId && v.Status == true, v => v.Voucher);
 
             var voucherApplied = await _voucherRepository.GetByIdAsync(voucherAppiedId);
+            var voucherAppliedDTO = _mapper.Map<VoucherDTO>(voucherApplied);
 
             var checkoutVM = new CheckoutVM();
 
@@ -124,7 +127,7 @@ namespace ProductAPI.Controllers.MVC.Client
                 if (voucherAppiedId > 0)
                 {
                     var productIds = cart.Select(x => (int)x.ProductId).ToList();
-                    var check = await _voucherRepository.ValidateVoucher(voucherApplied, user, productIds, checkoutVM.total);
+                    var check = await _voucherService.ValidateApplyVoucher(voucherAppliedDTO, userDTO, productIds, checkoutVM.total);
                     if (check.Success)
                     {
                         TempData["SuccessMessage"] = check.Message;
@@ -240,10 +243,7 @@ namespace ProductAPI.Controllers.MVC.Client
 
         private async Task<int> GetTotalPageCountForUser(int userId)
         {
-            // Giả sử bạn có phương thức trả về tổng số đơn hàng
-            var orders = await _orderRepository.GetPagedByUserAsync(userId, 1, 5);
-            const int pageSize = 5;
-            return orders.TotalPages;
+            return await _orderRepository.CountAsync(o=>o.UserId==userId);
         }
     }
 }

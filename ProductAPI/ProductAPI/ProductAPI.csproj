@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ProductBusinessLogic\ProductBusinessLogic.csproj" />
     <ProjectReference Include="..\ProductDataAccess\ProductDataAccess.csproj" />
   </ItemGroup>
 

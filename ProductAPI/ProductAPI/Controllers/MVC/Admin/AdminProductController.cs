@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
 using ProductDataAccess.Repositories;
@@ -7,6 +6,7 @@ using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
 using Microsoft.Extensions.Caching.Distributed;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -14,49 +14,34 @@ namespace ProductAPI.Controllers.MVC.Admin
     [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminProductController : Controller
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
         private readonly IDistributedCache _cache;
-        private readonly IMapper _mapper;
+        private readonly ICategoryService _categoryService;
+        private readonly IProductService _productService;
 
-        public AdminProductController(IProductRepository productRepository, ICategoryRepository categoryRepository, IDistributedCache cache, IMapper mapper)
+        public AdminProductController(IProductService productService, ICategoryService categoryService, IDistributedCache cache)
         {
-            _productRepository = productRepository;
-            _mapper = mapper;
-            _categoryRepository = categoryRepository;
+            _productService = productService;
+            _categoryService = categoryService;
             _cache = cache;
         }
-        public async Task<IActionResult> Index(int page = 1, string searchText = null)
+        public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
-            var products = new PagedResult<Product>();
-            if (searchText != null)
-            {
-                products = await _productRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.ProductName.ToLower().Contains(searchText.ToLower()));
-            }
-            else
-            {
-                products = await _productRepository.GetPagedWithIncludeAsync(page, 10);
-            }
-            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
-            return View(productsDto);
+            var products = await _productService.GetProductPagedWithSearch(page, 10, searchText);
+            return View(products);
         }
 
-        public async Task<IActionResult> Detail(int id, string mess = null)
+        public async Task<IActionResult> Detail(int id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var product = await _productService.GetByIdAsync(id);
             if (product == null)
                 return NotFound();
-            TempData["Message"] = mess;
-            var productDto = _mapper.Map<ProductDTO>(product);
-            return View(productDto);
+            return View(product);
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create(string mess = null)
+        public async Task<IActionResult> Create()
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            ViewBag.Message = mess;
-            ViewData["Categories"] = _mapper.Map<List<CategoryDTO>>(categories);
+            ViewData["Categories"] = await _categoryService.GetAllAsync();
             return View();
         }
 
@@ -91,9 +76,8 @@ namespace ProductAPI.Controllers.MVC.Admin
                 productDto.ImgName = productImage.FileName;
             }
 
-            var product = _mapper.Map<Product>(productDto);
-            product.CreatedAt = DateTime.Now;
-            if (await _productRepository.AddAsync(product))
+            productDto.CreatedAt = DateTime.Now;
+            if (await _productService.AddAsync(productDto))
             {
                 TempData["SuccessMessage"] = "Add product successfull";
             }
@@ -106,14 +90,11 @@ namespace ProductAPI.Controllers.MVC.Admin
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(int id, string mess = null)
+        public async Task<IActionResult> Edit(int id)
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            var product = await _productRepository.GetByIdWithIncludeAsync(p => p.ProductId == id, p => p.Category);
-            ViewBag.Message = mess;
-            ViewData["Categories"] = _mapper.Map<List<CategoryDTO>>(categories);
-            var productDto = _mapper.Map<ProductDTO>(product);
-            return View(productDto);
+            var product = await _productService.GetByIdAsync(id);
+            ViewData["Categories"] = await _categoryService.GetAllAsync();
+            return View(product);
         }
 
         [HttpPost]
@@ -126,8 +107,6 @@ namespace ProductAPI.Controllers.MVC.Admin
 
             try
             {
-                var product = _mapper.Map<Product>(productDTO);
-
                 // Lưu sản phẩm và hình ảnh vào cơ sở dữ liệu
                 if (productImage != null)
                 {
@@ -148,10 +127,10 @@ namespace ProductAPI.Controllers.MVC.Admin
                     {
                         productImage.CopyTo(stream);
                     }
-                    product.ImgName = productImage.FileName;
+                    productDTO.ImgName = productImage.FileName;
                 }
 
-                if (await _productRepository.UpdateAsync(product))
+                if (await _productService.UpdateAsync(productDTO))
                 {
                     TempData["SuccessMessage"] = "Edit product successfull";
                     string cacheKey = $"product:{productDTO.ProductId}";
@@ -162,7 +141,7 @@ namespace ProductAPI.Controllers.MVC.Admin
                     TempData["ErrorMessage"] = "Failed to edit product";
 
                 }
-                return RedirectToAction("Edit", new { id = product.ProductId });
+                return RedirectToAction("Edit", new { id = productDTO.ProductId });
             }
             catch (Exception ex)
             {
@@ -175,7 +154,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             try
             {
-                if (await _productRepository.DeleteProduct(id))
+                if (await _productService.DeleteAsync(id))
                 {
                     TempData["SuccessMessage"] = "Delete product successfull";
                 }
@@ -197,7 +176,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             try
             {
-                if (await _productRepository.RestoreProduct(id))
+                if (await _productService.RestoreProduct(id))
                 {
                     TempData["SuccessMessage"] = "Restore product successfull";
                 }
@@ -217,8 +196,7 @@ namespace ProductAPI.Controllers.MVC.Admin
 
         private async Task<IActionResult> ReturnModelError(ProductDTO productDTO)
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            ViewData["Categories"] = _mapper.Map<List<CategoryDTO>>(categories);
+            ViewData["Categories"] = await _categoryService.GetAllAsync();
             return View(productDTO);
         }
     }

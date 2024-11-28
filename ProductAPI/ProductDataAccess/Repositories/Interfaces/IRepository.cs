@@ -8,15 +8,21 @@ namespace ProductDataAccess.Repositories
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> GetAllWithPredicateIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdAsync(int id);
-        Task<bool> AddAsync(T entity);
-        Task<bool> AddRangeAsync(List<T> entity);
-        Task<bool> UpdateAsync(T entity);
-        Task<bool> DeleteAsync(int id);
+        Task AddAsync(T entity);
+        Task AddRangeAsync(List<T> entity);
+        void Update(T entity);
+        void UpdateRange(List<T> entity);
+        void Delete(T entity);
 
-        Task<PagedResult<T>> GetPagedAsync(int pageNumber, int pageSize);
+        Task<int> CountAsync(Expression<Func<T, bool>> predicate);
+        Task<int> CountAsync();
 
-        Task<PagedResult<T>> GetPagedWithIncludeAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes);
-        Task<PagedResult<T>> GetPagedWithIncludeSearchAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
+        Task<bool> SaveChangesAsync();
+
+        Task<IEnumerable<T>> GetPagedAsync(int pageNumber, int pageSize);
+
+        Task<IEnumerable<T>> GetPagedWithIncludeAsync(int pageNumber, int pageSize, params Expression<Func<T, object>>[] includes);
+        Task<IEnumerable<T>> GetPagedWithIncludeSearchAsync(int pageNumber, int pageSize, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);
 
         Task<IEnumerable<T>> GetAllWithIncludeAsync(params Expression<Func<T, object>>[] includes);
         Task<T> GetByIdWithIncludeAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes);

@@ -1,15 +1,10 @@
-﻿
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
-using ProductDataAccess.Repositories;
-using ProductDataAccess.Repositories.Interfaces;
 using ProductDataAccess.DTOs;
-using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
-using System.Text.RegularExpressions;
+using ProductBusinessLogic.Interfaces;
+
 
 
 namespace ProductAPI.Controllers.MVC.Admin
@@ -18,48 +13,42 @@ namespace ProductAPI.Controllers.MVC.Admin
     [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminVoucherController : Controller
     {
-        private readonly IVoucherRepository _voucherRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly IUserRepoisitory _userRepository;
-        private readonly IUserGroupRepository _userGroupRepository;
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IVoucherUserRepository _voucherUserRepository;
-        private readonly IVoucherCampaignRepository _voucherCampaignRepository;
-        private readonly IVoucherAssignmentRepository _voucherAssignmentRepository;
-        private readonly IMapper _mapper;
-        public AdminVoucherController(IVoucherRepository voucherRepository, IProductRepository productRepository,
-            ICategoryRepository categoryRepository, IUserRepoisitory userRepository,
-            IUserGroupRepository userGroupRepository, IVoucherUserRepository voucherUserRepository,
-            IVoucherCampaignRepository voucherCampaignRepository,
-            IVoucherAssignmentRepository voucherAssignmentRepository, IMapper mapper)
+        private readonly IVoucherService _voucherService;
+        private readonly IProductService _productService;
+        private readonly IUserService _userService;
+        private readonly IUserGroupService _userGroupService;
+        private readonly ICategoryService _categoryService;
+        private readonly IVoucherUserService _voucherUserService;
+        private readonly IVoucherCampaignService _voucherCampaignService;
+        private readonly IVoucherAssignmentService _voucherAssignmentService;
+        public AdminVoucherController(IVoucherService voucherService, IProductService productService,
+            ICategoryService categoryService, IUserService userService,
+            IUserGroupService userGroupService, IVoucherUserService voucherUserService,
+            IVoucherCampaignService voucherCampaignService,
+            IVoucherAssignmentService voucherAssignmentService)
         {
-            _voucherRepository = voucherRepository;
-            _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
-            _userRepository = userRepository;
-            _userGroupRepository = userGroupRepository;
-            _voucherUserRepository = voucherUserRepository;
-            _voucherCampaignRepository = voucherCampaignRepository;
-            _voucherAssignmentRepository = voucherAssignmentRepository;
-            _mapper = mapper;
+            _voucherService = voucherService;
+            _productService = productService;
+            _categoryService = categoryService;
+            _userService = userService;
+            _userGroupService = userGroupService;
+            _voucherUserService = voucherUserService;
+            _voucherCampaignService = voucherCampaignService;
+            _voucherAssignmentService = voucherAssignmentService;
         }
         public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
 
-            var vouchers = await _voucherRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.Code.ToLower().Contains(searchText.ToLower()));
-            var voucherDTO = _mapper.Map<PagedResult<VoucherDTO>>(vouchers);
-            return View(voucherDTO);
+            var vouchers = await _voucherService.GetVoucherPagedWithSearch(page, 10, searchText);
+            return View(vouchers);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var products = await _productRepository.GetAllAsync();
-            var categories = await _categoryRepository.GetAllAsync();
-
             VoucherCreateVM vm = new VoucherCreateVM();
-            vm.Products = _mapper.Map<List<ProductDTO>>(products);
-            vm.Categories = _mapper.Map<List<CategoryDTO>>(categories);
+            vm.Products = await _productService.GetAllAsync();
+            vm.Categories = await _categoryService.GetAllAsync();
             return View(vm);
         }
 
@@ -77,24 +66,8 @@ namespace ProductAPI.Controllers.MVC.Admin
                 ModelState.AddModelError("", "The expiry date is not a valid.");
                 return await ReturnModelError(createVM);
             }
-
-            List<int> selectedProductIds = createVM.ProductId != null
-    ? JsonConvert.DeserializeObject<List<int>>(createVM.ProductId) ?? new List<int>()
-    : new List<int>();
-
-
-            var voucherCondition = new VoucherCondition();
-
-            voucherCondition.MinOrderValue = createVM.MinOrderValue ?? 0m; // Gán mặc định là 0 nếu null
-            voucherCondition.MaxDiscountAmount = createVM.MaxDiscountAmount ?? 0m; // Gán mặc định là 0 nếu null
-            voucherCondition.GroupName = createVM.GroupName ?? "Default Group Name"; // Gán mặc định nếu null
-            voucherCondition.ProductId = selectedProductIds ?? new List<int>(); // Gán danh sách rỗng nếu null
-
-
-            var voucher = _mapper.Map<Voucher>(createVM);
-            voucher.Conditions = JsonConvert.SerializeObject(voucherCondition);
-
-            var result = await _voucherRepository.AddAsync(voucher);
+            
+            var result = await _voucherService.CreateVoucher(createVM);
             if (result)
             {
                 TempData["SuccessMessage"] = "Add voucher successfull";
@@ -109,27 +82,10 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var products = await _productRepository.GetAllAsync();
-            var categories = await _categoryRepository.GetAllAsync();
-            var voucher = await _voucherRepository.GetByIdAsync(id);
-
-           
-
-            VoucherEditVM vm = _mapper.Map<VoucherEditVM>(voucher);
-            try
-            {
-                var voucherCondition = JsonConvert.DeserializeObject<VoucherCondition>(voucher.Conditions);
-                vm.GroupName = voucherCondition.GroupName;
-                vm.MaxDiscountAmount = voucherCondition.MaxDiscountAmount;
-                vm.MinOrderValue = voucherCondition.MinOrderValue;
-                vm.ProductId = JsonConvert.SerializeObject(voucherCondition.ProductId);
-            }
-            catch
-            {
-
-            }
-            vm.Products = _mapper.Map<List<ProductDTO>>(products);
-            vm.Categories = _mapper.Map<List<CategoryDTO>>(categories);
+            var voucher = await _voucherService.GetByIdAsync(id);
+            var vm = await _voucherService.ConvertVoucherEditVM(voucher);           
+            vm.Products = await _productService.GetAllAsync();
+            vm.Categories = await _categoryService.GetAllAsync();
             return View(vm);
         }
 
@@ -148,23 +104,7 @@ namespace ProductAPI.Controllers.MVC.Admin
                 return await ReturnModelError(editVM);
             }
 
-            List<int> selectedProductIds = editVM.ProductId != null
-    ? JsonConvert.DeserializeObject<List<int>>(editVM.ProductId) ?? new List<int>()
-    : new List<int>();
-
-
-            var voucherCondition = new VoucherCondition();
-
-            voucherCondition.MinOrderValue = editVM.MinOrderValue ?? 0m; // Gán mặc định là 0 nếu null
-            voucherCondition.MaxDiscountAmount = editVM.MaxDiscountAmount ?? 0m; // Gán mặc định là 0 nếu null
-            voucherCondition.GroupName = editVM.GroupName ?? "Default Group Name"; // Gán mặc định nếu null
-            voucherCondition.ProductId = selectedProductIds ?? new List<int>(); // Gán danh sách rỗng nếu null
-
-
-            var voucher = _mapper.Map<Voucher>(editVM);
-            voucher.Conditions = JsonConvert.SerializeObject(voucherCondition);
-
-            var result = await _voucherRepository.UpdateAsync(voucher);
+            var result = await _voucherService.UpdateVoucher(editVM);
             if (result)
             {
                 TempData["SuccessMessage"] = "Voucher edit successfully";
@@ -173,29 +113,24 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 TempData["ErrorMessage"] = "Failed to edit voucher";
             }
-            return RedirectToAction("Detail", new { id = voucher.VoucherId });
+            return RedirectToAction("Detail", new { id = editVM.VoucherId });
         }
 
         [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
 
-            var voucher = await _voucherRepository.GetByIdAsync(id);
-            var voucherDTO = _mapper.Map<VoucherDTO>(voucher);
-
-            return View(voucherDTO);
+            var voucher = await _voucherService.GetByIdAsync(id);
+            return View(voucher);
         }
 
         public async Task<IActionResult> DistributeVoucher(int page = 1)
         {
 
-            var vouchers = await _voucherRepository.GetPagedAsync(page, 10);
-            var users = await _userRepository.GetAllWithPredicateIncludeAsync(u=>u.UserId!=1);
-            var userGroups = await _userGroupRepository.GetAllAsync();
-            var voucherDTO = _mapper.Map<PagedResult<VoucherDTO>>(vouchers);
-            voucherDTO.Users = _mapper.Map<List<UserDTO>>(users);
-            voucherDTO.UserGroups = _mapper.Map<List<GroupDTO>>(userGroups);
-            return View(voucherDTO);
+            var vouchers = await _voucherService.GetAllPagedAsync(page, 10);
+            vouchers.Users = await _userService.GetAllAsync();
+            vouchers.UserGroups = await _userGroupService.GetAllAsync();
+            return View(vouchers);
         }
 
         [HttpPost]
@@ -203,7 +138,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             if (ModelState.IsValid)
             {
-                var voucher = await _voucherRepository.GetByIdAsync(model.VoucherId);
+                var voucher = await _voucherService.GetByIdAsync(model.VoucherId);
 
                 if (voucher == null)
                 {
@@ -211,7 +146,7 @@ namespace ProductAPI.Controllers.MVC.Admin
                     return RedirectToAction("Index");
                 }
 
-                if (await _voucherRepository.DistributeVoucher(voucher, model.Quantity, model.SelectedUserIds))
+                if (await _voucherService.DistributeVoucher(voucher, model))
                 {
                     TempData["SuccessMessage"] = "Voucher successfully distributed!";
                     return RedirectToAction("Index");
@@ -227,29 +162,20 @@ namespace ProductAPI.Controllers.MVC.Admin
         [HttpGet]
         public async Task<IActionResult> GetUserVouchers(int campaignId =0, int userId = 0, int page = 1, int pageSize = 5, string searchKeyword = "")
         {
-            // Lấy dữ liệu voucherUsers kèm thông tin Voucher từ repository
-            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v => v.UserId == userId, v => v.Voucher);
-
             // Danh sách vouchers
             var vouchers = new PagedResult<VoucherDTO>();
 
             if (userId > 0)
             {
-               var voucherOfUserList = await _voucherRepository.GetVouchersOfUserPaged(userId, page, pageSize);              
+               vouchers = await _voucherService.GetVouchersOfUserPaged(page, pageSize, userId);              
                 // Lưu userId vào ViewBag để sử dụng trong Partial View
                 ViewBag.UserId = userId;
-                vouchers = _mapper.Map<PagedResult<VoucherDTO>>(voucherOfUserList);
-                foreach(var item in voucherOfUserList.Items)
-                {
-                    var voucherRedeem = item.VoucherUsers.Where(v=>v.UserId==userId).Select(v=>(v.Quantity - v.TimesUsed)).FirstOrDefault();
-                    vouchers.Items.Where(v => v.VoucherId == item.VoucherId).FirstOrDefault().ReedemQuantity = voucherRedeem;
-                }
+               
             }
             else
             {
                 ViewBag.CampaignId = campaignId;
-                var allVouchers = await _voucherRepository.GetPagedAsync(page, pageSize);
-                vouchers = _mapper.Map<PagedResult<VoucherDTO>>(allVouchers);
+                vouchers = await _voucherService.GetAllPagedAsync(page, pageSize);
             }
             // Trả về Partial View
             return PartialView("_UserVouchersModal", vouchers);
@@ -258,19 +184,18 @@ namespace ProductAPI.Controllers.MVC.Admin
 
         public async Task<IActionResult> ListCampaign(int page = 1)
         {
-            var voucherCampaigns = await _voucherCampaignRepository.GetPagedAsync(page, 10);
-            var voucherCampaignDtos = _mapper.Map<PagedResult<VoucherCampaignDTO>>(voucherCampaigns);
-            return View(voucherCampaignDtos);
+            var voucherCampaigns = await _voucherCampaignService.GetAllPagedAsync(page, 10);
+            return View(voucherCampaigns);
         }
 
 
         [HttpGet]
         public async Task<IActionResult> CreateCampaign()
         {
-            var groups = await _userGroupRepository.GetAllAsync();
+            var groups = await _userGroupService.GetAllAsync();
 
             CampaignVM vm = new CampaignVM();
-            vm.Groups = _mapper.Map<List<GroupDTO>>(groups);    
+            vm.Groups = groups;
             return View(vm);
         }
 
@@ -289,11 +214,8 @@ namespace ProductAPI.Controllers.MVC.Admin
                 ModelState.AddModelError("", "The expiry date is not a valid.");
                 return await ReturnModelError(createVM);
             }
-
-            var campaign = _mapper.Map<VoucherCampaign>(createVM);
-
-
-            var result = await _voucherCampaignRepository.AddAsync(campaign);
+            
+            var result = await _voucherCampaignService.CreateCampaign(createVM);
             if (result)
             {
                 TempData["SuccessMessage"] = "Add campaign successfull";
@@ -307,21 +229,16 @@ namespace ProductAPI.Controllers.MVC.Admin
         public async Task<IActionResult> DetailCampaign(int id)
         {
 
-            var campaign = await _voucherCampaignRepository.GetByIdAsync(id);
-            var vouchers = await _voucherRepository.GetAllWithPredicateIncludeAsync(v=>v.VoucherAssignments.Any(va=>va.CampaignId==id));
-            var campaignDTO = _mapper.Map<VoucherCampaignDTO>(campaign);
-            campaignDTO.AssignedVouchers = _mapper.Map<List<VoucherDTO>>(vouchers);
-            return View(campaignDTO);
+            var campaign = _voucherCampaignService.GetCampaignWithVoucher(id);
+            return View(campaign);
         }
 
 
         [HttpGet]
         public async Task<IActionResult> EditCampaign(int id)
         {
-            var campaign = await _voucherCampaignRepository.GetByIdAsync(id);
-            var groups = await _userGroupRepository.GetAllAsync();
-            var vm = _mapper.Map<CampaignVM>(campaign);
-            vm.Groups = _mapper.Map<List<GroupDTO>>(groups);
+            var vm = await _voucherCampaignService.GetCampaign(id);
+            vm.Groups = await _userGroupService.GetAllAsync();
             return View(vm);
         }
 
@@ -341,9 +258,7 @@ namespace ProductAPI.Controllers.MVC.Admin
                 return await ReturnModelError(editVM);
             }
 
-            var campaign = _mapper.Map<VoucherCampaign>(editVM);
-
-            var result = await _voucherCampaignRepository.UpdateAsync(campaign);
+            var result = await _voucherCampaignService.UpdateCampaign(editVM);
             if (result)
             {
                 TempData["SuccessMessage"] = "Update campaign successfull";
@@ -362,15 +277,16 @@ namespace ProductAPI.Controllers.MVC.Admin
             {
                 return BadRequest("No vouchers selected.");
             }
-            List<VoucherAssignment> listVA = new List<VoucherAssignment>(); 
+            List<VoucherAssignmentDTO> listVA = new List<VoucherAssignmentDTO>(); 
             foreach (int voucherId in voucherIds)
             {
-                VoucherAssignment va = new VoucherAssignment();
+                VoucherAssignmentDTO va = new VoucherAssignmentDTO();
                 va.VoucherId = voucherId;
                 va.CampaignId = campaignId;
                 listVA.Add(va);
             }
-            var result = await _voucherAssignmentRepository.AddRangeAsync(listVA);
+            
+            var result = await _voucherAssignmentService.AddRangeAsync(listVA);
             if (result)
             {
                 TempData["SuccessMessage"] = "Assign successfull";
@@ -385,8 +301,8 @@ namespace ProductAPI.Controllers.MVC.Admin
 
         public async Task<IActionResult> DeteleVoucherUser(int voucherId, int userId)
         {
-            var voucherUser = await _voucherUserRepository.GetByIdWithIncludeAsync(v=>v.VoucherId==voucherId && v.UserId==userId);
-            var result = await _voucherUserRepository.DeleteDistributeVoucher(voucherUser.VoucherUserId);
+            var voucherUser = await _voucherUserService.GetVoucherUser(voucherId, userId);
+            var result = await _voucherUserService.DeleteDistributeVoucher(voucherUser.VoucherUserId);
             if (result)
             {
                 TempData["SuccessMessage"] = "Delete successfull";
@@ -400,8 +316,9 @@ namespace ProductAPI.Controllers.MVC.Admin
 
         public async Task<IActionResult> DeteleVoucherOrCampaign(int voucherId, int campaignId)
         {
-            var voucherAssign = await _voucherAssignmentRepository.GetByIdWithIncludeAsync(v=>v.VoucherId == voucherId && v.CampaignId==campaignId);
-            var result = await _voucherAssignmentRepository.DeleteAsync(voucherAssign.AssignmentId);     
+            var voucherAssign = await _voucherAssignmentService.GetVoucherAssign(voucherId, campaignId);
+           
+            var result = await _voucherAssignmentService.DeleteAsync(voucherAssign.AssignmentId);
             if (result)
             {
                 TempData["SuccessMessage"] = "Delete successfull";
@@ -427,17 +344,14 @@ namespace ProductAPI.Controllers.MVC.Admin
 
         private async Task<IActionResult> ReturnModelError(CampaignVM vm)
         {
-            var groups = await _userGroupRepository.GetAllAsync();
-            vm.Groups = _mapper.Map<List<GroupDTO>>(groups);
+            vm.Groups = await _userGroupService.GetAllAsync();
             return View(vm);
         }
 
         private async Task<T> PrepareViewModel<T>(T vm) where T : VoucherBaseVM
         {
-            var products = await _productRepository.GetAllAsync();
-            var categories = await _categoryRepository.GetAllAsync();
-            vm.Products = _mapper.Map<List<ProductDTO>>(products);
-            vm.Categories = _mapper.Map<List<CategoryDTO>>(categories);
+            vm.Products = await _productService.GetAllAsync();
+            vm.Categories = await _categoryService.GetAllAsync();
             return vm;
         }
 

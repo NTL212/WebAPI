@@ -16,7 +16,8 @@ namespace ProductAPI.Profiles
             CreateMap<Category, CategoryDTO>().ReverseMap();
             CreateMap<Cart, CartDTO>().ReverseMap();
             CreateMap<CartItem, CartItemDTO>().ReverseMap();
-            CreateMap<Order, OrderDTO>().ReverseMap();
+            CreateMap<Order, OrderDTO>().ReverseMap()
+           .ForMember(dest => dest.VoucherId, opt => opt.MapFrom(src => src.VoucherAppliedId));
             CreateMap<OrderItem, OrderItemDTO>().ReverseMap();
             CreateMap<Voucher, VoucherDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();

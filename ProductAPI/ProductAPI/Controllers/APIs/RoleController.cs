@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductDataAccess.Repositories;
 using ProductDataAccess.Repositories.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
@@ -62,7 +60,8 @@ namespace ProductAPI.Controllers.APIs
 		public async Task<ActionResult<ProductDTO>> Create(RoleDTO roleDto)
 		{
 			var role = _mapper.Map<Role>(roleDto);
-			if (await _roleRepository.AddAsync(role))
+			await _roleRepository.AddAsync(role);
+            if (await _roleRepository.SaveChangesAsync())
 			{
 				var createdRoleDto = _mapper.Map<RoleDTO>(role);
 				return CreatedAtAction(nameof(GetById), new { id = role.RoleId}, createdRoleDto);
@@ -79,7 +78,9 @@ namespace ProductAPI.Controllers.APIs
 		public async Task<ActionResult<ProductDTO>> Update(RoleDTO roleDto)
 		{
 			var role = _mapper.Map<Role>(roleDto);
-			if (await _roleRepository.UpdateAsync(role))
+			_roleRepository.Update(role);
+
+            if (await _roleRepository.SaveChangesAsync())
 			{
 				return NoContent();
 			}
@@ -93,7 +94,10 @@ namespace ProductAPI.Controllers.APIs
 		[HttpDelete]
 		public async Task<ActionResult<ProductDTO>> Delete(int id)
 		{
-			if (await _roleRepository.DeleteAsync(id))
+			var role = await _roleRepository.GetByIdAsync(id);
+			_roleRepository.Delete(role);
+
+            if (await _roleRepository.SaveChangesAsync())
 			{
 				return NoContent();
 			}

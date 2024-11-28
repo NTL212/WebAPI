@@ -11,6 +11,8 @@ using ProductAPI.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using ProductDataAccess.Models;
 using System.Drawing.Printing;
+using ProductBusinessLogic.Interfaces;
+using ProductAPI.Helper;
 
 
 namespace ProductAPI.Controllers.MVC.Client
@@ -25,14 +27,16 @@ namespace ProductAPI.Controllers.MVC.Client
         private readonly IDistributedCache _distributedCache;
         private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(10);
         private readonly IMapper _mapper;
+        private readonly IOrderService _orderService;
 
-        public UserOrderController(IOrderRepository orderRepository, IVoucherRepository voucherRepository, RabbitMqService rabbitMqService,   IDistributedCache distributedCache, IMapper mapper)
+        public UserOrderController(IOrderRepository orderRepository, IVoucherRepository voucherRepository, IOrderService orderService, RabbitMqService rabbitMqService,   IDistributedCache distributedCache, IMapper mapper)
         {
             _orderRepository = orderRepository;
             _voucherRepository = voucherRepository;
             _mapper = mapper;
             _rabbitMqService = rabbitMqService;
             _distributedCache = distributedCache;
+            _orderService = orderService;
         }
 
         public async Task<IActionResult> Index(int userId, bool resetCached=false, int pageNumber = 1, string mess = null)
@@ -41,7 +45,9 @@ namespace ProductAPI.Controllers.MVC.Client
             string cacheKey = $"UserOrders:{userId}:Page:{pageNumber}";
             if (resetCached)
             {
-                await InvalidateUserOrdersCache(userId);
+                CacheHelper helper = new CacheHelper();
+                var pageCount = await _orderService.GetOrderCountByUserAsync(userId);
+                await helper.InvalidateUserOrdersCache(userId, pageCount, _distributedCache);
             }
             PagedResult<OrderDTO> cachedPageResult;
 
@@ -74,26 +80,6 @@ namespace ProductAPI.Controllers.MVC.Client
             ViewData["message"] = mess;
 
             return View(cachedPageResult);
-        }
-
-
-        public async Task InvalidateUserOrdersCache(int userId)
-        {
-            // Xóa cache cho tất cả các trang của người dùng (giả sử bạn biết số lượng trang)
-            int pageCount = await GetTotalPageCountForUser(userId); // Giả định bạn có cách lấy số trang
-            for (int pageNumber = 1; pageNumber <= pageCount; pageNumber++)
-            {
-                string cacheKey = $"UserOrders:{userId}:Page:{pageNumber}";
-                await _distributedCache.RemoveAsync(cacheKey); // Xóa cache cho từng trang
-            }
-        }
-
-        private async Task<int> GetTotalPageCountForUser(int userId)
-        {
-            // Giả sử bạn có phương thức trả về tổng số đơn hàng
-            var orders = await _orderRepository.GetPagedByUserAsync(userId, 1, 5);
-            const int pageSize = 5;
-            return orders.TotalPages;
         }
 
         public async Task<IActionResult> Detail(int id)

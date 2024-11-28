@@ -20,6 +20,7 @@
           "Microsoft.Extensions.Identity.Core": "8.0.10",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.6",
           "Newtonsoft.Json": "13.0.3",
+          "ProductBusinessLogic": "1.0.0",
           "ProductDataAccess": "1.0.0",
           "StackExchange.Redis": "2.8.16",
           "Swashbuckle.AspNetCore": "6.6.2",
@@ -2308,6 +2309,18 @@
           }
         }
       },
+      "ProductBusinessLogic/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "12.0.1",
+          "ProductDataAccess": "1.0.0"
+        },
+        "runtime": {
+          "ProductBusinessLogic.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "ProductDataAccess/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Identity": "2.2.0",
@@ -3757,6 +3770,11 @@
       "sha512": "sha512-bR4qdCmssMMbo9Fatci49An5B1UaVJZHKNq70PRgzoLYIlitb8Tj7ns/Xt5Pz1CkERiTjcVBDU2y1AVrPBYkaw==",
       "path": "system.windows.extensions/7.0.0",
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
+    },
+    "ProductBusinessLogic/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "ProductDataAccess/1.0.0": {
       "type": "project",

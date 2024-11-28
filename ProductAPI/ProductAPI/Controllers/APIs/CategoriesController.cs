@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
-using ProductAPI.Filters;
-using ProductDataAccess.Models;
-using ProductDataAccess.Repositories;
+using ProductBusinessLogic.Interfaces;
 
 
 namespace ProductAPI.Controllers.APIs
@@ -15,58 +12,49 @@ namespace ProductAPI.Controllers.APIs
     //[ServiceFilter(typeof(ValidateTokenAttribute))]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapper _mapper;
+        private readonly ICategoryService _categoryService;
 
-        public CategoriesController(ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoriesController(ICategoryService categoryService)
         {
-            _categoryRepository = categoryRepository;
-            _mapper = mapper;
+            _categoryService = categoryService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
+        public async Task<ActionResult<List<CategoryDTO>>> GetAll()
         {
-            var categories = await _categoryRepository.GetAllAsync();
-            var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
-            return Ok(categoriesDto);
+            var categories = await _categoryService.GetAllAsync();
+            return Ok(categories);
         }
 
         [HttpGet("{id}/subcategories")]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllSubCategory(int id)
+        public async Task<ActionResult<List<CategoryDTO>>> GetAllSubCategory(int id)
         {
-            var categories = await _categoryRepository.GetAllSubCategory(id);
-            var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
-            return Ok(categoriesDto);
+            var categories = await _categoryService.GetAllSubCategory(id);
+            return Ok(categories);
         }
 
         [HttpGet("parentcategories")]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllParentCategory()
+        public async Task<ActionResult<List<CategoryDTO>>> GetAllParentCategory()
         {
-            var categories = await _categoryRepository.GetAllParentCategory();
-            var categoriesDto = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
-            return Ok(categoriesDto);
+            var categories = await _categoryService.GetAllParentCategory();
+            return Ok(categories);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryDTO>> GetById(int id)
         {
-            var category = await _categoryRepository.GetByIdAsync(id);
+            var category = await _categoryService.GetByIdAsync(id);
             if (category == null)
                 return NotFound();
-
-            var categoryDto = _mapper.Map<CategoryDTO>(category);
-            return Ok(categoryDto);
+            return Ok(category);
         }
 
         [HttpPost]
         public async Task<ActionResult<CategoryDTO>> Create(CategoryDTO categoryDto)
         {
-            var category = _mapper.Map<Category>(categoryDto);
-            if (await _categoryRepository.AddAsync(category))
+            if (await _categoryService.AddAsync(categoryDto))
             {
-                var createdCategoryDto = _mapper.Map<CategoryDTO>(category);
-                return CreatedAtAction(nameof(GetById), new { id = createdCategoryDto.CategoryId }, createdCategoryDto);
+                return Ok(categoryDto);
             };
             return BadRequest();
         }
@@ -77,8 +65,7 @@ namespace ProductAPI.Controllers.APIs
             if (id != categoryDto.CategoryId)
                 return BadRequest();
 
-            var category = _mapper.Map<Category>(categoryDto);
-            if (await _categoryRepository.UpdateAsync(category))
+            if (await _categoryService.UpdateAsync(categoryDto))
             {
                 return NoContent();
             };
@@ -88,7 +75,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            if (await _categoryRepository.DeleteAsync(id))
+            if (await _categoryService.DeleteAsync(id))
             {
                 return NoContent();
             }

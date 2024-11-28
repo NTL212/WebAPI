@@ -6,6 +6,8 @@ using ProductDataAccess.Models.Response;
 using ProductDataAccess.Models;
 using ProductDataAccess.ViewModels;
 using ProductAPI.Filters;
+using ProductBusinessLogic.Interfaces;
+using ProductBusinessLogic.Services;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -13,52 +15,37 @@ namespace ProductAPI.Controllers.MVC.Admin
     [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminUserController : Controller
     {
-        private readonly IUserRepoisitory _userRepoisitory;
-        private readonly IUserGroupRepository _userUserGroupRepository;
-        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
+        private readonly IUserGroupService _userGroupService;
 
-        public AdminUserController(IUserRepoisitory userRepoisitory, IMapper mapper, IUserGroupRepository userGroupRepository)
+        public AdminUserController(IUserService userService, IUserGroupService userGroupService)
         {
-            _userRepoisitory = userRepoisitory;
-            _mapper = mapper;
-            _userUserGroupRepository = userGroupRepository;
+            _userService = userService;
+            _userGroupService = userGroupService;
         }
 
-        public async Task<IActionResult> Index(int page=1, string searchText=null)
+        public async Task<IActionResult> Index(int page=1, string searchText="")
         {
-            var users = new PagedResult<User>();
+            var users = await _userService.GetAllUserPagedWithSearch(page, 10, searchText);
 
-            if (searchText != null)
-            {
-                users = await _userRepoisitory.GetPagedWithIncludeSearchAsync(page, 10, u => u.Username.ToLower().Contains(searchText.ToLower()), u => u.Group);
-            }
-            else
-            {
-                users =  await _userRepoisitory.GetPagedWithIncludeAsync(page, 10, u => u.Group);
-            }
-            users.Items = users.Items.Where(u=>u.UserId!=1).ToList();
-            var userDtos = _mapper.Map<PagedResult<UserDTO>>(users);
-            var userGroups = await _userUserGroupRepository.GetAllAsync();
-            var userGroupDtos = _mapper.Map<List<GroupDTO>>(userGroups);
+            var userGroups = await _userGroupService.GetAllAsync();
             var userVM = new AdminUserListVM();
 
-            userVM.userDtos = userDtos;
-            userVM.groupDtos = userGroupDtos;
+            userVM.userDtos = users;
+            userVM.groupDtos = userGroups;
 
             return View(userVM);
         }
 
         public async Task<IActionResult> Detail(int id)
         {
-            var user = await _userRepoisitory.GetByIdWithIncludeAsync(u=>u.UserId==id, u=>u.Group);
-            var userDto = _mapper.Map<UserDTO>(user);
-            return View(userDto);
+            var user = await _userService.GetByIdAsync(id);
+            return View(user);
         }
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var group = await _userUserGroupRepository.GetAllAsync();
-            ViewData["groups"] = _mapper.Map<List<GroupDTO>>(group);
+            ViewData["groups"] = await _userGroupService.GetAllAsync();
             return View();
         }
 
@@ -70,15 +57,14 @@ namespace ProductAPI.Controllers.MVC.Admin
                 return await ReturnModelError(userDTO);
             }
 
-            var userExist = _userRepoisitory.GetByIdWithIncludeAsync(u=>u.Email == userDTO.Email);
+            var userExist = _userService.GetUserByEmail(userDTO.Email);
             if (userExist != null)
             {
                 ModelState.AddModelError("", "Email had exist");
                 return await ReturnModelError(userDTO);
             }
 
-            var user = _mapper.Map<User>(userDTO);
-            var result = await _userRepoisitory.CreateUser(user, password);
+            var result = await _userService.CreateUser(userDTO, password);
             if (result)
             {
                 TempData["SuccessMessage"] = "Add user successfully";           
@@ -97,13 +83,10 @@ namespace ProductAPI.Controllers.MVC.Admin
                 TempData["ErrorMessage"] = "Admin user not allow edit";
                 return RedirectToAction("Index");
             }
-            var user = await _userRepoisitory.GetByIdAsync(id);
-            var group = await _userUserGroupRepository.GetAllAsync();
+            var user = await _userService.GetByIdAsync(id);
+            ViewData["groups"] = await _userGroupService.GetAllAsync();
 
-            var userDto = _mapper.Map<UserDTO>(user);
-            ViewData["groups"] = _mapper.Map<List<GroupDTO>>(group);
-
-            return View(userDto);
+            return View(user);
         }
 
         [HttpPost]
@@ -114,18 +97,14 @@ namespace ProductAPI.Controllers.MVC.Admin
                 return await ReturnModelError(userDto);
             }
 
-            var user = await _userRepoisitory.GetByIdAsync(userDto.UserId);
+            var user = await _userService.GetByIdAsync(userDto.UserId);
 
             if(user == null)
             {
                 return await ReturnModelError(userDto);
             }
-            user.Username = userDto.Username;
-            user.Email = userDto.Email;
-            user.GroupId = userDto.GroupId;
-            user.IsActive = userDto.IsActive;
 
-            var result = await _userRepoisitory.UpdateAsync(user);
+            var result = await _userService.UpdateAsync(userDto);
             if (result)
             {
                 TempData["SuccessMessage"] = "Update user successfully";
@@ -142,7 +121,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             if (selectedUserIds != null && selectedUserIds.Length > 0)
             {
-                var result = await _userRepoisitory.AssignGroupToUsersAsync(selectedUserIds, userGroupId);
+                var result = await _userService.AssignGroupToUsersAsync(selectedUserIds, userGroupId);
                 if (result)
                 {
                     TempData["SuccessMessage"] = "Group successfully assigned to selected users.";
@@ -158,8 +137,7 @@ namespace ProductAPI.Controllers.MVC.Admin
 
         private async Task<IActionResult> ReturnModelError(UserDTO userDTO)
         {
-            var group = await _userUserGroupRepository.GetAllAsync();
-            ViewData["groups"] = _mapper.Map<List<GroupDTO>>(group);
+            ViewData["groups"] = await _userGroupService.GetAllAsync();
             return View(userDTO);
         }
     }

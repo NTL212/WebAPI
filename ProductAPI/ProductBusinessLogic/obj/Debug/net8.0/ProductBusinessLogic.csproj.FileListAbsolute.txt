@@ -1,0 +1,15 @@
+E:\Work\ProductAPI\ProductBusinessLogic\bin\Debug\net8.0\ProductBusinessLogic.deps.json
+E:\Work\ProductAPI\ProductBusinessLogic\bin\Debug\net8.0\ProductBusinessLogic.dll
+E:\Work\ProductAPI\ProductBusinessLogic\bin\Debug\net8.0\ProductBusinessLogic.pdb
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.csproj.AssemblyReference.cache
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.AssemblyInfoInputs.cache
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.AssemblyInfo.cs
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.csproj.CoreCompileInputs.cache
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductB.25DCC3CF.Up2Date
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.dll
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\refint\ProductBusinessLogic.dll
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ProductBusinessLogic.pdb
+E:\Work\ProductAPI\ProductBusinessLogic\obj\Debug\net8.0\ref\ProductBusinessLogic.dll
+E:\Work\ProductAPI\ProductBusinessLogic\bin\Debug\net8.0\ProductDataAccess.dll
+E:\Work\ProductAPI\ProductBusinessLogic\bin\Debug\net8.0\ProductDataAccess.pdb

@@ -4,10 +4,9 @@ using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.Models;
-using ProductDataAccess.ViewModels;
 using ProductAPI.Filters;
-using MailKit.Search;
 using Microsoft.Extensions.Caching.Distributed;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -15,38 +14,32 @@ namespace ProductAPI.Controllers.MVC.Admin
     [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class AdminCategoryController : Controller
     {
-        private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        private readonly ICategoryService _categoryService;
+        private readonly IProductService _productService;
         private readonly IDistributedCache _cache;
-        private readonly IMapper _mapper;
 
-        public AdminCategoryController(IProductRepository productRepository, ICategoryRepository categoryRepository, IDistributedCache cache, IMapper mapper)
+        public AdminCategoryController(ICategoryService categoryService, IProductService productService, IDistributedCache cache)
         {
-            _productRepository = productRepository;
-            _mapper = mapper;
-            _categoryRepository = categoryRepository;
+            _categoryService = categoryService;
+            _productService = productService;
             _cache = cache;
         }
         public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
-            var categories = await _categoryRepository.GetPagedWithIncludeSearchAsync(page, 10, p => p.CategoryName.ToLower().Contains(searchText.ToLower()));
-            var categoryDtos = _mapper.Map<PagedResult<CategoryDTO>>(categories);
-            return View(categoryDtos);
+            var categories = await _categoryService.GetCategoryPagedWithSearch(page, 10, searchText);
+            return View(categories);
         }
 
         public async Task<IActionResult> ProductsOfCategory(int categoryId,int page = 1)
         {
-            var products = new PagedResult<Product>();
-            products = await _productRepository.GetPagedWithIncludeSearchAsync(page, 10, p=>p.CategoryId==categoryId);
-            var productsDto = _mapper.Map<PagedResult<ProductDTO>>(products);
-            return View(productsDto);
+            var products = await _productService.GetProductPagedByCategory(page, 10, categoryId);
+            return View(products);
         }
 
         [HttpGet]
         public async Task<IActionResult> Create(string mess = null)
         {
-            var parentCategories = await _categoryRepository.GetAllParentCategory();
-            ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
+            ViewData["ParentCategories"] = await _categoryService.GetAllParentCategory();
             ViewBag.Message = mess;
             return View();
         }
@@ -56,41 +49,38 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             if (!ModelState.IsValid)
             {
-                var parentCategories = await _categoryRepository.GetAllParentCategory();
-                ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
+                await LoadParentCategoriesAsync();
                 return View(categoryDTO);
             }
+
             try
             {
-                var category = _mapper.Map<Category>(categoryDTO);
+                var result = await _categoryService.AddAsync(categoryDTO);
 
-                if (await _categoryRepository.AddAsync(category))
+                if (result)
                 {
+                    TempData["SuccessMessage"] = "Create Category Successfully";
                     return RedirectToAction("Index");
                 }
-                else
-                {
-                    return RedirectToAction("Create", new { mess = "Error" });
-                }
+
+                TempData["ErrorMessage"] = "Error occurred while creating the category.";
+                return RedirectToAction("Create");
             }
             catch (Exception ex)
             {
-
-                return RedirectToAction("Create", new { id = categoryDTO.CategoryId, mess = ex.Message });
+                TempData["ErrorMessage"] = $"An unexpected error occurred: {ex.Message}";
+                return RedirectToAction("Create", new { id = categoryDTO.CategoryId });
             }
         }
 
+       
+
         [HttpGet]
-        public async Task<IActionResult> Edit(int id, string mess = null)
+        public async Task<IActionResult> Edit(int id)
         {
-            var parentCategories = await _categoryRepository.GetAllParentCategory();
-            var category = await _categoryRepository.GetByIdAsync(id);
-         
-            ViewBag.Message = mess;
-            parentCategories = parentCategories.Where(c => c.IsDeleted == false);
-            ViewBag.ParentCategories = _mapper.Map<List<CategoryDTO>>(parentCategories);
-            var categoryDTO= _mapper.Map<CategoryDTO>(category);
-            return View(categoryDTO);
+            var category = await _categoryService.GetByIdAsync(id);
+            ViewBag.ParentCategories = await _categoryService.GetAllActiveParentCategory();;
+            return View(category);
         }
 
         [HttpPost]
@@ -98,24 +88,22 @@ namespace ProductAPI.Controllers.MVC.Admin
         {
             if (!ModelState.IsValid)
             {
-                var parentCategories = await _categoryRepository.GetAllParentCategory();
-                parentCategories = parentCategories.Where(c => c.IsDeleted == false);
-                ViewData["ParentCategories"] = _mapper.Map<List<CategoryDTO>>(parentCategories);
+                ViewData["ParentCategories"] = await _categoryService.GetAllActiveParentCategory(); ;
                 return View(categoryDTO);
             }
             try
             {
-                var category = _mapper.Map<Category>(categoryDTO);
-
-                if (await _categoryRepository.UpdateAsync(category))
+                var result = await _categoryService.UpdateAsync(categoryDTO);
+                if (result)
                 {
                     const string cacheKey = "categories";
                     await _cache.RemoveAsync(cacheKey);
-                    return RedirectToAction("Edit", new { id = category.CategoryId, mess = "Success" });
+                    TempData["SuccessMessage"] = "Edit Category Successfully";
+                    return RedirectToAction("Edit", new { id = categoryDTO.CategoryId });
                 }
                 else
                 {
-                    return RedirectToAction("Edit", new { id = category.CategoryId, mess = "Error" });
+                    return RedirectToAction("Edit", new { id = categoryDTO.CategoryId });
                 }
             }
             catch (Exception ex)
@@ -125,40 +113,10 @@ namespace ProductAPI.Controllers.MVC.Admin
             }
         }
 
-        public async Task<IActionResult> Delete(int id)
+        // Tách logic nạp danh mục cha ra một phương thức riêng
+        private async Task LoadParentCategoriesAsync()
         {
-            try
-            {
-                if (await _productRepository.DeleteProduct(id))
-                {
-                    const string cacheKey = "categories";
-                    await _cache.RemoveAsync(cacheKey);
-                    return RedirectToAction("Detail", new { id = id, mess = "Success" });
-                }
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
-            }
-        }
-
-        public async Task<IActionResult> Restore(int id)
-        {
-            try
-            {
-                if (await _productRepository.RestoreProduct(id))
-                {
-                    const string cacheKey = "categories";
-                    await _cache.RemoveAsync(cacheKey);
-                    return RedirectToAction("Detail", new { id = id, mess = "Success" });
-                }
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Detail", new { id = id, mess = "Error" });
-            }
+            ViewData["ParentCategories"] = await _categoryService.GetAllParentCategory();
         }
     }
 }   

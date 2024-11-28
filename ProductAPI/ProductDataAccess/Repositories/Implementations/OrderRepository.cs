@@ -65,23 +65,14 @@ namespace ProductDataAccess.Repositories
                 .ToListAsync();
         }
 
-        public async Task<PagedResult<Order>> GetPagedByUserAsync(int userId, int pageNumber, int pageSize)
+        public async Task<IEnumerable<Order>> GetPagedByUserAsync(int userId, int pageNumber, int pageSize)
         {
-            var totalRecords = await _dbSet.Where(o => o.UserId == userId).CountAsync();
-            var items = await _dbSet
+            return await _dbSet
                 .Where(o => o.UserId == userId)
                 .OrderByDescending(o => o.OrderDate)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-
-            return new PagedResult<Order>
-            {
-                Items = items,
-                TotalRecords = totalRecords,
-                PageNumber = pageNumber,
-                PageSize = pageSize
-            };
         }
 
         public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
@@ -101,19 +92,19 @@ namespace ProductDataAccess.Repositories
 
         public async Task<bool> CancelOrderAsync(int orderId)
         {
-            var order = await _context.Orders.Include(o=>o.OrderItems).FirstOrDefaultAsync(o=>o.OrderId==orderId);
+            var order = await _context.Orders.Include(o => o.OrderItems).FirstOrDefaultAsync(o => o.OrderId == orderId);
             if (order == null)
                 return false;
 
             order.Status = "Canceled";
 
-            if(order.VoucherId > 0)
+            if (order.VoucherId > 0)
             {
-                var voucherUser =await _context.VoucherUsers.FindAsync(order.VoucherId);
-                if(voucherUser.TimesUsed > 0 && voucherUser.TimesUsed <= voucherUser.Quantity)
+                var voucherUser = await _context.VoucherUsers.FindAsync(order.VoucherId);
+                if (voucherUser.TimesUsed > 0 && voucherUser.TimesUsed <= voucherUser.Quantity)
                 {
                     voucherUser.TimesUsed -= 1;
-                }  
+                }
             }
 
             foreach (var o in order.OrderItems)
@@ -130,7 +121,7 @@ namespace ProductDataAccess.Repositories
 
         public async Task<bool> ConfirmOrders(List<int> selectedOrderIds)
         {
-            var orders = await _dbSet.Where(o=>selectedOrderIds.Contains(o.OrderId)).ToListAsync();
+            var orders = await _dbSet.Where(o => selectedOrderIds.Contains(o.OrderId)).ToListAsync();
 
             orders.ForEach(o => o.Status = "Confirmed");
             return await _context.SaveChangesAsync() > 0;
