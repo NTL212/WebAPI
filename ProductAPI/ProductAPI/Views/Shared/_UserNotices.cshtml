@@ -1,0 +1,116 @@
+﻿@model List<Notice>
+
+<style>
+    /* Dropdown styles */
+    .dropdown-menu {
+        background-color: #f8f9fa; /* Màu nền dịu */
+        border-radius: 0.5rem;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Item styling */
+    .dropdown-item {
+        transition: background-color 0.2s ease-in-out;
+    }
+
+        .dropdown-item:hover {
+            background-color: #e9ecef; /* Màu nổi bật khi hover */
+        }
+
+    /* Icon trạng thái */
+    .bi-check-circle-fill.text-success {
+        color: #28a745; /* Màu xanh lá */
+    }
+
+    .bi-exclamation-circle-fill.text-danger {
+        color: #dc3545; /* Màu đỏ */
+    }
+
+    /* Title styling */
+    .dropdown-item .fw-bold {
+        font-size: 1rem; /* Kích thước chữ lớn hơn message */
+        color: #212529; /* Màu chữ đậm */
+    }
+
+    /* Message styling */
+    .dropdown-item .text-muted {
+        font-size: 0.9rem; /* Chữ nhỏ hơn title */
+        color: #6c757d; /* Màu chữ xám nhạt */
+    }
+
+    /* Tách biệt nội dung */
+    .dropdown-item:not(:last-child) {
+        border-bottom: 1px solid #dee2e6; /* Đường phân cách giữa các item */
+    }
+
+</style>
+
+<script>
+    function markAsSeen(element, id, isSeen) {
+        if (isSeen === "True") return; // Nếu đã xem thì không cần gọi API
+        console.log(id);
+        // Gọi API cập nhật trạng thái
+        fetch('/notification/UpdateAsSeen', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(id)
+        })
+            .then(response => {
+                if (response.ok) {
+                    // Cập nhật icon trạng thái
+                    const icon = element.querySelector('i');
+                    icon.classList.remove('bi-exclamation-circle-fill', 'text-danger');
+                    icon.classList.add('bi-check-circle-fill', 'text-success');
+                } else {
+                    console.error('Failed to mark notification as seen');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+</script>
+
+<ul class="menu sf-arrows">
+    <li>
+        <a href="#" class="sf-with-ul">
+            Notifications
+            <span class="badge bg-primary">@Model.Count</span>
+        </a>
+        <ul class="dropdown-menu" style="max-height: 300px; overflow-y: auto; min-width: 300px;">
+            @if (!Model.Any())
+            {
+                <li>
+                    <a href="#" class="dropdown-item text-center text-muted">No notifications</a>
+                </li>
+            }
+            else
+            {
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <a href="javascript:void(0);"
+                           class="dropdown-item d-flex align-items-start gap-3 p-3 border-bottom"
+                           data-id="@item.Id"
+                           onclick="markAsSeen(this, '@item.Id', '@item.IsSeen')">
+                            <!-- Icon trạng thái -->
+                            <span class="mt-1">
+                                <i class="bi @(item.IsSeen ? "bi-check-circle-fill" : "bi-exclamation-circle-fill")
+                                          @(item.IsSeen ? "text-success" : "text-danger") fs-4"></i>
+                            </span>
+                            <!-- Nội dung -->
+                            <div class="flex-grow-1">
+                                <div class="fw-bold text-dark" style="font-size: 1rem;">@item.Title</div>
+                                <div class="text-muted" style="font-size: 0.9rem;">@item.Message</div>
+                            </div>
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+</ul>
+
+

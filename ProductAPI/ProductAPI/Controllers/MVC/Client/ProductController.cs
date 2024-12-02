@@ -1,22 +1,21 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProductDataAccess.Repositories;
-using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
-using ProductDataAccess.ViewModels;
+using ProductBusinessLogic.Interfaces;
+
 
 namespace ProductAPI.Controllers.MVC.Client
 {
     public class ProductController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IProductRepository _productRepository;
-        public ProductController(IHttpClientFactory httpClientFactory, IProductRepository productRepository)
+        private readonly IProductService _productService;
+        public ProductController(IHttpClientFactory httpClientFactory, IProductService productService)
         {
             _httpClientFactory = httpClientFactory;
-            _productRepository = productRepository;
+            _productService = productService;
         }
         private readonly string _apiBaseUrl = "https://localhost:7016/api/";
 

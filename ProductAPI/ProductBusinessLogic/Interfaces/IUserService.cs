@@ -16,5 +16,9 @@ namespace ProductBusinessLogic.Interfaces
         Task<bool> CreateUser(UserDTO userDTO, string password);
 
         Task<bool> AssignGroupToUsersAsync(int[] selectedUserIds, int userGroupId);
+
+        Task<int> GetCountOrderOfUser(int userId);
+
+        Task<string> ForgotPassword(string email);
     }
 }

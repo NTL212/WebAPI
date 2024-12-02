@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
-using ProductDataAccess.Models.Request;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
 

@@ -1,6 +1,5 @@
 ﻿
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using ProductBusinessLogic.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
@@ -37,6 +36,12 @@ namespace ProductBusinessLogic.Services
             {
                 return false;
             }
+        }
+
+        public async Task<List<VoucherUserDTO>> GetAllVoucherOfUser(int userId)
+        {
+            var voucherUsers = await _voucherUserRepository.GetAllWithPredicateIncludeAsync(v => v.Status ==true && v.UserId == userId, v=>v.Voucher);
+            return _mapper.Map<List<VoucherUserDTO>>(voucherUsers);
         }
 
         public async Task<VoucherUserDTO> GetVoucherUser(int voucherId, int userId)

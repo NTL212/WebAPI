@@ -1,0 +1,14 @@
+E:\Work\ProductAPI\ProductDataAccess\bin\Release\net8.0\ProductDataAccess.deps.json
+E:\Work\ProductAPI\ProductDataAccess\bin\Release\net8.0\ProductDataAccess.runtimeconfig.json
+E:\Work\ProductAPI\ProductDataAccess\bin\Release\net8.0\ProductDataAccess.dll
+E:\Work\ProductAPI\ProductDataAccess\bin\Release\net8.0\ProductDataAccess.pdb
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.csproj.AssemblyReference.cache
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.AssemblyInfoInputs.cache
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.AssemblyInfo.cs
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.csproj.CoreCompileInputs.cache
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.dll
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\refint\ProductDataAccess.dll
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.pdb
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ProductDataAccess.genruntimeconfig.cache
+E:\Work\ProductAPI\ProductDataAccess\obj\Release\net8.0\ref\ProductDataAccess.dll

@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+service NotificationService {
+  rpc GetNotifyList (Empty) returns (NotifyList);
+  rpc GetNotifyByUserList (IdRequest) returns (NotifyList);
+  rpc GetNotifyByOrderList (IdRequest) returns (NotifyList);
+  rpc GetNoticeById (NoticeIdRequest) returns (Notice);
+  rpc AddNotice (Notice) returns (NoticeResponse);
+  rpc UpdateNotice (Notice) returns (NoticeResponse);
+  rpc UpdateNoticeIsSeen (NoticeIdRequest) returns (NoticeResponse);
+  rpc DeleteNotice (NoticeIdRequest) returns (NoticeResponse);
+}
+
+message Empty {}
+
+message NotifyList {
+  repeated Notice notices = 1;
+}
+
+message Notice {
+  string id = 1;
+  string title = 2;
+  int32 user_id = 3;
+  int32 order_id = 4;
+  string message = 5;
+  bool is_seen = 6;
+  google.protobuf.Timestamp created = 7;
+}
+
+message NoticeIdRequest {
+  string id = 1;
+}
+
+message IdRequest {
+  int32 id = 1;
+}
+
+message NoticeResponse {
+  string status = 1;
+  string message = 2;
+}

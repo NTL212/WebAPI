@@ -25,6 +25,7 @@ namespace ProductAPI.Profiles
             CreateMap<OrderVoucher, OrderVoucherDTO>().ReverseMap();
             CreateMap<UserGroup, GroupDTO>().ReverseMap();
             CreateMap<VoucherUser, VoucherUserDTO>().ReverseMap();
+            CreateMap<VoucherAssignment, VoucherAssignmentDTO>().ReverseMap();
         
 
             CreateMap<PagedResult<Order>, PagedResult<OrderDTO>>()

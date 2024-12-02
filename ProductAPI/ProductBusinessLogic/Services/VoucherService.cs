@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ProductBusinessLogic.Interfaces;
 using ProductDataAccess.DTOs;
@@ -175,6 +174,28 @@ namespace ProductBusinessLogic.Services
             };
         }
 
+        public async Task UpdateVoucherUsageAsync(int voucherId)
+        {
+            var voucher = await _voucherRepository.GetByIdAsync(voucherId);
+            if (voucher != null)
+            {
+                voucher.UsedCount++;
+                await _voucherRepository.SaveChangesAsync();
+            }
+        }
+
+
+        public override async Task<bool> DeleteAsync(int id)
+        {
+            var voucher = await _voucherRepository.GetByIdAsync(id);
+            if (voucher == null)
+            {
+                return false;
+            }
+            voucher.Status = "Inactive";
+            _voucherRepository.Update(voucher);
+            return await _voucherRepository.SaveChangesAsync();
+        }
 
         public async Task<ValidateVoucherVM> ValidateApplyVoucher(VoucherDTO voucher, UserDTO user, List<int> productIds, decimal totalOrder)
         {
@@ -263,6 +284,12 @@ namespace ProductBusinessLogic.Services
             return new ValidateVoucherVM(true, "The voucher is valid.");
         }
 
+
+        public async Task<bool> IsVoucherValidAsync(string code)
+        {
+            var voucher = await _voucherRepository.GetByIdWithIncludeAsync(v=>v.Code==code);
+            return voucher != null && voucher.UsedCount < voucher.MaxUsage;
+        }
         private bool ValidateVoucher(VoucherDTO voucherDTO, DistributeVoucherVM distributeVoucherVM, List<int> userIds)
         {
             if (voucherDTO.MaxUsage < distributeVoucherVM.Quantity * userIds.Count)
@@ -293,6 +320,12 @@ namespace ProductBusinessLogic.Services
                 DateAssigned = DateTime.Now,
                 Status = true
             };
+        }
+
+        public async Task<VoucherDTO> GetVoucherByCode(string code)
+        {
+            var voucher = await _voucherRepository.GetVoucherByCodeAsync(code);
+            return _mapper.Map<VoucherDTO>(voucher);
         }
     }
 }

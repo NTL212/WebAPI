@@ -1,0 +1,17 @@
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Infrastructure.deps.json
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Infrastructure.dll
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Infrastructure.pdb
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Application.dll
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Domain.dll
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Application.pdb
+E:\Work\ProductAPI\Notification.Infrastructure\bin\Debug\net8.0\Notification.Domain.pdb
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.csproj.AssemblyReference.cache
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.AssemblyInfoInputs.cache
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.AssemblyInfo.cs
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.csproj.CoreCompileInputs.cache
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notifica.A820A050.Up2Date
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.dll
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\refint\Notification.Infrastructure.dll
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\Notification.Infrastructure.pdb
+E:\Work\ProductAPI\Notification.Infrastructure\obj\Debug\net8.0\ref\Notification.Infrastructure.dll

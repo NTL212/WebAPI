@@ -1,7 +1,5 @@
 ﻿using OrderService;
-using ProductDataAccess.Models;
-using ProductDataAccess.Repositories;
-using RabbitMQ.Client;
+
 
 
 public class OrderConsumerBackgroundService : BackgroundService

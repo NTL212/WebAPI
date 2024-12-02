@@ -1,6 +1,7 @@
 ﻿using RabbitMQ.Client.Events;
 using RabbitMQ.Client;
 
+
 namespace ProductAPI.Services
 {
     public class RabbitMqService
@@ -34,11 +35,16 @@ namespace ProductAPI.Services
         public void PublishOrderMessage(string stringJson)
         {
             var body = System.Text.Encoding.UTF8.GetBytes(stringJson);
-
-            channel.BasicPublish(
+            var properties = channel.CreateBasicProperties(); 
+            properties.Persistent = true;
+            channel.BasicReturn += (sender, args) =>
+            {
+                Console.WriteLine($"Message returned: {args.ReplyText}");
+            };
+                channel.BasicPublish(
                     exchange: "",
                     routingKey: "OrderQueue2",
-                    basicProperties: null,
+                    basicProperties: properties,
                     body: body
                 );
         }

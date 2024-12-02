@@ -14,7 +14,6 @@ namespace ProductBusinessLogic.Interfaces
         Task<PagedResult<ProductDTO>> GetProductPagedWithSearch(int pageNumber, int pageSize, string searchKey);
 
         Task<bool> RestoreProduct(int productId);
-        Task<List<ProductDTO>> GetAllProductsByCategory(int categoryId);
         Task<PagedResult<ProductDTO>> GetAllProductsByCategory(int pageNumber, int pageSize, int id, string searchKey);
         Task<PagedResult<ProductDTO>> GetAllProductsPaged(int pageNumber, int pageSize, string searchKey);
     }

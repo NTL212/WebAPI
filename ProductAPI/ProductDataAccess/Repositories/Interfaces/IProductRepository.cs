@@ -6,8 +6,6 @@ namespace ProductDataAccess.Repositories
 	{
 		Task<IEnumerable<Product>> GetAllIncludeProducts();
         Task<IEnumerable<Product>> GetAllAvailableProducts();
-        Task<IEnumerable<Product>> GetAllProductsByCategory(int id);
-		Task<bool> DeleteProduct(int id);
-		Task<bool> RestoreProduct(int id);
+        Task<IEnumerable<Product>> GetProductsByCategoryIdsPagedAsync(int pageNumber, int pageSize, IEnumerable<int> ids);
 	}
 }

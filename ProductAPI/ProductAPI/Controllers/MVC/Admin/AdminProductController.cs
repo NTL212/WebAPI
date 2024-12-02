@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
-using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
-using ProductDataAccess.Models;
-using ProductDataAccess.Models.Response;
 using Microsoft.Extensions.Caching.Distributed;
 using ProductBusinessLogic.Interfaces;
+using ProductAPI.Services;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
@@ -17,12 +14,14 @@ namespace ProductAPI.Controllers.MVC.Admin
         private readonly IDistributedCache _cache;
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
+        private readonly IFileService _fileService;
 
-        public AdminProductController(IProductService productService, ICategoryService categoryService, IDistributedCache cache)
+        public AdminProductController(IProductService productService, ICategoryService categoryService, IDistributedCache cache, IFileService fileService)
         {
             _productService = productService;
             _categoryService = categoryService;
             _cache = cache;
+            _fileService = fileService;
         }
         public async Task<IActionResult> Index(int page = 1, string searchText = "")
         {
@@ -53,41 +52,43 @@ namespace ProductAPI.Controllers.MVC.Admin
                 return await ReturnModelError(productDto);
             }
 
-            // Lưu sản phẩm và hình ảnh vào cơ sở dữ liệu
-            if (productImage != null)
+            try
             {
-                if (!productImage.ContentType.StartsWith("image/"))
+                // Xử lý file thông qua service
+                if (productImage != null)
                 {
-                    ModelState.AddModelError("", "The uploaded file is not a valid image.");
-                    return await ReturnModelError(productDto);
+                    var imageValidationResult = _fileService.ValidateImage(productImage);
+                    if (!imageValidationResult.IsValid)
+                    {
+                        ModelState.AddModelError("", imageValidationResult.ErrorMessage);
+                        return await ReturnModelError(productDto);
+                    }
+
+                    productDto.ImgName = await _fileService.SaveFileAsync(productImage, "products");
                 }
 
-                if (productImage.Length > 5 * 1024 * 1024) // 2MB
+                productDto.CreatedAt = DateTime.UtcNow; // Sử dụng UTC để đồng bộ thời gian
+
+                var result = await _productService.AddAsync(productDto);
+                if (result)
                 {
-                    ModelState.AddModelError("", "Image size must be less than 2MB.");
-                    return await ReturnModelError(productDto);
+                    TempData["SuccessMessage"] = "Add product successful";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to add product";
                 }
 
-                var filePath = Path.Combine("wwwroot", "assets", "images", "products", productImage.FileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    productImage.CopyTo(stream);
-                }
-                productDto.ImgName = productImage.FileName;
+                return RedirectToAction("Index");
             }
-
-            productDto.CreatedAt = DateTime.Now;
-            if (await _productService.AddAsync(productDto))
+            catch (Exception ex)
             {
-                TempData["SuccessMessage"] = "Add product successfull";
+                // Log exception tại đây
+                TempData["ErrorMessage"] = "An error occurred while adding the product.";
+                return RedirectToAction("Index");
             }
-            else
-            {
-                TempData["ErrorMessage"] = "Failed to add product";
-
-            }
-            return RedirectToAction("Index");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)

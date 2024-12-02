@@ -1,13 +1,13 @@
 ﻿using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
-using System.Linq.Expressions;
+
 
 namespace ProductBusinessLogic.Interfaces
 {
     public interface IOrderService:IBaseService<OrderDTO>
     {
-        Task<ResultVM> CreateOrderAsync(OrderDTO orderDto, List<CartItemDTO> cartItems);
+        Task<ResultVM> CreateOrderAsync(OrderDTO orderDto);
         Task<List<OrderDTO>> GetOrdersByUserIdAsync(int userId);
         Task<List<OrderDTO>> GetSelectedOrders(List<int> selectedOrders);
         Task<PagedResult<OrderDTO>> GetPagedByUserAsync(int userId, int pageNumber, int pageSize);
@@ -17,5 +17,7 @@ namespace ProductBusinessLogic.Interfaces
         Task<bool> CancelOrderAsync(int orderId);
         Task<int> GetOrderCountByUserAsync(int userId);
         Task<bool> ConfirmOrders(List<int> selectedOrderIds);
+
+        Task<OperationResult> ConfirmAndInvalidateCacheAsync(List<int> orderIds);
     }
 }

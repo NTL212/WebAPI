@@ -27,7 +27,7 @@ namespace ProductBusinessLogic.Services
             return await _repository.SaveChangesAsync();
         }
 
-        public async Task<bool> AddRangeAsync(List<TDto> dto)
+        public virtual async Task<bool> AddRangeAsync(List<TDto> dto)
         {
             // Ánh xạ từ DTO sang Entity
             var entity = _mapper.Map<T>(dto);
@@ -78,6 +78,11 @@ namespace ProductBusinessLogic.Services
             return _mapper.Map<TDto>(entity);
         }
 
+        public async Task<int> GetCountAsync()
+        {
+            return await _repository.CountAsync();
+        }
+
         public virtual async Task<bool> UpdateAsync(TDto dto)
         {
             // Ánh xạ từ DTO sang Entity
@@ -88,7 +93,7 @@ namespace ProductBusinessLogic.Services
             
         }
 
-        public async Task<bool> UpdateRangeAsync(List<TDto> dto)
+        public virtual async Task<bool> UpdateRangeAsync(List<TDto> dto)
         {
             // Ánh xạ từ DTO sang Entity
             var entity = _mapper.Map<List<T>>(dto);

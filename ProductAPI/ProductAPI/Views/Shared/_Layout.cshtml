@@ -33,7 +33,8 @@
     <!-- Owl Carousel CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -90,7 +91,7 @@
                             <li>
                                 <a href="#">Links</a>
                                 <ul>
-                                    @if (Context.Session.GetInt32("UserId")!=null)
+                                    @if (Context.Session.GetInt32("UserId") != null)
                                     {
                                         <li>Hello @Context.Session.GetString("UserName")</li>
                                         <li id="authLink"><a href="@Url.Action("Logout", "Account")">Sign out</a></li>
@@ -99,7 +100,7 @@
                                     {
                                         <li id="authLink"><a href="#signin-modal" data-toggle="modal">Sign in / Sign up</a></li>
                                     }
-                                   
+
                                 </ul>
                             </li>
                         </ul><!-- End .top-menu -->
@@ -137,14 +138,14 @@
                     <div class="header-right">
 
                         <div class="dropdown cart-dropdown">
-                            <a href="@Url.Action("Index", "Cart")" class="dropdown-toggle" role="button"  aria-haspopup="true" aria-expanded="false" data-display="static">
+                            <a href="@Url.Action("Index", "Cart")" class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" data-display="static">
                                 <div class="icon">
                                     <i class="icon-shopping-cart"></i>
                                     <span id="cartCount" class="cart-count"></span>
                                 </div>
                                 <p>Cart</p>
                             </a>
-                         
+
                         </div><!-- End .cart-dropdown -->
                     </div><!-- End .header-right -->
                 </div><!-- End .container -->
@@ -167,7 +168,7 @@
                                 </nav><!-- End .side-nav -->
                             </div><!-- End .dropdown-menu -->
 
-                        
+
                         </div><!-- End .category-dropdown -->
 
                     </div><!-- End .header-left -->
@@ -185,21 +186,21 @@
 
                                 // Xóa các danh mục cũ nếu có
                                 categoryList.innerHTML = `
-                                          
-                                        `;
+
+                                                                `;
 
                                 // Duyệt qua danh sách danh mục từ API và thêm vào danh sách
                                 categories.forEach(category => {
                                     const categoryItem = document.createElement('li');
-                                    if(category.isDeleted==false){
+                                    if (category.isDeleted == false) {
                                         categoryItem.classList.add('dropdown', 'item');
                                         categoryItem.innerHTML = `<a href="/product/shopbycategory?id=${category.categoryId}"">${category.categoryName}</a>`;
                                         categoryList.appendChild(categoryItem);
                                     }
 
-                            
 
-                                    
+
+
                                 });
                             } catch (error) {
                                 console.error('Error loading categories:', error);
@@ -237,9 +238,9 @@
                             }).then(response => response.json())
                                 .then(data => {
                                     if (data.success) {
-                                       document.getElementById('cartCount').innerText = data.data
-                                       console.log(data.count)
-                                    } 
+                                        document.getElementById('cartCount').innerText = data.data
+                                        console.log(data.count)
+                                    }
                                 })
                                 .catch(error => {
                                     console.error("Error:", error);
@@ -259,30 +260,48 @@
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-center -->
-                   
+
                     <div class="header-right">
-                        @{
-                            var userId = Context.Session.GetInt32("UserId");
-                        }
-                        @if (userId != null)
-                        {
-                            <ul class="menu sf-arrows">
-                                <li>
-                                    <a href="#" class="sf-with-ul">Account</a>
+                        <div id="notificationContainer">
 
-                                    <ul>
-                                        <li><a href="@Url.Action("Index", "UserOrder", new {userId = userId})">MyOrder</a></li>
-                                        <li><a href="@Url.Action("UserProfile", "Account", new {userId = userId})">Profile</a></li>
-                                        <li><a href="@Url.Action("ChangePass", "Account")">Change Password</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <script>
+                                $(document).ready(function () {
+                                    // Gọi Ajax để tải Partial View
+                                    $.ajax({
+                                        url: '@Url.Action("GetNotifications", "Notification", new { userId = Context.Session.GetInt32("UserId") })',
+                                        type: 'GET',
+                                        success: function (data) {
+                                            $('#notificationContainer').html(data);
+                                        },
+                                        error: function () {
+                                            console.log('Error loading notifications.');
+                                        }
+                                    });
+                                });
+                            </script>
+                            </div>
+                            @{
+                                var userId = Context.Session.GetInt32("UserId");
+                            }
+                            @if (userId != null)
+                            {
+                                <ul class="menu sf-arrows">
+                                    <li>
+                                        <a href="#" class="sf-with-ul">Account</a>
 
-                            <!-- End .menu -->
-                        }
-                    </div>
-                </div><!-- End .container -->
-            </div><!-- End .header-bottom -->
+                                        <ul>
+                                            <li><a href="@Url.Action("Index", "UserOrder", new {userId = userId})">MyOrder</a></li>
+                                            <li><a href="@Url.Action("UserProfile", "Account", new {userId = userId})">Profile</a></li>
+                                            <li><a href="@Url.Action("ChangePass", "Account")">Change Password</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                <!-- End .menu -->
+                            }
+                        </div>
+                    </div><!-- End .container -->
+                </div><!-- End .header-bottom -->
         </header><!-- End .header -->
         @RenderBody()
     </div><!-- End .page-wrapper -->
@@ -528,7 +547,7 @@
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
 
-                                            <a href="@Url.Action("ForgotPassword", "Account")" class="forgot-link">Forgot Your Password?</a> 
+                                            <a href="@Url.Action("ForgotPassword", "Account")" class="forgot-link">Forgot Your Password?</a>
                                         </div>
                                         <span class="alert-danger">@TempData["LoginErrorMessage"]</span>
                                     </form>
@@ -541,7 +560,7 @@
                                         </div><!-- End .form-group -->
                                         <div class="form-group">
                                             <label for="register-email">Your email address *</label>
-                                            <input type="email" class="form-control" id="Email" name="Email" required>  
+                                            <input type="email" class="form-control" id="Email" name="Email" required>
                                         </div><!-- End .form-group -->
 
                                         <div class="form-group">
@@ -557,13 +576,13 @@
                                                 <span>SIGN UP</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
-                                           
+
                                             <div class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input" id="register-policy" required>
                                                 <label class="custom-control-label" for="register-policy">I agree to the <a href="#">privacy policy</a> *</label>
                                             </div><!-- End .custom-checkbox -->
 
-                                           
+
                                         </div><!-- End .form-footer -->
                                     </form>
                                 </div>
@@ -574,8 +593,8 @@
             </div>
         </div>
     </div>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
         $(document).ready(function () {
 
             var returnUrl = window.location.pathname; // Lấy returnUrl từ đường dẫn hiện tại của trang
@@ -586,7 +605,7 @@
                 $('#signin-modal').modal('show');
             }
         });
-        </script>
+    </script>
     <script>
 
         if ('@TempData["SuccessMessage"]' != "") {
@@ -607,40 +626,40 @@
             })
         }
     </script>
-         @* <script>
-        function updateLoginStatus() {
-            const token = '@Context.Session.GetString("Token")'; // Hoặc sessionStorage.getItem("authToken");
-            const authLink = $("#authLink a");
-            if (token) {
-                // Người dùng đã đăng nhập - hiển thị "Sign out"
-                authLink.text("Sign out");
-                authLink.removeAttr("href"); // Bỏ href để tránh mở modal
-                authLink.removeAttr("data-toggle");
+    @* <script>
+    function updateLoginStatus() {
+    const token = '@Context.Session.GetString("Token")'; // Hoặc sessionStorage.getItem("authToken");
+    const authLink = $("#authLink a");
+    if (token) {
+    // Người dùng đã đăng nhập - hiển thị "Sign out"
+    authLink.text("Sign out");
+    authLink.removeAttr("href"); // Bỏ href để tránh mở modal
+    authLink.removeAttr("data-toggle");
 
-                // Thêm sự kiện đăng xuất khi nhấp
-                authLink.on("click", function () {
-                    logout();
-                });
-            } else {
-                // Người dùng chưa đăng nhập - hiển thị "Sign in / Sign up"
-                authLink.text("Sign in / Sign up");
-                authLink.attr("href", "#signin-modal");
-                authLink.attr("data-toggle", "modal");
+    // Thêm sự kiện đăng xuất khi nhấp
+    authLink.on("click", function () {
+    logout();
+    });
+    } else {
+    // Người dùng chưa đăng nhập - hiển thị "Sign in / Sign up"
+    authLink.text("Sign in / Sign up");
+    authLink.attr("href", "#signin-modal");
+    authLink.attr("data-toggle", "modal");
 
-                // Xóa sự kiện đăng xuất nếu có
-                authLink.off("click");
-            }
-        }
+    // Xóa sự kiện đăng xuất nếu có
+    authLink.off("click");
+    }
+    }
 
 
-        // Kiểm tra trạng thái đăng nhập khi tải trang
-        $(document).ready(function () {
-            if ('@Context.Session.GetInt32("UserId")'=='') {
-                localStorage.removeItem("authToken");
-            }
-            updateLoginStatus();            
-        });
-        </script> *@
+    // Kiểm tra trạng thái đăng nhập khi tải trang
+    $(document).ready(function () {
+    if ('@Context.Session.GetInt32("UserId")'=='') {
+    localStorage.removeItem("authToken");
+    }
+    updateLoginStatus();
+    });
+    </script> *@
 
     <!-- Footer -->
     @Html.Partial("_Footer")
@@ -650,7 +669,7 @@
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-  
+
 
     <!-- Owl Carousel JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>

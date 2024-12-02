@@ -5,8 +5,6 @@ using ProductDataAccess.Models.Response;
 using ProductDataAccess.ViewModels;
 using ProductBusinessLogic.Interfaces;
 
-
-
 namespace ProductAPI.Controllers.MVC.Admin
 {
     [JwtAuthorize("Admin")]
@@ -229,7 +227,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         public async Task<IActionResult> DetailCampaign(int id)
         {
 
-            var campaign = _voucherCampaignService.GetCampaignWithVoucher(id);
+            var campaign = await _voucherCampaignService.GetCampaignWithVoucher(id);
             return View(campaign);
         }
 
@@ -276,17 +274,9 @@ namespace ProductAPI.Controllers.MVC.Admin
             if (voucherIds == null || !voucherIds.Any() || campaignId==null)
             {
                 return BadRequest("No vouchers selected.");
-            }
-            List<VoucherAssignmentDTO> listVA = new List<VoucherAssignmentDTO>(); 
-            foreach (int voucherId in voucherIds)
-            {
-                VoucherAssignmentDTO va = new VoucherAssignmentDTO();
-                va.VoucherId = voucherId;
-                va.CampaignId = campaignId;
-                listVA.Add(va);
-            }
+            }         
             
-            var result = await _voucherAssignmentService.AddRangeAsync(listVA);
+            var result = await _voucherAssignmentService.CreateAssignments(voucherIds, campaignId);
             if (result)
             {
                 TempData["SuccessMessage"] = "Assign successfull";

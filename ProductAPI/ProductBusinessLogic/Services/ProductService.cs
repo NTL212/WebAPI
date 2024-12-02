@@ -10,15 +10,22 @@ namespace ProductBusinessLogic.Services
     public class ProductService : BaseService<Product, ProductDTO>, IProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IMapper mapper, IProductRepository productRepository) : base(mapper, productRepository)
+        private readonly ICategoryRepository _categoryRepository;
+        public ProductService(IMapper mapper, IProductRepository productRepository, ICategoryRepository categoryRepository) : base(mapper, productRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<PagedResult<ProductDTO>> GetProductPagedByCategory(int pageNumber, int pageSize, int categoryId)
         {
-            var totalRecords = await _productRepository.CountAsync(p=>p.CategoryId==categoryId);
-            var products = await _productRepository.GetPagedWithIncludeSearchAsync(pageNumber, pageSize, p=>p.CategoryId==categoryId);
+            // Fetch subcategories
+            var subcategories = await _categoryRepository.GetAllSubCategory(categoryId);
+            var categoryIds = subcategories.Select(c => c.CategoryId).Append(categoryId);
+
+            var products = await _productRepository.GetProductsByCategoryIdsPagedAsync(pageNumber, pageSize, categoryIds);
+
+            var totalRecords = await _productRepository.CountAsync(p=>categoryIds.ToList().Contains((int)p.CategoryId));
             return new PagedResult<ProductDTO>
             {
                 Items = _mapper.Map<List<ProductDTO>>(products),
@@ -76,12 +83,6 @@ namespace ProductBusinessLogic.Services
         {
             var products = await _productRepository.GetAllIncludeProducts();
             return _mapper.Map<List<ProductDTO>>(products); 
-        }
-
-        public async Task<List<ProductDTO>> GetAllProductsByCategory(int categoryId)
-        {
-            var products = await _productRepository.GetAllProductsByCategory(categoryId);
-            return _mapper.Map<List<ProductDTO>>(products);
         }
 
         public async Task<PagedResult<ProductDTO>> GetAllProductsByCategory(int pageNumber, int pageSize, int id, string searchKey)

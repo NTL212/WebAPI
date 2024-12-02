@@ -5,6 +5,7 @@ using ProductBusinessLogic.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
 using ProductDataAccess.Models.Response;
+using ProductDataAccess.Repositories;
 using ProductDataAccess.Repositories.Interfaces;
 using System.Text.RegularExpressions;
 
@@ -15,10 +16,12 @@ namespace ProductBusinessLogic.Services
     public class UserService : BaseService<User, UserDTO>, IUserService
     {
         private readonly IUserRepoisitory _userRepoisitory;
+        private readonly IOrderRepository _orderRepository;
         private readonly PasswordHasher<User> _passwordHasher;
-        public UserService(IMapper mapper,IUserRepoisitory userRepoisitory, PasswordHasher<User> passwordHasher) : base(mapper, userRepoisitory)
+        public UserService(IMapper mapper,IUserRepoisitory userRepoisitory, PasswordHasher<User> passwordHasher, IOrderRepository orderRepository) : base(mapper, userRepoisitory)
         {
             _userRepoisitory = userRepoisitory;
+            _orderRepository = orderRepository;
             _passwordHasher = passwordHasher;
         }
 
@@ -73,7 +76,7 @@ namespace ProductBusinessLogic.Services
 
         public async override Task<List<UserDTO>> GetAllAsync()
         {
-            var user = await _userRepoisitory.GetAllWithPredicateIncludeAsync(u => u.UserId != 1);
+            var user = await _userRepoisitory.GetAllWithPredicateIncludeAsync(u => u.UserId != 1, u=>u.Group);
             return _mapper.Map<List<UserDTO>>(user);
         }
 
@@ -81,6 +84,58 @@ namespace ProductBusinessLogic.Services
         {
            var user = await _userRepoisitory.GetByIdWithIncludeAsync(u => u.Email == email, u => u.Group);
             return _mapper.Map<UserDTO>(user);
+        }
+
+        public async Task<string> ForgotPassword(string email)
+        {
+            var newPassword = GenerateRandomPassword();
+            var user = await _userRepoisitory.GetByIdWithIncludeAsync(u => u.Email == email, u => u.Group);
+            user.PasswordHash = user.PasswordHash = user.PasswordHash = _passwordHasher.HashPassword(user, newPassword); // Mã hóa mật khẩu
+            _userRepoisitory.Update(user);
+
+            if (await _userRepoisitory.SaveChangesAsync())
+                return newPassword;
+            else
+                return "";
+        }
+
+
+
+        private string GenerateRandomPassword(int length = 6)
+        {
+            // Định nghĩa các ký tự có thể sử dụng trong mật khẩu
+            const string validChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+
+            // Tạo đối tượng Random để sinh số ngẫu nhiên
+            Random random = new Random();
+
+            // Xây dựng mật khẩu
+            char[] password = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                password[i] = validChars[random.Next(validChars.Length)];
+            }
+
+            // Trả về mật khẩu dưới dạng chuỗi
+            return new string(password);
+        }
+
+        public async Task<int> GetCountOrderOfUser(int userId)
+        {
+            return await _orderRepository.CountAsync(o => o.UserId == userId);
+        }
+
+        public override async Task<bool> UpdateAsync(UserDTO dto)
+        {
+            var user = await _userRepoisitory.GetByIdAsync(dto.UserId);
+            if (user==null) return false;
+            user.Username = dto.Username;
+            user.Email = dto.Email;
+            user.GroupId = dto.GroupId;
+            user.IsActive = dto.IsActive;
+            _userRepoisitory.Update(user);
+            return await _userRepoisitory.SaveChangesAsync();
+
         }
     }
 }

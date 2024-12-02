@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProductBusinessLogic.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
@@ -14,27 +15,24 @@ namespace ProductBusinessLogic.Services
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
         private readonly IVoucherUserRepository _voucherUserRepository;
-        public OrderService(IMapper mapper, IOrderRepository orderRepository, IProductRepository productRepository, IVoucherUserRepository voucherUserRepository) : base(mapper, orderRepository)
+        private readonly IVoucherRepository _voucherRepository;
+        private readonly ICacheService _cacheService;
+        public OrderService(IMapper mapper, IOrderRepository orderRepository, IProductRepository productRepository, IVoucherUserRepository voucherUserRepository, IVoucherRepository voucherRepository, ICacheService cacheService) : base(mapper, orderRepository)
         {
             _orderRepository = orderRepository;
             _productRepository = productRepository;
             _voucherUserRepository = voucherUserRepository;
+            _voucherRepository = voucherRepository;
+            _cacheService = cacheService;
         }
 
 
-        public async Task<ResultVM> CreateOrderAsync(OrderDTO orderDto, List<CartItemDTO> cartItems)
+        public async Task<ResultVM> CreateOrderAsync(OrderDTO orderDto)
         {
             try
             {
                 var order = _mapper.Map<Order>(orderDto);
                 order.VoucherId = orderDto.VoucherAppliedId;
-                order.OrderItems = cartItems.Select(ci=>new OrderItem
-                {
-                    ProductId = ci.ProductId,
-                    Price = ci.Price,
-                    Quantity = ci.Quantity,
-                }).ToList();
-                List<OrderItem> list = new List<OrderItem>();
                 order.OrderDate = DateTime.Now;
                 order.Status = "Pending";
 
@@ -50,7 +48,7 @@ namespace ProductBusinessLogic.Services
                 {
                     var product = await _productRepository
                         .GetByIdWithIncludeAsync(c => c.ProductId == item.ProductId);
-
+                    item.Product = product;
                     product.Stock -= item.Quantity;
 
                     if (product.Stock < 0)
@@ -60,10 +58,12 @@ namespace ProductBusinessLogic.Services
                     _productRepository.Update(product);
                 }
 
-                await _orderRepository.AddAsync(order);
+                var orderCreated = await _orderRepository.CreateOrder(order);
                 if (await _orderRepository.SaveChangesAsync())
                 {
-                    return new ResultVM(true, "Place order successfully");
+                    var result= new ResultVM(true, $"Place order #{orderCreated.OrderId} with total=${orderCreated.TotalAmount} successfully");                   
+                    result.Order = _mapper.Map<OrderDTO>(orderCreated);
+                    return result;
                 }
                 return new ResultVM(false, "Place order failed");
             }
@@ -92,12 +92,6 @@ namespace ProductBusinessLogic.Services
             return orderPaged;
         }
 
-        public async Task<bool> UpdateOrderStatusAsync(int orderId, string status)
-        {
-
-            return await _orderRepository.UpdateOrderStatusAsync(orderId, status);
-        }
-
         public async Task<OrderDTO> GetOrderById(int orderId)
         {
             var order = await _orderRepository.GetOrderById(orderId);
@@ -110,7 +104,28 @@ namespace ProductBusinessLogic.Services
             var order = await _orderRepository.GetOrderById(orderId);
             if (order == null)
                 return false;
-            order.Status = "Cancled";
+
+            order.Status = "Canceled";
+
+            if (order.VoucherId > 0)
+            {
+                var voucherUser = await _voucherUserRepository.GetVoucherUser((int)order.UserId, (int)order.VoucherId);
+                if (voucherUser.TimesUsed > 0 && voucherUser.TimesUsed <= voucherUser.Quantity)
+                {
+                    voucherUser.TimesUsed -= 1;
+                }
+                _voucherUserRepository.Update(voucherUser);
+            }
+
+            foreach (var o in order.OrderItems)
+            {
+                var product = await _productRepository.GetByIdAsync((int)o.ProductId);
+                if (product != null)
+                {
+                    product.Stock += o.Quantity;
+                }
+                _productRepository.Update(product);
+            }
             _orderRepository.Update(order);
             return await _orderRepository.SaveChangesAsync();
         }
@@ -152,6 +167,27 @@ namespace ProductBusinessLogic.Services
         {
             var orders = await _orderRepository.GetAllWithPredicateIncludeAsync(o=>selectedOrders.Contains(o.OrderId));
             return _mapper.Map<List<OrderDTO>>(orders); 
+        }
+
+        public async Task<OperationResult> ConfirmAndInvalidateCacheAsync(List<int> orderIds)
+        {
+            if (orderIds == null || !orderIds.Any())
+                return new OperationResult(false, "No orders to confirm.");
+
+            var updated = await ConfirmOrders(orderIds);
+
+            if (!updated)
+                return new OperationResult(false, "Failed to confirm orders.");
+
+            var orders = await GetSelectedOrders(orderIds);
+
+            foreach (var order in orders)
+            {
+                var pageCount = await GetOrderCountByUserAsync(order.UserId);
+                await _cacheService.InvalidateUserOrdersCacheAsync(order.UserId, pageCount);
+            }
+
+            return new OperationResult(true);
         }
     }
 }

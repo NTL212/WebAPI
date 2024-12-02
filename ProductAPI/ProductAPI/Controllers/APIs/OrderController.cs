@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.Models;
 using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
+using ProductBusinessLogic.Interfaces;
+using ProductAPI.Services;
 
 namespace ProductAPI.Controllers.APIs
 {
@@ -10,26 +12,39 @@ namespace ProductAPI.Controllers.APIs
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IMapper _mapper;
+        private readonly IOrderService _orderService;
+        private readonly INotificationGRPCService _notificationGRPCService;
 
-        public OrderController(IOrderRepository orderRepository, IMapper mapper)
+        public OrderController(IOrderService orderService, INotificationGRPCService notificationGRPCService)
         {
-            _orderRepository = orderRepository;
-            _mapper = mapper;
+            _orderService = orderService;
+            _notificationGRPCService = notificationGRPCService;
         }
 
         // Tạo đơn hàng mới
         [HttpPost]
-        public async Task<IActionResult> CreateOrder([FromBody] Order order)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderDTO order)
         {
-            var result = await _orderRepository.CreateOrderAsync(order);
+            var result = await _orderService.CreateOrderAsync(order);
             if (result == null)
                 return BadRequest("Could not create order.");
 
-            // Ánh xạ lại Order sang OrderDTO
-            var orderDTO = _mapper.Map<OrderDTO>(order);
-            return Ok(result);
+            if (result.IsSuccess)
+            {
+                var notice = new Notice
+                {
+                    UserId = result.Order.UserId,
+                    OrderId = result.Order.OrderId,
+                    Title = "Place Order Successfully",
+                    Message = result.Message
+                };
+                var message  = await _notificationGRPCService.AddNoticeAsync(notice);
+                return Ok(result);
+            }
+            else
+            {
+                return BadRequest(result.Message);
+            }
 
         }
 
@@ -37,11 +52,9 @@ namespace ProductAPI.Controllers.APIs
 		[HttpGet]
 		public async Task<IActionResult> GetAllOrder()
 		{
-			var orders = await _orderRepository.GetAllAsync();
+			var orders = await _orderService.GetAllAsync();
 
-			// Ánh xạ từ các Order sang OrderDTO
-			var ordersDTO = _mapper.Map<IEnumerable<OrderDTO>>(orders);
-			return Ok(ordersDTO);
+			return Ok(orders);
 		}
 
 
@@ -49,41 +62,24 @@ namespace ProductAPI.Controllers.APIs
 		[HttpGet("user/{userId}")]
         public async Task<IActionResult> GetOrdersByUserId(int userId)
         {
-            var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
-
-            // Ánh xạ từ các Order sang OrderDTO
-            var ordersDTO = _mapper.Map<IEnumerable<OrderDTO>>(orders);
-            return Ok(ordersDTO);
+            var orders = await _orderService.GetOrdersByUserIdAsync(userId);
+            return Ok(orders);
         }
 
         // Lấy chi tiết đơn hàng theo OrderId
         [HttpGet("{orderId}")]
         public async Task<IActionResult> GetOrderById(int orderId)
         {
-            var order = await _orderRepository.GetByIdAsync(orderId);
+            var order = await _orderService.GetByIdAsync(orderId);
             if (order == null)
                 return NotFound();
-
-            // Ánh xạ từ Order sang OrderDTO
-            var orderDTO = _mapper.Map<OrderDTO>(order);
-            return Ok(orderDTO);
-        }
-
-        // Cập nhật trạng thái đơn hàng
-        [HttpPut("{orderId}/status")]
-        public async Task<IActionResult> UpdateOrderStatus(int orderId, [FromBody] string status)
-        {
-            var updated = await _orderRepository.UpdateOrderStatusAsync(orderId, status);
-            if (!updated)
-                return BadRequest("Could not update order status.");
-
-            return NoContent();
+            return Ok(order);
         }
 
         [HttpDelete("{orderId}")]
         public async Task<IActionResult> CancelOrder(int orderId)
         {
-            var updated = await _orderRepository.CancelOrderAsync(orderId);
+            var updated = await _orderService.CancelOrderAsync(orderId);
             if (!updated)
                 return BadRequest("Could not update order status.");
 

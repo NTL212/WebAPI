@@ -6,19 +6,16 @@ using Microsoft.OpenApi.Models;
 using ProductAPI.Email;
 using ProductAPI.Filters;
 using ProductAPI.Profiles;
-using ProductDataAccess.Repositories;
-using ProductDataAccess.Repositories.Implementations;
-using ProductDataAccess.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductDataAccess.Models;
 using System.Text;
 using ProductBusinessLogic.Interfaces;
 using ProductBusinessLogic.Services;
+using ProductDataAccess;
+using ProductBusinessLogic;
+
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 //Http Client
 builder.Services.AddHttpClient();
@@ -29,9 +26,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddDbContext<ProductCategoryContext>(options =>
-    options.UseSqlServer(connectionString));
-
 builder.Services.AddHttpContextAccessor();
 
 // Add Redis distributed cache
@@ -48,38 +42,29 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 //DI Repository, Service
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IUserRepoisitory, UserRepository>();
-builder.Services.AddScoped<IUserGroupRepository, UserGroupRepository>();
-builder.Services.AddScoped<IVoucherUserRepository, VoucherUserRepository>();
-builder.Services.AddScoped<IVoucherCampaignRepository, VoucherCampaignRepository>();
-builder.Services.AddScoped<IVoucherAssignmentRepository, VoucherAssignmentRepository>();
+builder.Services.AddDataAccessServices(builder.Configuration);
+builder.Services.AddBusinessServices();
+
 builder.Services.AddScoped<PasswordHasher<User>>();
 
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserGroupService, UserGroupService>();
-builder.Services.AddScoped<IVoucherService, VoucherService>();
-builder.Services.AddScoped<IVoucherUserService, VoucherUserService>();
-builder.Services.AddScoped<IVoucherCampaignService, VoucherCampaignService>();
-builder.Services.AddScoped<IVoucherAssignmentService, VoucherAssignmentService>();
 
-builder.Services.AddScoped<RabbitMqService>();
+builder.Services.AddSingleton<RabbitMqService>();
 builder.Services.AddScoped<ValidateTokenAttribute>();
+builder.Services.AddScoped<INotificationGRPCService, NotificationGRPCService>();
 
 //Mail
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<ICheckoutService, CheckoutService>();
+
+//Cache
+builder.Services.AddScoped<ICacheService, CacheService>();
+
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -150,7 +135,7 @@ builder.Services.AddCors(options =>
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-
+builder.Services.AddGrpc();
 
 var app = builder.Build();
 
@@ -170,6 +155,8 @@ app.UseCors("AllowSpecificOrigins");
 
 app.UseHttpsRedirection();
 
+
+app.MapGrpcService<NotificationGRPCService>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
-using ProductDataAccess.Repositories;
-using ProductDataAccess.ViewModels;
-using ProductDataAccess.Repositories.Interfaces;
+using ProductBusinessLogic.Interfaces;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,16 +11,12 @@ namespace ProductAPI.Controllers.APIs
     [ApiController]
     public class VoucherController : ControllerBase
     {
-        private readonly IVoucherRepository _voucherRepository;
-        private readonly IOrderVoucherRepository _orderVoucherRepository;
-        private readonly IVoucherCampaignRepository _voucherCampaignRepository;
-        private readonly IMapper _mapper;
-        public VoucherController(IVoucherRepository voucherRepository, IMapper mapper, IOrderVoucherRepository orderVoucherRepository, IVoucherCampaignRepository voucherCampaignRepository)
+        private readonly IVoucherService _voucherService;
+        private readonly IVoucherCampaignService _voucherCampaignService;
+        public VoucherController(IVoucherService voucherService, IVoucherCampaignService voucherCampaignService)
         {
-            _voucherRepository = voucherRepository;
-            _orderVoucherRepository = orderVoucherRepository;
-            _voucherCampaignRepository = voucherCampaignRepository;
-            _mapper = mapper;
+            _voucherService = voucherService;
+            _voucherCampaignService = voucherCampaignService;
 
         }
 
@@ -31,7 +24,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpGet("{code}")]
         public async Task<ActionResult<Voucher>> GetVoucherByCode(string code)
         {
-            var voucher = await _voucherRepository.GetVoucherByCodeAsync(code);
+            var voucher = await _voucherService.GetVoucherByCode(code);
             if (voucher == null)
             {
                 return NotFound("Voucher not found");
@@ -39,42 +32,20 @@ namespace ProductAPI.Controllers.APIs
             return Ok(voucher);
         }
 
-        // POST api/voucher/apply
-        [HttpPost("apply")]
-        public async Task<ActionResult> ApplyVoucherToOrder([FromBody] ApplyVoucherRequest request)
-        {
-            var isValid = await _voucherRepository.IsVoucherValidAsync(request.Code);
-            if (!isValid)
-            {
-                return BadRequest("Voucher is not valid");
-            }
-
-            var voucher = await _voucherRepository.GetVoucherByCodeAsync(request.Code);
-            var isApplied = await _orderVoucherRepository.ApplyVoucherToOrderAsync(request.OrderId, voucher.VoucherId, (decimal)voucher.DiscountValue);
-
-            if (isApplied)
-            {
-                return Ok("Voucher applied successfully");
-            }
-            return BadRequest("Failed to apply voucher");
-        }
 
         // POST api/voucher
         [HttpPost]
         public async Task<ActionResult<Voucher>> CreateVoucher([FromBody] VoucherDTO voucherDTO)
         {
-            var voucher = _mapper.Map<Voucher>(voucherDTO);
-            var createdVoucher = await _voucherRepository.CreateVoucherAsync(voucher);
-            return CreatedAtAction(nameof(GetVoucherByCode), new { code = createdVoucher.Code }, createdVoucher);
+            var createdVoucher = await _voucherService.AddAsync(voucherDTO);
+            return Ok();
         }
 
         // PUT api/voucher
         [HttpPut]
         public async Task<ActionResult> UpdateVoucher([FromBody] VoucherDTO voucherDTO)
-        {
-            var voucher = _mapper.Map<Voucher>(voucherDTO);
-            _voucherRepository.Update(voucher);
-            var success = await _voucherRepository.SaveChangesAsync();
+        {           
+            var success = await _voucherService.UpdateAsync(voucherDTO);
             if (success)
             {
                 return Ok("Voucher updated successfully");
@@ -86,9 +57,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpDelete("{voucherId}")]
         public async Task<ActionResult> DeleteVoucher(int voucherId)
         {
-            var voucher = await _voucherRepository.GetByIdAsync(voucherId);
-            _voucherRepository.Delete(voucher);
-            var success = await _voucherRepository.SaveChangesAsync();
+            var success = await _voucherService.DeleteAsync(voucherId);
             if (success)
             {
                 return NoContent();
@@ -99,13 +68,12 @@ namespace ProductAPI.Controllers.APIs
 
         [HttpGet("campaign/{voucherCampaignId}")]
 
-        public async Task<ActionResult<VoucherCampaign>> GetVoucherCampaign(int voucherCampaignId)
+        public async Task<ActionResult<VoucherCampaignDTO>> GetVoucherCampaign(int voucherCampaignId)
         {
-            var voucherCp = await _voucherCampaignRepository.GetByIdAsync(voucherCampaignId);
-            var voucherDto = _mapper.Map<VoucherCampaignDTO>(voucherCp);
-            if (voucherDto != null)
+            var voucherCp = await _voucherCampaignService.GetByIdAsync(voucherCampaignId);
+            if (voucherCp != null)
             {
-                return Ok(voucherDto);
+                return Ok(voucherCp);
             }
             else
             {
@@ -116,12 +84,10 @@ namespace ProductAPI.Controllers.APIs
         [HttpPost("campaign")]
         public async Task<ActionResult<VoucherCampaign>> CreateVoucherCampaign([FromBody] VoucherCampaignDTO voucherDTO)
         {
-            var voucher = _mapper.Map<VoucherCampaign>(voucherDTO);
-            await _voucherCampaignRepository.AddAsync(voucher);
-            var createdVoucher = await _voucherCampaignRepository.SaveChangesAsync();
+            var createdVoucher = await _voucherCampaignService.AddAsync(voucherDTO);
             if (createdVoucher)
             {
-                return Ok(voucher);
+                return Ok();
             }
             else
                 return BadRequest("Add voucher campaign failed");
@@ -132,9 +98,7 @@ namespace ProductAPI.Controllers.APIs
         [HttpPut("campaign")]
         public async Task<ActionResult> UpdateVoucherCampaign([FromBody] VoucherCampaignDTO voucherDTO)
         {
-            var voucher = _mapper.Map<VoucherCampaign>(voucherDTO);
-            _voucherCampaignRepository.Update(voucher);
-            var success = await _voucherCampaignRepository.SaveChangesAsync();
+            var success = await _voucherCampaignService.UpdateAsync(voucherDTO);
             if (success)
             {
                 return Ok("Voucher updated successfully");
@@ -146,20 +110,12 @@ namespace ProductAPI.Controllers.APIs
         [HttpDelete("{voucherId}/campaign")]
         public async Task<ActionResult> DeleteVoucherCampaign(int voucherId)
         {
-            var success = await _voucherCampaignRepository.DeleteVoucherCampaignAsync(voucherId);
+            var success = await _voucherCampaignService.DeleteAsync(voucherId);
             if (success)
             {
                 return NoContent();
             }
             return NotFound("Voucher not found");
-        }
-
-        // PUT api/voucher/{voucherId}/usage
-        [HttpPut("{voucherId}/usage")]
-        public async Task<ActionResult> UpdateVoucherUsage(int voucherId)
-        {
-            await _voucherRepository.UpdateVoucherUsageAsync(voucherId);
-            return Ok("Voucher usage updated");
         }
     }
 }

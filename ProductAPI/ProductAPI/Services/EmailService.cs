@@ -4,12 +4,11 @@ using ProductAPI.Email;
 using ProductDataAccess.Models;
 using System.Net.Mail;
 using System.Net;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using ProductDataAccess.Repositories.Interfaces;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Services
 {
@@ -18,14 +17,14 @@ namespace ProductAPI.Services
 		private readonly EmailSetting _emailSettings;
 		private readonly IConfiguration _configuration;
 		private readonly ProductCategoryContext _context;
-		private readonly IUserRepoisitory _userRepoisitory;
+		private readonly IUserService _userService;
 
-		public EmailService(IOptions<EmailSetting> emailSettings, IConfiguration configuration, ProductCategoryContext context, IUserRepoisitory userRepoisitory)
+		public EmailService(IOptions<EmailSetting> emailSettings, IConfiguration configuration, ProductCategoryContext context, IUserService  userService)
 		{
 			_emailSettings = emailSettings.Value;
 			_configuration = configuration;
 			_context = context;
-			_userRepoisitory = userRepoisitory;
+            _userService = userService;
 		}
 
 		public async Task SendEmailAsync(EmailModel emailData)
@@ -88,17 +87,16 @@ namespace ProductAPI.Services
 					return false;
 				}
 
-				var user = _context.Set<User>().FirstOrDefault(u => u.Email == email);
+				var user = await _userService.GetUserByEmail(email);
 				if (user == null)
 				{
 					return false;
 				}
 
 				user.IsActive = true;
-				await _context.SaveChangesAsync();
-
-				return true;
-			}
+				
+				return await _userService.UpdateAsync(user);
+            }
 			catch (Exception)
 			{
 				return false;
@@ -121,7 +119,7 @@ namespace ProductAPI.Services
 
         public async Task<bool> SendForgotPasswordEmail(string email)
         {
-			var newPass = await _userRepoisitory.ForgotPassword(email);
+			var newPass = await _userService.ForgotPassword(email);
             var emailModel = new EmailModel
             {
                 FromEmail = "noreply@yourapp.com",

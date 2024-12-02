@@ -10,9 +10,11 @@ namespace ProductBusinessLogic.Interfaces
     {
         Task<PagedResult<VoucherDTO>> GetVoucherPagedWithSearch(int pageNumber, int pageSize, string searchKey);
         Task<PagedResult<VoucherDTO>> GetVouchersOfUserPaged(int pageNumber, int pageSize, int userId);
-
+                                                                                                                    
         Task<bool> CreateVoucher(VoucherCreateVM createVM);
         Task<bool> UpdateVoucher(VoucherEditVM editVM);
+
+        Task<VoucherDTO> GetVoucherByCode(string code);
 
         Task<VoucherEditVM> ConvertVoucherEditVM(VoucherDTO voucher);
 

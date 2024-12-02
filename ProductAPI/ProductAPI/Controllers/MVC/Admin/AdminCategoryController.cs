@@ -1,9 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using ProductDataAccess.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
-using ProductDataAccess.Models.Response;
-using ProductDataAccess.Models;
 using ProductAPI.Filters;
 using Microsoft.Extensions.Caching.Distributed;
 using ProductBusinessLogic.Interfaces;

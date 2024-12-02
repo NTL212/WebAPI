@@ -1,42 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
 using Newtonsoft.Json;
-using ProductDataAccess.Repositories;
-using ProductDataAccess.Repositories.Interfaces;
 using ProductDataAccess.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
 using ProductDataAccess.Models.Request;
-using System.Threading.Channels;
-using MassTransit.Transports;
-using ProductDataAccess.ViewModels;
 using System.Net;
 
 namespace OrderService
 {
     public class OrderConsumer
     {
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IOrderRepository _orderRepository;
-        private readonly IProductRepository _productRepository;
         private readonly IHttpClientFactory _httpClientFactory;
-        private IConnection _connection;
-        private IModel _channel;
         private readonly ILogger<OrderConsumer> _logger;
         private readonly string _apiUrl = "https://localhost:7016/";
 
         public OrderConsumer(
-            IServiceScopeFactory serviceScopeFactory,
-            IOrderRepository orderRepository,
             ILogger<OrderConsumer> logger,
-            IProductRepository productRepository,
             IHttpClientFactory httpClientFactory)
         {
-            _orderRepository = orderRepository;
-            _productRepository = productRepository;
             _httpClientFactory = httpClientFactory;
             _logger = logger;
-            _serviceScopeFactory = serviceScopeFactory;
 
         }
 
@@ -150,7 +134,7 @@ namespace OrderService
             client.DefaultRequestHeaders.Add("Origin", "https://client-origin.com");
 
             var resultJson = JsonConvert.SerializeObject(order);
-            await client.PostAsync($"{_apiUrl}Cart/OrderResult", new StringContent(resultJson, Encoding.UTF8, "application/json"));
+
             try
             {
                 var response = await client.PostAsync($"{_apiUrl}api/order", new StringContent(resultJson, Encoding.UTF8, "application/json"));

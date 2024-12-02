@@ -3,9 +3,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
-using ProductAPI.Filters;
-using ProductDataAccess.Models;
-using ProductDataAccess.Repositories;
 using ProductDataAccess.Models.Response;
 using ProductBusinessLogic.Interfaces;
 
@@ -18,25 +15,16 @@ namespace ProductAPI.Controllers.APIs
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-        private readonly IMapper _mapper;
 
-        public ProductsController(IProductService productService, IMapper mapper)
+        public ProductsController(IProductService productService)
         {
             _productService = productService;
-            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ProductDTO>>> GetAll()
         {
             var products = await _productService.GetAllAsync();
-            return Ok(products);
-        }
-
-        [HttpGet("{id}/category")]
-        public async Task<ActionResult<List<ProductDTO>>> GetAllProductsByCategory(int id)
-        {
-            var products = await _productService.GetAllProductsByCategory(id);
             return Ok(products);
         }
 

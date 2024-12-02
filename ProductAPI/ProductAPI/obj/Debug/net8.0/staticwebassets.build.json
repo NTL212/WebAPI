@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "VBBOvtI7SvMz1TndyLMM/BYPbfw5vUXmU2w6njtIpIM=",
+  "Hash": "b9fZXLltJ+PgF5eKhq4po4uBqIWI2FX3DbJ42DNTPjI=",
   "Source": "ProductAPI",
   "BasePath": "_content/ProductAPI",
   "Mode": "Default",
@@ -29883,6 +29883,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\assets\\images\\products\\Lenovo-Th_638173491118967582_HasThumb.png"
+    },
+    {
+      "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\OIP (3).jpg",
+      "SourceId": "ProductAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\",
+      "BasePath": "_content/ProductAPI",
+      "RelativePath": "assets/images/products/OIP (3).jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\images\\products\\OIP (3).jpg"
     },
     {
       "Identity": "E:\\Work\\ProductAPI\\ProductAPI\\wwwroot\\assets\\images\\products\\OIP.jpg",

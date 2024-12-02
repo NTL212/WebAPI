@@ -1,18 +1,13 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
-using ProductDataAccess.Repositories;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Response;
 using Newtonsoft.Json;
 using ProductDataAccess.Models.Request;
-
 using ProductAPI.Services;
 using Microsoft.Extensions.Caching.Distributed;
-using ProductDataAccess.Models;
-using System.Drawing.Printing;
 using ProductBusinessLogic.Interfaces;
-using ProductAPI.Helper;
+
 
 
 namespace ProductAPI.Controllers.MVC.Client
@@ -21,22 +16,21 @@ namespace ProductAPI.Controllers.MVC.Client
     [ServiceFilter(typeof(ValidateTokenAttribute))]
     public class UserOrderController : Controller
     {
-        private readonly IOrderRepository _orderRepository;
-        private readonly IVoucherRepository _voucherRepository;
+        private readonly IVoucherService _voucherService;
         private readonly RabbitMqService _rabbitMqService;
         private readonly IDistributedCache _distributedCache;
-        private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(10);
-        private readonly IMapper _mapper;
+        private readonly ICacheService _cacheService;   
         private readonly IOrderService _orderService;
 
-        public UserOrderController(IOrderRepository orderRepository, IVoucherRepository voucherRepository, IOrderService orderService, RabbitMqService rabbitMqService,   IDistributedCache distributedCache, IMapper mapper)
+        private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(10);
+
+        public UserOrderController(IVoucherService voucherService, IOrderService orderService, RabbitMqService rabbitMqService, IDistributedCache distributedCache, ICacheService cacheService)
         {
-            _orderRepository = orderRepository;
-            _voucherRepository = voucherRepository;
-            _mapper = mapper;
+            _voucherService = voucherService;
             _rabbitMqService = rabbitMqService;
             _distributedCache = distributedCache;
             _orderService = orderService;
+            _cacheService = cacheService;
         }
 
         public async Task<IActionResult> Index(int userId, bool resetCached=false, int pageNumber = 1, string mess = null)
@@ -45,9 +39,8 @@ namespace ProductAPI.Controllers.MVC.Client
             string cacheKey = $"UserOrders:{userId}:Page:{pageNumber}";
             if (resetCached)
             {
-                CacheHelper helper = new CacheHelper();
                 var pageCount = await _orderService.GetOrderCountByUserAsync(userId);
-                await helper.InvalidateUserOrdersCache(userId, pageCount, _distributedCache);
+                await _cacheService.InvalidateUserOrdersCacheAsync(userId, pageCount);
             }
             PagedResult<OrderDTO> cachedPageResult;
 
@@ -61,10 +54,7 @@ namespace ProductAPI.Controllers.MVC.Client
             else
             {
                 // If not found in cache, fetch from DB
-                var pageResult = await _orderRepository.GetPagedByUserAsync(userId, pageNumber, pageSize);
-
-                // Map to DTO
-                cachedPageResult = _mapper.Map<PagedResult<OrderDTO>>(pageResult);
+                cachedPageResult = await _orderService.GetPagedByUserAsync(userId, pageNumber, pageSize);
 
                 // Serialize data to JSON and store in Redis
                 var serializedData = JsonConvert.SerializeObject(cachedPageResult);
@@ -97,20 +87,20 @@ namespace ProductAPI.Controllers.MVC.Client
             else
             {
                 // If not found in cache, fetch from DB
-                var order = await _orderRepository.GetOrderById(id);
-                Voucher voucher=null;
-                if (order.VoucherId != null)
+                var order = await _orderService.GetOrderById(id);
+                VoucherDTO voucher=null;
+                if (order.VoucherAppliedId != null)
                 {
-                    voucher = await _voucherRepository.GetByIdAsync((int)order.VoucherId);
+                    voucher = await _voucherService.GetByIdAsync((int)order.VoucherAppliedId);
                 }
                 if (order == null)
                     return NotFound();
 
                 // Ánh xạ từ Order sang OrderDTO
-                cachedResult = _mapper.Map<OrderDTO>(order);
+                cachedResult = order;
                 if (voucher != null)
                 {
-                    cachedResult.Voucher = _mapper.Map<VoucherDTO>(voucher);
+                    cachedResult.Voucher = voucher;
                 }
               
                 // Serialize data to JSON and store in Redis

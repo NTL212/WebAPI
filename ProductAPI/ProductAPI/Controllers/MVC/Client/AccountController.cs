@@ -8,21 +8,20 @@ using ProductDataAccess.DTOs;
 using ProductDataAccess.Models.Request;
 using ProductDataAccess.Models.Response;
 using System.Text;
+using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.MVC.Client
 {
     public class AccountController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IUserRepoisitory _userRepository;
+        private readonly IUserService _userService;
         private readonly IEmailService _emailService;
-        private readonly IMapper _mapper;
         private readonly IAuthService _authService;
-        public AccountController(IHttpClientFactory httpClientFactory, IUserRepoisitory userRepository, IMapper mapper, IAuthService authService, IEmailService emailService)
+        public AccountController(IHttpClientFactory httpClientFactory, IUserService userService, IAuthService authService, IEmailService emailService)
         {
             _httpClientFactory = httpClientFactory;
-            _userRepository = userRepository;
-            _mapper = mapper;
+            _userService = userService;
             _authService = authService;
             _emailService = emailService;
         }
@@ -38,7 +37,7 @@ namespace ProductAPI.Controllers.MVC.Client
                 return RedirectToAction("Index", "Home");
             }
 
-            var user = await _userRepository.GetByIdWithIncludeAsync(u => u.Email == loginDto.Email);
+            var user = await _userService.GetUserByEmail(loginDto.Email);
             if (user == null)
             {
                 TempData["LoginErrorMessage"] = "Account not exist.";
@@ -180,9 +179,8 @@ namespace ProductAPI.Controllers.MVC.Client
         [ServiceFilter(typeof(ValidateTokenAttribute))]
         public async Task<IActionResult> UserProfile(int userId)
         {
-            var user = await _userRepository.GetByIdAsync(userId);
-            var userDto = _mapper.Map<UserDTO>(user);
-            return View(userDto);
+            var user = await _userService.GetByIdAsync(userId);
+            return View(user);
 
         }
 
@@ -198,7 +196,7 @@ namespace ProductAPI.Controllers.MVC.Client
         [HttpPost]
         public async Task<IActionResult> ChangePass(ChangePasswordDTO changeDto)
         {
-            var user = await _userRepository.GetByIdAsync((int)HttpContext.Session.GetInt32("UserId"));
+            var user = await _userService.GetByIdAsync((int)HttpContext.Session.GetInt32("UserId"));
             changeDto.Email = user.Email;
             var token = _authService.ChangePassword(changeDto);
             string message = "Failed";

@@ -13,7 +13,6 @@ namespace ProductAPI.Controllers.MVC.Client
         private readonly ICartService _cartService;
         private readonly IDistributedCache _cache;
         private readonly string _apiBaseUrl = "https://localhost:7016/api/";
-
         public HomeController(IHttpClientFactory httpClientFactory, ICartService cartService, IDistributedCache cache)
         {
             _httpClientFactory = httpClientFactory;
@@ -23,12 +22,13 @@ namespace ProductAPI.Controllers.MVC.Client
 
         public async Task<IActionResult> Index()
         {
+
             // Cache keys
             const string categoriesCacheKey = "home:categories";
             const string productsCacheKey = "home:products";
 
             // Attempt to get categories from cache
-            var cachedCategories = await _cache.GetStringAsync(categoriesCacheKey);
+             var cachedCategories = await _cache.GetStringAsync(categoriesCacheKey);
             var cachedProducts = await _cache.GetStringAsync(productsCacheKey);
 
             List<Category> categories;

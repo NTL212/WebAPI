@@ -286,3 +286,16 @@ E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\StackExchange.Redis.dll
 E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\System.Diagnostics.DiagnosticSource.dll
 E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\ProductBusinessLogic.dll
 E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\ProductBusinessLogic.pdb
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.Core.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.Core.Api.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\runtimes\linux-arm64\native\libgrpc_csharp_ext.arm64.so
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\runtimes\linux-x64\native\libgrpc_csharp_ext.x64.so
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\runtimes\osx-x64\native\libgrpc_csharp_ext.x64.dylib
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\runtimes\win-x64\native\grpc_csharp_ext.x64.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\runtimes\win-x86\native\grpc_csharp_ext.x86.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Google.Protobuf.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.AspNetCore.Server.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.AspNetCore.Server.ClientFactory.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.Net.Client.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.Net.ClientFactory.dll
+E:\Work\ProductAPI\ProductAPI\bin\Debug\net8.0\Grpc.Net.Common.dll

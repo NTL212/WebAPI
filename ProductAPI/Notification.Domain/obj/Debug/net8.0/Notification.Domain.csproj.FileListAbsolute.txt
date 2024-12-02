@@ -1,0 +1,11 @@
+E:\Work\ProductAPI\Notification.Domain\bin\Debug\net8.0\Notification.Domain.deps.json
+E:\Work\ProductAPI\Notification.Domain\bin\Debug\net8.0\Notification.Domain.dll
+E:\Work\ProductAPI\Notification.Domain\bin\Debug\net8.0\Notification.Domain.pdb
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\Notification.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\Notification.Domain.AssemblyInfoInputs.cache
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\Notification.Domain.AssemblyInfo.cs
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\Notification.Domain.csproj.CoreCompileInputs.cache
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\Notification.Domain.dll
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\refint\Notification.Domain.dll
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\Notification.Domain.pdb
+E:\Work\ProductAPI\Notification.Domain\obj\Debug\net8.0\ref\Notification.Domain.dll

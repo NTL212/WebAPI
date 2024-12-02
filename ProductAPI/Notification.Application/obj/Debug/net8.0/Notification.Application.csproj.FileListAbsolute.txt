@@ -1,0 +1,15 @@
+E:\Work\ProductAPI\Notification.Application\bin\Debug\net8.0\Notification.Application.deps.json
+E:\Work\ProductAPI\Notification.Application\bin\Debug\net8.0\Notification.Application.dll
+E:\Work\ProductAPI\Notification.Application\bin\Debug\net8.0\Notification.Application.pdb
+E:\Work\ProductAPI\Notification.Application\bin\Debug\net8.0\Notification.Domain.dll
+E:\Work\ProductAPI\Notification.Application\bin\Debug\net8.0\Notification.Domain.pdb
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.csproj.AssemblyReference.cache
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.AssemblyInfoInputs.cache
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.AssemblyInfo.cs
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.csproj.CoreCompileInputs.cache
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notifica.1404CAA7.Up2Date
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.dll
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\refint\Notification.Application.dll
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\Notification.Application.pdb
+E:\Work\ProductAPI\Notification.Application\obj\Debug\net8.0\ref\Notification.Application.dll

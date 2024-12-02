@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductDataAccess.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace ProductDataAccess.ViewModels
         public bool IsSuccess { get; set; } 
         public string Message { get; set; }
 
+        public OrderDTO? Order { get; set; }
         public ResultVM() { }
         public ResultVM(bool isSuccess, string message) 
         {

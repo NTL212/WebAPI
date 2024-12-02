@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProductBusinessLogic.Interfaces;
 using ProductDataAccess.DTOs;
 using ProductDataAccess.Models;
@@ -45,6 +46,19 @@ namespace ProductBusinessLogic.Services
         {
             var campaign = _mapper.Map<VoucherCampaign>(cVM);
             _voucherCampaignRepository.Update(campaign);
+            return await _voucherCampaignRepository.SaveChangesAsync();
+        }
+
+        public async Task<bool> DeleteVoucherCampaignAsync(int voucherCampaignId)
+        {
+
+            var voucher = await _voucherCampaignRepository.GetByIdAsync(voucherCampaignId);
+            if (voucher == null)
+            {
+                return false;
+            }
+            voucher.Status = "Inactive";
+            _voucherCampaignRepository.Update(voucher);
             return await _voucherCampaignRepository.SaveChangesAsync();
         }
     }

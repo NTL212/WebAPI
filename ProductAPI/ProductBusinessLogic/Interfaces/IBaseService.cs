@@ -13,6 +13,8 @@ namespace ProductBusinessLogic.Interfaces
 
         Task<T> GetByIdAsync(int id);
 
+        Task<int> GetCountAsync();
+
         Task<List<T>> GetAllAsync();
 
         Task<PagedResult<T>> GetAllPagedAsync(int pageNumber, int pageSize);

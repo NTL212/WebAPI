@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Filters;
 using Microsoft.Extensions.Caching.Distributed;
-using ProductAPI.Helper;
 using ProductBusinessLogic.Interfaces;
 
 namespace ProductAPI.Controllers.MVC.Admin
@@ -14,7 +12,7 @@ namespace ProductAPI.Controllers.MVC.Admin
         private readonly IOrderService _orderService;
         private readonly IVoucherService _voucherService;
         private readonly IDistributedCache _distributedCache;
-        public AdminOrderController(IOrderService orderService, IVoucherService voucherService, IDistributedCache distributedCache, IMapper mapper)
+        public AdminOrderController(IOrderService orderService, IVoucherService voucherService, IDistributedCache distributedCache)
         {
             _orderService = orderService;
             _voucherService = voucherService;
@@ -45,29 +43,38 @@ namespace ProductAPI.Controllers.MVC.Admin
         }
 
         [HttpPost]
-        public async Task<IActionResult> ConfirmOrders(List<int> selectedOrderIds, int page=1)
+        public async Task<IActionResult> ConfirmOrders(List<int> selectedOrderIds, int page = 1)
         {
-            var updated = await _orderService.ConfirmOrders(selectedOrderIds);
-            if (updated)
+            if (!selectedOrderIds.Any())
             {
-                TempData["SuccessMessage"] = "Confirm orders successfull";
-                var orders = await _orderService.GetSelectedOrders(selectedOrderIds);
-                CacheHelper helper = new CacheHelper();
-                foreach (var item in orders)
+                TempData["ErrorMessage"] = "No orders selected.";
+                return RedirectToAction("Index", new { page });
+            }
+
+            try
+            {
+                var result = await _orderService.ConfirmAndInvalidateCacheAsync(selectedOrderIds);
+
+                if (result.IsSuccess)
                 {
-                    var pageCount = await _orderService.GetOrderCountByUserAsync(item.UserId);
-                    await helper.InvalidateUserOrdersCache(item.UserId, pageCount, _distributedCache);
-                }            
+                    TempData["SuccessMessage"] = "Orders confirmed successfully.";
+                    return selectedOrderIds.Count > 1
+                        ? RedirectToAction("Index", new { page })
+                        : RedirectToAction("Detail", new { id = selectedOrderIds.First() });
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = result.ErrorMessage;
+                    return RedirectToAction("Index", new { page });
+                }
             }
-            else
+            catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "Failed to confirm order";
+                // Log exception here
+                TempData["ErrorMessage"] = "An unexpected error occurred.";
+                return RedirectToAction("Index", new { page });
             }
-            if (selectedOrderIds.Count >1 )
-            {
-                return RedirectToAction("Index", new { page = page });
-            }
-            return RedirectToAction("Detail", new { id = selectedOrderIds.ElementAt(0)});
         }
+
     }
 }

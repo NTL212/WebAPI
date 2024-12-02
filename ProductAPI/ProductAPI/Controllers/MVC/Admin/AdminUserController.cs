@@ -1,13 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using ProductDataAccess.Repositories.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProductDataAccess.DTOs;
-using ProductDataAccess.Models.Response;
-using ProductDataAccess.Models;
 using ProductDataAccess.ViewModels;
 using ProductAPI.Filters;
 using ProductBusinessLogic.Interfaces;
-using ProductBusinessLogic.Services;
 
 namespace ProductAPI.Controllers.MVC.Admin
 {
